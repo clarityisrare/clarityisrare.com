@@ -1,0 +1,123 @@
+---
+title: 'If AI Scales Requirements, the RE Role Must Change'
+subtitle: 'AI Does Not Replace Requirements Engineering. It Exposes It.'
+description: 'AI amplifies whatever level of understanding already exists — which changes the requirements engineer''s role more than any tool ever did.'
+pubDate: 2026-03-05
+series: 'series-02'
+draft: true
+order: 1
+tags: ['AI', 'Role']
+minutes: 11
+heroImage: '../../assets/images/hero-02-1.png'
+---
+
+import CTA from '../../components/mdx/CTA.astro';
+
+For years, many organizations treated requirements engineering as a documentation activity. Capture what stakeholders say, structure it, move it forward. Improve templates, improve tools, improve efficiency and assume the system will work. In many organizations I see today, that assumption still holds.
+
+Then AI enters.
+
+Suddenly, everything accelerates. Requirements are summarized in seconds. Documents are restructured instantly. Gaps are highlighted automatically. Trace links are proposed without effort. And yet something does not scale with this speed:
+
+Clarity.
+
+Because AI does not create understanding. It amplifies whatever level of understanding already exists. Well-structured requirements become easier to analyze, reuse, and align. But weak, ambiguous, or incomplete requirements do not remain slow problems. They become fast, scalable risks. This is often the moment when teams pause, because something feels off.
+
+The real bottleneck was never writing requirements. It was making them meaningful.
+
+And that realization changes the role of the Requirements Engineer more fundamentally than any tool ever did.
+
+## From Writing Requirements to Designing Meaning
+
+Traditionally, the requirements engineer was seen as the author of documentation. Someone who captures, translates, and structures stakeholder input into something usable for implementation. If I look at how many teams still operate today, that definition is still the default. But in an AI-assisted world, it becomes too small. AI can already generate documentation. It can summarize discussions, draft requirements, and restructure content with remarkable fluency. If the role is reduced to writing, it inevitably becomes replaceable. What remains and what becomes more important, is everything that AI cannot reliably do.
+
+Understanding meaning. Managing ambiguity. Making trade-offs explicit. Deciding what matters and what does not.
+
+The focus shifts away from producing artifacts and toward something less visible, but far more critical: designing the conditions under which those artifacts can be trusted. A requirements engineer is no longer only responsible for what is written down. They are responsible for how meaning is created, shaped, and preserved within the system.
+
+## Context Is the New Control Point
+
+One pattern I repeatedly observe when teams start using AI is this: they focus on the tool, not on the input. And that is where things go wrong.
+
+AI does not "know." It works with what it is given.
+
+The quality of its output is directly shaped by the completeness, structure, and boundaries of the input it receives. If context is fragmented or biased, the output will reflect exactly that — often in a form that looks convincing.
+
+That is the danger. Because the failure is not obvious. It is plausible. This is why the role begins to shift toward what can best be described as context engineering. Not as a technical exercise, but as a discipline:
+
+- Defining what information is relevant.
+- Controlling what must be excluded.
+- Making assumptions explicit.
+- Ensuring that sources can be traced and challenged.
+
+I have seen teams dramatically improve AI outcomes, not by changing tools, but simply by improving how context is structured and controlled.
+
+Poor context behaves like poor requirements. It just fails faster.
+
+Concretely, context engineering is the work of assembling the input before the AI touches it: which documents, data models, and decisions are in scope; which legacy sources to deliberately exclude; which terms need a definition attached; and which assumptions must travel with the requirement. A worked example: instead of asking AI to "analyze the payments requirements," you give it the current data model, the two integration contracts it must respect, the definition of "active account," and an explicit note that last year's process is out of scope. Same tool, same prompt style—the difference in output is entirely the context you engineered around it.
+
+## Coherence Is Not Correctness
+
+One of the most underestimated risks of AI-supported work is not that it produces nonsense. It is that it produces answers that look right. Structured. Fluent. Consistent. Convincing.
+
+But coherence is not correctness.
+
+This is something I have seen repeatedly: outputs that are technically clean, logically structured and fundamentally wrong. A well-written requirement that is based on incorrect assumptions is harder to detect than a poorly written one. And when such errors are scaled through AI-supported processes, they do not slow down decision-making.
+
+They accelerate the wrong decisions.
+
+This fundamentally changes what it means to review requirements. It is no longer sufficient to ask whether something is clearly formulated. The critical questions become:
+
+Where does this come from? What assumptions are embedded in it? What evidence supports it and what is missing?
+
+The task shifts from reviewing content to validating truth.
+
+## Managing Ambiguity Instead of Eliminating It
+
+Ambiguity has always been part of requirements engineering. Traditionally, the goal was to eliminate it as early as possible. AI changes that dynamic in a subtle but important way. Where a human would ask for clarification, AI tends to select one interpretation. It resolves ambiguity silently, without making that decision visible.
+
+The result is not confusion. It is false certainty.
+
+And in my experience, false certainty is significantly more dangerous than visible ambiguity because it moves through the process unnoticed.
+
+This creates a new responsibility.
+
+The requirements engineer must ensure that ambiguity is not simply removed but made visible and controlled. Alternatives must be preserved where necessary. Assumptions must be explicit. Decisions must be taken consciously, not hidden inside generated outputs.
+
+Ambiguity is no longer just something to fix. It becomes something to govern.
+
+## Where Responsibility Moves
+
+AI can suggest. AI can compare. AI can generate. But it does not carry accountability.
+
+It does not understand business consequences, regulatory constraints, or organizational priorities. It cannot decide which trade-off is acceptable and which risk is too high. That responsibility does not disappear. It moves. And it moves directly to the requirements engineer. In many discussions I have, this is the point where the role starts to feel less operational and much more strategic. Not as the person who documents decisions, but as the one who defines how decisions are made, where they must remain human, and how they are made visible and traceable.
+
+In this sense, requirements engineering becomes a control function. Not by adding more process. But by defining boundaries.
+
+This is also where the requirements engineer and the architect start to share a job. The architect defines control points in the solution—interfaces, non-functional requirements, architecture decision records. The requirements engineer now defines the control points around meaning—what the AI may assume, what it must trace, where a human decides. When those two sets of boundaries line up, AI accelerates delivery safely. When they do not, the RE quietly hands the architect requirements built on assumptions the architecture was never designed to hold.
+
+## The Role Is Not Smaller. It Is Sharper.
+
+AI removes parts of the work. What remains is more demanding.
+
+- Defining meaning instead of capturing statements.
+- Designing context instead of writing text.
+- Ensuring trust instead of ensuring structure.
+
+And this leads to an uncomfortable but unavoidable conclusion: if requirements engineering is reduced to documentation, it will be automated. If it is understood as the discipline that defines meaning, context, and decision boundaries, it becomes irreplaceable. The question is whether this shift is actively shaped or passively experienced.
+
+Because the tools are already changing the work. The expectations will follow.
+
+And the question for every requirements engineer is no longer whether AI will affect their role but whether they are willing to redefine it before it is redefined for them.
+
+## What This Means in Practice — and What Comes Next
+
+Everything described here can sound abstract at first. But in reality, it shows up in very concrete ways. I see it in how elicitation is prepared, how analysis is performed, how validation is structured, and how decisions are documented. I see it in where teams gain speed and where they suddenly lose control.
+
+In the next article, I want to make this practical.
+
+Where does AI actually help in requirements engineering today? Where does it mislead? And how does the daily work of a requirements engineer change when AI becomes part of the workflow?
+
+Because understanding the shift in the role is only the beginning. Understanding how the work itself changes is where the real transformation starts.
+
+<CTA href="/blog/new-daily-work/">👉 Continue reading: The New Daily Work of AI-Assisted Requirements Engineering</CTA>

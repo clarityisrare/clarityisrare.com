@@ -1,0 +1,179 @@
+---
+title: 'Why documentation quality is the real bottleneck in AI-assisted requirements engineering'
+description: 'AI does not create clarity — it amplifies whatever clarity or confusion already exists in the underlying documentation.'
+pubDate: 2026-01-15
+series: 'series-01'
+order: 1
+tags: ['AI', 'Documentation']
+minutes: 12
+heroImage: '../../assets/images/hero-01-1.png'
+---
+
+import ArrowNote from '../../components/mdx/ArrowNote.astro';
+import CTA from '../../components/mdx/CTA.astro';
+
+**AI doesn't make uncertainty disappear. It makes it look resolved.**
+
+You've probably seen this happen.
+
+A set of requirements gets analyzed by AI. The output is structured, complete, and confident. It even highlights inconsistencies and suggests improvements. It looks… right.
+
+**Until someone tries to implement it—and realizes something doesn't add up.**
+
+AI can analyze requirements faster than ever before. It can summarize, compare, and detect inconsistencies in seconds. But it does not create clarity. It works with whatever clarity—or confusion—already exists in the underlying documentation.
+
+**And that is where the real problem begins.**
+
+As AI becomes embedded in requirements engineering, many expect it to bring clarity to messy or incomplete documentation. It does something very different.
+
+AI does not create clarity, it amplifies whatever clarity or confusion already exists in the underlying documentation. When information is missing, it fills the gaps with plausible assumptions, producing outputs that look structured but may be misaligned with business intent.
+
+## Why this matters now
+
+AI is rapidly becoming part of everyday requirements engineering work. It is used to analyze documentation, generate requirements, identify gaps, and support validation. What previously required hours of manual review can now be done in seconds, shifting not just speed, but how quickly outputs are trusted without the same level of scrutiny.
+
+Most organizations still operate on fragmented and partially inaccessible documentation landscapes, often limiting what AI can actually see. As a result, AI operates on a filtered version of reality, creating blind spots that are difficult to detect.
+
+This combination—high reliance on AI, low-quality or incomplete documentation, and restricted access to existing knowledge—creates a new kind of risk. Not because AI fails visibly, but because it succeeds convincingly on an incomplete picture.
+
+And the risk does not stay inside the requirements team. It reaches everyone who depends on those requirements being right—the architects who design against them, the change and initiative managers who plan around them, and the business leads who fund the work based on them.
+
+## Core thesis: AI does not create clarity, it amplifies the clarity or confusion that already exists
+
+AI systems operate on what is available to them—and in most organizations, that picture is incomplete.
+
+Two structural problems drive this:
+
+### 1. Missing or low-quality documentation
+
+AI can only analyze what it can access.
+
+If documentation is fragmented across systems, outdated, inconsistent, or restricted by access rights, the AI works on a partial version of reality. When critical context is missing, the model fills the gaps with assumptions—producing analysis that appears structured but is built on incomplete information.
+
+One term worth defining up front, because it drives everything below: an AI "hallucination" is output that is fluent, confident, and wrong—an answer the model invents to fill a gap, delivered with the same polish as a correct one.
+
+This is not just a theoretical risk. In a 2026 study of 39 requirements professionals (Alzahrani, IJACSA), two-thirds—66.7%—reported hallucination rates above 20% when the AI worked from incomplete or unclear source documentation. These are practitioners' estimates from real projects, not lab measurements—and that is the point: the people closest to the work already see it happening.
+
+**[Read the study →](https://thesai.org/Publications/ViewPaper?Volume=17&Issue=4&Code=IJACSA&SerialNo=13)**
+
+**The pattern is clear: when the source is weak, the output becomes uncertain—but still looks convincing.**
+
+### 2. Poorly specified inputs (requirements to the AI)
+
+Even when documentation exists, the way we ask AI to use it determines the outcome.
+
+Vague, underspecified, or ambiguous inputs behave like weak requirements. They leave room for interpretation.
+
+AI will resolve that ambiguity—but it will do so probabilistically, not intentionally.
+
+That means:
+
+- assumptions are introduced without being explicit
+- constraints are interpreted inconsistently
+- important edge cases are silently ignored
+
+**The output still looks coherent. But coherence is not correctness.**
+
+### When both problems combine
+
+Individually, each issue is manageable. Together, they reinforce each other:
+
+- incomplete documentation removes critical context
+- weak prompting fails to constrain interpretation
+- the AI fills the resulting gaps with plausible assumptions
+
+The result is not random failure.
+
+**It is systematic, confident misalignment.**
+
+Outputs look convincing enough to trust, but are detached from the actual business intent.
+
+### The real failure mode
+
+The danger is not that AI produces wrong results.
+
+The danger is that it produces results that look right—on an incomplete and weakly defined foundation.
+
+AI does not misunderstand requirements. It inherits—and scales—the gaps in how they are documented and how they are asked.
+
+## "Garbage in, hallucination out": How bad documentation becomes confident AI output
+
+This isn't a flaw in the model, it's the model doing exactly what we asked, just on incomplete information.
+
+The phrase "garbage in, garbage out" is not new. What is new is how it manifests with AI.
+
+Instead of rejecting incomplete inputs, AI models generate the most plausible continuation based on patterns. That output is grammatically correct, logically structured, and often highly convincing.
+
+But it is not grounded in missing context.
+
+### From missing information to fabricated certainty
+
+When documentation is incomplete or unclear, three things typically happen:
+
+1. Gaps are filled with assumptions — missing definitions, undefined edge cases, or absent constraints are silently resolved by the model.
+2. Ambiguity is collapsed into a single interpretation — where multiple meanings exist, the model selects one without showing alternatives.
+3. Uncertainty is not surfaced — the output does not indicate which parts are inferred and which are grounded in source material.
+
+The result is not random error.
+
+**It is structured, confident output built on invisible assumptions.**
+
+### Why this is difficult to detect
+
+The problem is not just that the output can be wrong.
+
+It is that it does not look wrong.
+
+AI-generated analysis:
+
+- uses consistent terminology
+- follows logical structure
+- aligns internally
+
+This creates a strong signal of credibility. But internal consistency is not the same as external correctness.
+
+**A system can be perfectly coherent—and still be based on incomplete or incorrect inputs.**
+
+### A real-world parallel
+
+This pattern is not limited to requirements engineering.
+
+In the legal case Mata v. Avianca, lawyers submitted AI-generated case references that did not exist. The issue was not that the output looked suspicious—it was the opposite. The citations appeared valid and were integrated into a legal argument as if they were real.
+
+The failure was not "AI hallucination" as an isolated event. It was the absence of:
+
+- verified source grounding
+- traceability to real evidence
+- validation before trusting the output
+
+### The key shift
+
+With AI, the failure mode changes:
+
+from errors you can see — to errors you can trust.
+
+And once output becomes easy to trust, it becomes easy to reuse, share, and operationalize.
+
+That is how weak documentation turns into scaled, embedded misunderstanding.
+
+**AI does not just propagate bad inputs. It strengthens their appearance of correctness.**
+
+## What this changes—for the people who fund and steer the work
+
+If AI scales whatever we feed it, the cheapest lever is no longer a smarter model—it is a better input. That quietly rewrites a few familiar decisions.
+
+<ArrowNote label="If you fund IT change:">the budget you approve now buys AI-scaled decisions, not just AI-generated documents. When the underlying documentation is thin, you are paying for fast, confident work built on unverified assumptions—and paying again later to unwind it. The highest-return investment shifts from more tooling to better documentation and validation.</ArrowNote>
+
+<ArrowNote label="If you sponsor or manage an initiative:">"the AI already analyzed it" is not a milestone. Build an explicit validation step into the plan—who confirms that the output matches business intent, and when—so speed does not quietly turn into exposure.</ArrowNote>
+
+<ArrowNote label="If you architect the solution:">treat documentation as a first-class system input, with the same rigor you apply to any interface. Fragmented, inaccessible, or outdated sources are not a paperwork problem; they are a design risk the AI will propagate into everything built on top.</ArrowNote>
+
+<ArrowNote label="If you engineer requirements:">your value moves from producing text to guaranteeing the input—making context explicit, assumptions visible, and sources traceable before anything gets scaled.</ArrowNote>
+
+**None of this needs better AI. It needs a deliberate decision about what we let it amplify.**
+
+So if AI amplifies what's already there, where exactly does it break?
+
+In the next post, I talk about the most common failure modes in AI-assisted requirements analysis and why they often go unnoticed.
+
+<CTA href="/blog/failure-modes/">👉 Continue reading: Part 2: Failure Modes</CTA>

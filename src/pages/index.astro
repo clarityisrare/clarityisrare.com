@@ -1,8 +1,15 @@
 ---
+import { getImage } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import ScrollControls from '../components/ScrollControls.astro';
+import { AUTHOR_NAME, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import heroSrc from '../assets/images/logo-hero.png';
+import { getRecentPosts } from '../lib/posts';
+
+const hero = await getImage({ src: heroSrc, width: 1672, format: 'webp' });
+const recent = await getRecentPosts(4);
 ---
 
 <!doctype html>
@@ -13,37 +20,108 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<section class="home-hero" style={`--hero:url(${hero.src})`}>
+				<img class="home-hero-img" src={hero.src} alt={AUTHOR_NAME} />
+				<div
+					class="home-text rounded-[18px] bg-white/50 backdrop-blur-[4px]"
+				>
+					<h1
+						class="mb-5 text-[40px] font-extrabold leading-[1.12] tracking-[-0.03em] text-pretty text-accent-ink"
+					>
+						Hello, I am {AUTHOR_NAME}, your Requirements Engineering blogger.
+					</h1>
+					<p class="text-[20px] leading-[1.6] text-ink-2">
+						I'm a senior requirements engineer who's worked across start-ups,
+						SMEs and global players, from process to regulatory. I write about
+						making requirements clear enough for people <i>and</i> machines.
+					</p>
+				</div>
+			</section>
+
+			<section class="mx-auto max-w-[1120px] px-8 pt-14 pb-2 max-[760px]:px-4">
+				<div class="mb-5 flex items-baseline justify-between">
+					<h2 class="text-[24px] font-extrabold text-accent-ink">
+						Recent posts
+					</h2>
+					<a href="/blog" class="text-sm font-bold">All posts →</a>
+				</div>
+				<div
+					class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4"
+				>
+					{
+						recent.map((r) => (
+							<a
+								href={r.href}
+								class="rounded-2xl border border-line bg-white p-[22px] transition-shadow hover:shadow-[0_10px_30px_-16px_rgba(0,0,0,0.35)]"
+							>
+								<div class="mb-3 font-mono text-[11px] text-muted-2">
+									{r.series.title}
+								</div>
+								<div class="mb-3.5 text-[18px] font-bold leading-[1.28] text-ink">
+									{r.post.data.title}
+								</div>
+								{r.minutesText && (
+									<div class="text-xs text-muted-2">{r.minutesText}</div>
+								)}
+							</a>
+						))
+					}
+				</div>
+			</section>
 		</main>
+		<ScrollControls />
 		<Footer />
+
+		<style>
+			.home-hero {
+				position: relative;
+				width: 100%;
+				height: calc(100vh - 85px);
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				background-image: var(--hero);
+				background-repeat: no-repeat;
+				background-position: center center;
+				background-size: contain;
+			}
+			.home-hero-img {
+				display: none;
+			}
+			.home-text {
+				width: 42%;
+				margin-right: 4vw;
+				padding: 32px 34px;
+			}
+			@media (max-width: 760px) {
+				.home-hero {
+					display: block;
+					height: auto;
+					background: none;
+					/* Match the 16px side gutter used on every other page. */
+					padding: 0 16px;
+				}
+				.home-hero-img {
+					display: block;
+					width: 100%;
+					max-height: calc(100svh - 130px);
+					object-fit: contain;
+				}
+				.home-text {
+					width: auto;
+					margin-right: 0;
+					padding: 24px 0 8px;
+					background: none;
+					backdrop-filter: none;
+					border-radius: 0;
+				}
+				.home-text :global(h1) {
+					font-size: 30px;
+				}
+				.home-text :global(p) {
+					font-size: 17px;
+				}
+			}
+		</style>
 	</body>
 </html>

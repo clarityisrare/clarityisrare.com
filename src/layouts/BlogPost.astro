@@ -3,84 +3,114 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import ReadAloud from '../components/ReadAloud.astro';
+import ScrollControls from '../components/ScrollControls.astro';
+import { SITE_TITLE } from '../consts';
+import { SERIES, type SeriesId } from '../data/series';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+	title,
+	subtitle,
+	description,
+	series,
+	tags = [],
+	minutes,
+	publishedOn,
+	heroImage,
+	audio,
+} = Astro.props;
+
+const cat = SERIES[series as SeriesId];
+const minutesText = minutes ? `${minutes} min read` : '';
 ---
 
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
+		<BaseHead
+			title={`${title} · ${SITE_TITLE}`}
+			description={description}
+			image={heroImage}
+		/>
 	</head>
-
 	<body>
 		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
+		<main class="mx-auto w-full max-w-[760px] px-6 py-12 text-left max-[760px]:px-4">
+			<a
+				href="/blog"
+				class="mb-7 inline-block text-[14px] font-bold text-accent-ink-soft"
+				>← Back to blog</a
+			>
+
+			{
+				heroImage && (
+					<Image
+						src={heroImage}
+						widths={[760, 1140]}
+						sizes="(max-width: 760px) 100vw, 760px"
+						alt=""
+						class="mb-8 block w-full rounded-2xl"
+					/>
+				)
+			}
+
+			<div class="mb-3.5 flex items-center gap-3.5">
+				<Image
+					src={cat.image}
+					width={128}
+					alt=""
+					class="h-16 w-16 shrink-0 rounded-[10px] object-cover"
+				/>
+				<div class="font-mono text-[12px] text-muted-2">{cat.title}</div>
+			</div>
+
+			<h1
+				id="post-title"
+				class="mb-5 text-[40px] font-extrabold leading-[1.12] tracking-[-0.02em] text-pretty text-accent-ink"
+			>
+				{title}
+			</h1>
+
+			<div class="mb-7 flex flex-wrap items-center gap-2.5">
+				{
+					publishedOn && (
+						<span class="text-[14px] font-semibold text-muted">
+							Published on {publishedOn}
+						</span>
+					)
+				}
+				{
+					minutesText && (
+						<span class="text-[14px] font-semibold text-muted">{minutesText}</span>
+					)
+				}
+				{
+					tags.map((t) => (
+						<span class="rounded-[12px] bg-accent-soft px-[11px] py-1 text-[12px] font-semibold text-accent-ink">
+							{t}
+						</span>
+					))
+				}
+			</div>
+
+			<ReadAloud audio={audio} />
+
+			{
+				subtitle && (
+					<h2
+						id="post-subtitle"
+						class="mb-8 text-[28px] font-extrabold leading-[1.2] tracking-[-0.02em] text-pretty text-accent-ink"
+					>
+						{subtitle}
+					</h2>
+				)
+			}
+
+			<div id="article-body" class="post-prose"><slot /></div>
 		</main>
+		<ScrollControls />
 		<Footer />
 	</body>
 </html>

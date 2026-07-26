@@ -9,11 +9,23 @@ const blog = defineCollection({
 	schema: ({ image }) =>
 		z.object({
 			title: z.string(),
+			subtitle: z.string().optional(),
 			description: z.string(),
-			// Transform string to Date object
+			// Transform string to Date object (used for RSS ordering, not display).
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
+			// Human-entered publish date shown verbatim on the blog list, e.g. '31.07.2026'.
+			publishedOn: z.string().optional(),
+			// Which series (category) the post belongs to, and its position within it.
+			series: z.enum(['series-01', 'series-02', 'series-03']),
+			order: z.number(),
+			tags: z.array(z.string()).default([]),
+			// Reading time in minutes (from the design hand-off).
+			minutes: z.number().optional(),
 			heroImage: z.optional(image()),
+			// Optional pre-recorded narration for the read-aloud feature.
+			audio: z.string().optional(),
+			draft: z.boolean().default(false),
 		}),
 });
 

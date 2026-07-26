@@ -1,0 +1,155 @@
+---
+title: 'Failure Modes'
+description: 'The recurring, predictable ways AI-assisted requirements analysis breaks — and why they go unnoticed.'
+pubDate: 2026-01-29
+series: 'series-01'
+draft: true
+order: 2
+tags: ['AI', 'Practice']
+minutes: 10
+heroImage: '../../assets/images/hero-01-2.png'
+---
+
+import Callout from '../../components/mdx/Callout.astro';
+import ArrowNote from '../../components/mdx/ArrowNote.astro';
+import CTA from '../../components/mdx/CTA.astro';
+
+## Where it breaks: recurring failure modes in AI-assisted analysis
+
+These failures are not edge cases. They are predictable patterns.
+
+They follow recurring patterns—across organizations, tools, and domains.
+
+What makes them difficult to detect is not their rarity, but their consistency. And they appear even when AI output looks structured, complete—and correct.
+
+The eight modes below fall into three families: how we ask (input and prompting), what the AI can actually see (context, documentation, and access), and what we then do with the result (traceability and governance). The details differ; the root cause is always the same—the AI resolves a gap silently, then presents the result with full confidence.
+
+### 1. Ambiguity is a design risk, not a wording issue
+
+Ambiguity in requirements is often treated as something you can fix later with better wording. In reality, it sits much deeper, it's a design problem.
+
+AI can help identify unclear phrasing, but it cannot determine meaning in context. When a term like "active customer" appears without definition, the model will not stop and ask—it will choose one interpretation and continue.
+
+That choice may look reasonable, but it is still an assumption.
+
+<Callout>Ambiguity is not something AI can fix later. If it exists in the source, it becomes embedded in the output.</Callout>
+
+What appears precise on the surface may still be misaligned with the intended design.
+
+### 2. Missing context turns analysis into guesswork
+
+Requirements rarely stand on their own. They depend on system boundaries, data flows, integrations, and known exceptions.
+
+When that context is not available, AI does not pause—it fills the gap.
+
+A requirement describing how customer data is processed might look perfectly consistent when analyzed in isolation. But once placed in a broader system landscape, inconsistencies can emerge—data formats may not align, or assumptions about process flow may break at integration points.
+
+Without access to that wider context, the analysis remains locally accurate but globally incorrect.
+
+<Callout>Context isn't additional information. It's part of the requirement itself.</Callout>
+
+### 3. Incomplete documentation leads to confident assumptions
+
+AI does not distinguish between omitted and missing information—it treats both as gaps to fill.
+
+If something is not defined, it will assume a plausible version of reality.
+
+Take a simple requirement: "The user can transfer money."
+
+At first glance, it appears clear. But critical details are missing—limits, validations, exception handling.
+
+AI will typically fill these gaps with standard patterns: reasonable limits, expected validations, and common system behaviors. The output will look complete and well-structured.
+
+But those details were never actually specified.
+
+This is where the risk emerges: assumptions are transformed into structure. Over time, those assumptions can become accepted as if they were real requirements.
+
+<Callout>If it's not written down, the model will decide for you.</Callout>
+
+### 4. Outdated or biased sources optimize the wrong reality
+
+AI does not understand intent in terms of where an organization wants to go. It reflects what already exists.
+
+If the available documentation contains outdated processes, legacy decisions, or historical biases, the model will reproduce and reinforce them.
+
+This creates a fundamental mismatch: while teams may be aiming to design a future system, AI is grounding its analysis in the past.
+
+As a result, the output may appear consistent—but aligned with the wrong version of reality.
+
+<Callout>AI doesn't modernize your requirements. It preserves and scales them.</Callout>
+
+### 5. Lack of traceability turns output into unverified opinion
+
+One of the less visible failure modes is the absence of traceability.
+
+AI-generated outputs often do not clearly show:
+
+- what information comes directly from source material
+- what has been inferred
+- and where assumptions have been introduced
+
+Without this transparency, analysis becomes difficult to validate. It may look structured and internally consistent, but the underlying reasoning cannot be checked.
+
+A well-known example outside requirements engineering illustrates this clearly: in a legal case, AI-generated case references were used in formal arguments that appeared valid—but later turned out not to exist. The issue was not how the output looked, but the absence of verifiable grounding behind it.
+
+The same pattern can emerge in requirements analysis when outputs are accepted without traceability.
+
+<Callout>Without traceability, AI output is not analysis. It is unverified interpretation.</Callout>
+
+### 6. Weak governance allows incorrect output to become decision input
+
+Many technical issues become critical only at the organizational level.
+
+AI outputs become risky when they are:
+
+- trusted without validation
+- used without clear accountability
+- or treated as authoritative
+
+The shift is subtle. AI moves from being a support tool to becoming part of the decision-making process.
+
+When governance mechanisms—such as review steps, ownership, and validation practices—are unclear or missing, incorrect outputs are not just generated. They are used.
+
+<Callout>The risk is not that AI produces errors. It is that organizations "operationalize" them.</Callout>
+
+### 7. Restricted access does not protect knowledge, it removes it from analysis
+
+AI can only work with what it is allowed to access. In most organizations, that access is incomplete.
+
+Information is often:
+
+- distributed across multiple tools
+- restricted by permissions
+- or simply not integrated into the analysis environment
+
+From the outside, the output still appears complete. But in reality, it is based on a filtered subset of available knowledge.
+
+The critical issue is not that something is wrong, it is that something is missing, without being visible.
+
+<Callout>Restricted access does not reduce risk. It shifts risk into undetected blind spots.</Callout>
+
+### 8. Weak prompting does not guide AI, it leaves room for interpretation
+
+Interacting with AI is, in many ways, an extension of requirements engineering.
+
+Every prompt defines scope, constraints, and expectations. When that input is vague or incomplete, the same patterns emerge as with poorly written requirements.
+
+The result is not failure in the traditional sense: the system still produces an answer. But that answer becomes inconsistent, sensitive to small phrasing changes, and shaped by implicit assumptions.
+
+This makes prompting less of a usability issue and more of a quality issue. Weak input leads to unstable output—just as it always has in requirements engineering.
+
+<Callout>Poor prompting is not a usability issue. It is a requirements quality problem in disguise.</Callout>
+
+For a deeper look at how to structure effective AI inputs, including prompting patterns, context engineering and requirements contracts, see the companion series, Why Requirements Engineering Must Change.
+
+## Where these modes land if you are not a requirements engineer
+
+<ArrowNote label="For architects:">every mode above is an unstated assumption entering your design inputs. A requirement that "looks consistent in isolation" (modes 2–3) becomes an integration defect at your boundaries. Treat AI-analyzed requirements as hypotheses to confirm against the real system context, not as settled fact.</ArrowNote>
+
+<ArrowNote label="For developers:">these failures do not announce themselves in the ticket. The limits, validations, and edge cases the AI invented (mode 3) reach you as acceptance criteria that read cleanly but no one actually specified. When a criterion has no traceable origin (mode 5), challenge it before you build to it.</ArrowNote>
+
+<ArrowNote label="For business and change leads:">mode 6 is the expensive one. The danger is not that AI makes an error; it is that an unverified output quietly becomes a decision, a scope, or a budget line. One validation gate between AI analysis and any money-spending decision removes most of that risk.</ArrowNote>
+
+These failure modes are not isolated issues. They are a reflection of how organizations manage requirements today. So if AI scales documentation quality, what exactly needs to change?
+
+<CTA href="/blog/what-organizations-must-change/">👉 Continue reading: Part 3: What Organizations Must Change</CTA>

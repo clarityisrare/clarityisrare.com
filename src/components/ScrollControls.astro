@@ -1,0 +1,58 @@
+---
+// Fixed bottom-right scroll affordances: a bobbing "scroll down" hint and a
+// "back to top" button. Progressive enhancement — hidden until JS toggles them.
+const btn =
+	'fixed right-[22px] z-30 hidden h-[46px] w-[46px] items-center justify-center rounded-full bg-white/75 text-accent-ink shadow-[0_6px_20px_-6px_rgba(0,0,0,0.35)] backdrop-blur-[6px]';
+---
+
+<button id="scroll-top" class={`${btn} bottom-[78px]`} aria-label="Back to top">
+	<svg
+		width="22"
+		height="22"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="2.5"
+		stroke-linecap="round"
+		stroke-linejoin="round"><path d="m6 15 6-6 6 6"></path></svg
+	>
+</button>
+
+<button id="scroll-hint" class={`${btn} bottom-[22px]`} aria-label="Scroll down">
+	<svg
+		width="22"
+		height="22"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="2.5"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		class="[animation:bob_1.6s_ease-in-out_infinite]"
+		><path d="m6 9 6 6 6-6"></path></svg
+	>
+</button>
+
+<script>
+	const doc = document.scrollingElement || document.documentElement;
+	const hint = document.getElementById('scroll-hint');
+	const top = document.getElementById('scroll-top');
+
+	function update() {
+		if (!hint || !top) return;
+		const remaining = doc.scrollHeight - (doc.scrollTop + window.innerHeight);
+		hint.classList.toggle('hidden', !(remaining > 80));
+		hint.classList.toggle('flex', remaining > 80);
+		top.classList.toggle('hidden', !(doc.scrollTop > 120));
+		top.classList.toggle('flex', doc.scrollTop > 120);
+	}
+
+	hint?.addEventListener('click', () =>
+		window.scrollBy({ top: Math.round(window.innerHeight * 0.85), behavior: 'smooth' }),
+	);
+	top?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+	window.addEventListener('scroll', update, { passive: true });
+	window.addEventListener('resize', update);
+	update();
+	setTimeout(update, 200);
+</script>

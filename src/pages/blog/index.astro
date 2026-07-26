@@ -1,114 +1,344 @@
 ---
 import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import ScrollControls from '../../components/ScrollControls.astro';
+import { SITE_TITLE } from '../../consts';
+import { getSeriesGroups, postBodyText } from '../../lib/posts';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const groups = await getSeriesGroups();
+const all = groups.flatMap((g) => g.posts);
+const totalPostsText = `${all.length} post${all.length === 1 ? '' : 's'} across ${groups.length} topic${groups.length === 1 ? '' : 's'}`;
+
+const tagSet = new Set<string>();
+all.forEach((r) => r.post.data.tags.forEach((t) => tagSet.add(t)));
+const tags = [...tagSet].sort().slice(0, 7);
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
+		<BaseHead
+			title={`Blog · ${SITE_TITLE}`}
+			description="Requirements engineering notes, grouped into three series on AI and the changing craft."
+		/>
 	</head>
 	<body>
 		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
+		<main class="mx-auto max-w-[1120px] px-8 py-14 max-[760px]:px-4">
+			<h1
+				class="mb-1.5 text-[44px] font-extrabold tracking-[-0.02em] text-accent-ink"
+			>
+				Blog
+			</h1>
+			<p class="mb-7 text-[16px] text-muted">{totalPostsText}</p>
+
+			<!-- Search -->
+			<div
+				class="mb-5 flex max-w-[460px] items-center gap-2.5 rounded-[26px] border border-line-2 bg-white px-5 py-3"
+			>
+				<span
+					class="inline-block h-[15px] w-[15px] shrink-0 rounded-full border-2 border-muted-2"
+				></span>
+				<input
+					id="blog-search"
+					type="text"
+					placeholder="Search titles, tags and article text…"
+					class="w-full border-none bg-transparent text-[15px] text-ink outline-none"
+				/>
+			</div>
+
+			<!-- Tag filter chips -->
+			<div class="mb-4 flex flex-wrap gap-5">
+				<button type="button" data-chip="" class="chip chip-active">All</button>
+				{
+					tags.map((t) => (
+						<button type="button" data-chip={t.toLowerCase()} class="chip chip-inactive">
+							{t}
+						</button>
+					))
+				}
+			</div>
+
+			<!-- Live result count (shown only while a filter is active) -->
+			<div id="result-status" class="mb-6 hidden text-[14px] text-muted"></div>
+
+			<!-- Results -->
+			<div class="flex flex-col gap-[52px]">
+				{
+					groups.map((g) => (
+						<div data-cat>
+							<h2 class="mb-3 text-[24px] font-extrabold leading-[1.25] tracking-[-0.01em] text-pretty text-accent-ink">
+								{g.series.title}
+							</h2>
+							<div class="mb-4 h-0.5 bg-accent" />
+							<div class="series-row">
+								<Image
+									src={g.series.image}
+									widths={[390, 780]}
+									sizes="(max-width: 760px) 100vw, 390px"
+									alt=""
+									class="series-img"
+								/>
+								<div class="series-list">
+									{g.posts.map((r) => (
+										<a
+											href={r.href}
+											data-post
+											data-title={r.post.data.title.toLowerCase()}
+											data-tags={r.post.data.tags.join(' ').toLowerCase()}
+											data-body={postBodyText(r.post)}
+											class="block border-b border-line-2 py-[18px]"
+										>
+											<div class="mb-2.5 text-[18px] font-bold leading-[1.35] text-ink">
+												{r.post.data.title}
+											</div>
+											<div class="flex flex-wrap items-center gap-2.5">
+												{r.post.data.publishedOn && (
+													<span class="text-[13px] text-muted-2">
+														Published on {r.post.data.publishedOn}
+													</span>
+												)}
+												{r.minutesText && (
+													<span class="text-[13px] text-muted-2">
+														{r.minutesText}
+													</span>
+												)}
+												{r.post.data.tags.map((t) => (
+													<span class="rounded-[12px] bg-accent-soft px-[9px] py-[3px] text-[11px] font-semibold text-accent-ink">
+														{t}
+													</span>
+												))}
+											</div>
+											<div
+												data-snippet
+												class="mt-2.5 hidden text-[13px] leading-[1.55] text-muted"
+											/>
+										</a>
+									))}
+								</div>
+							</div>
+						</div>
+					))
+				}
+			</div>
+
+			<!-- Empty state -->
+			<div id="blog-empty" class="hidden py-16 text-center">
+				<div class="mb-1 text-[18px] font-bold text-muted">
+					No posts match your filters
+				</div>
+				<button
+					id="clear-filters"
+					type="button"
+					class="mt-3 inline-block rounded-[22px] border border-line-2 bg-white px-5 py-2.5 font-bold text-ink"
+				>
+					Clear filters
+				</button>
+			</div>
 		</main>
+		<ScrollControls />
 		<Footer />
+
+		<style>
+			.chip {
+				cursor: pointer;
+				padding: 2px;
+				font-size: 14px;
+				background: none;
+				border: none;
+				user-select: none;
+			}
+			.chip-inactive {
+				font-weight: 500;
+				color: #6b6259;
+			}
+			.chip-active {
+				font-weight: 800;
+				color: var(--color-accent-ink);
+				text-decoration: underline;
+				text-underline-offset: 4px;
+			}
+			[data-snippet] :global(mark) {
+				background: var(--color-accent-soft);
+				color: var(--color-accent-ink);
+				border-radius: 3px;
+				padding: 0 2px;
+				font-weight: 600;
+			}
+			.series-row {
+				display: flex;
+				gap: 28px;
+				align-items: flex-start;
+			}
+			.series-img {
+				flex-shrink: 0;
+				width: 390px;
+				height: auto;
+				border-radius: 14px;
+				display: block;
+			}
+			.series-list {
+				flex: 1;
+				min-width: 0;
+			}
+			@media (max-width: 760px) {
+				.series-row {
+					flex-direction: column;
+					gap: 18px;
+				}
+				.series-img {
+					width: 100%;
+				}
+			}
+		</style>
+
+		<script>
+			const search = document.getElementById('blog-search') as HTMLInputElement | null;
+			const chips = Array.from(
+				document.querySelectorAll<HTMLElement>('[data-chip]'),
+			);
+			const cats = Array.from(document.querySelectorAll<HTMLElement>('[data-cat]'));
+			const empty = document.getElementById('blog-empty');
+			const status = document.getElementById('result-status');
+
+			const posts = Array.from(
+				document.querySelectorAll<HTMLElement>('[data-post]'),
+			).map((el) => ({
+				el,
+				title: el.dataset.title || '',
+				tags: el.dataset.tags || '',
+				body: el.dataset.body || '',
+				bodyLower: (el.dataset.body || '').toLowerCase(),
+				snippet: el.querySelector<HTMLElement>('[data-snippet]'),
+			}));
+
+			let activeTag = '';
+			let query = '';
+
+			function setActive(el: HTMLElement, on: boolean) {
+				el.classList.toggle('chip-active', on);
+				el.classList.toggle('chip-inactive', !on);
+			}
+
+			function escapeHtml(s: string) {
+				return s.replace(
+					/[&<>]/g,
+					(c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c] as string,
+				);
+			}
+
+			// Highlight every occurrence of `q` (case-insensitive) inside `text`.
+			function highlight(text: string, q: string) {
+				const lower = text.toLowerCase();
+				let out = '';
+				let i = 0;
+				let at: number;
+				while ((at = lower.indexOf(q, i)) !== -1) {
+					out +=
+						escapeHtml(text.slice(i, at)) +
+						'<mark>' +
+						escapeHtml(text.slice(at, at + q.length)) +
+						'</mark>';
+					i = at + q.length;
+				}
+				return out + escapeHtml(text.slice(i));
+			}
+
+			// A readable ~150-char window around the first match, on word boundaries.
+			function buildSnippet(body: string, idx: number, qlen: number, q: string) {
+				let start = Math.max(0, idx - 60);
+				let end = Math.min(body.length, idx + qlen + 90);
+				let text = body.slice(start, end);
+				if (start > 0) {
+					const sp = text.indexOf(' ');
+					if (sp > -1 && sp < 25) text = text.slice(sp + 1);
+					text = '… ' + text;
+				}
+				if (end < body.length) {
+					const sp = text.lastIndexOf(' ');
+					if (sp > -1 && text.length - sp < 25) text = text.slice(0, sp);
+					text = text + ' …';
+				}
+				return highlight(text, q);
+			}
+
+			function apply() {
+				let visible = 0;
+				for (const p of posts) {
+					const tagFilterOk = !activeTag || p.tags.split(' ').includes(activeTag);
+
+					let queryOk = !query;
+					let bodyIdx = -1;
+					if (query) {
+						bodyIdx = p.bodyLower.indexOf(query);
+						queryOk =
+							p.title.includes(query) ||
+							p.tags.includes(query) ||
+							bodyIdx >= 0;
+					}
+
+					const show = tagFilterOk && queryOk;
+					p.el.classList.toggle('hidden', !show);
+
+					if (p.snippet) {
+						if (show && query && bodyIdx >= 0) {
+							p.snippet.innerHTML = buildSnippet(
+								p.body,
+								bodyIdx,
+								query.length,
+								query,
+							);
+							p.snippet.classList.remove('hidden');
+						} else {
+							p.snippet.classList.add('hidden');
+							p.snippet.textContent = '';
+						}
+					}
+
+					if (show) visible++;
+				}
+
+				cats.forEach((c) => {
+					const any = c.querySelectorAll('[data-post]:not(.hidden)').length > 0;
+					c.classList.toggle('hidden', !any);
+				});
+
+				empty?.classList.toggle('hidden', visible > 0);
+
+				if (status) {
+					const filtering = query !== '' || activeTag !== '';
+					if (filtering && visible > 0) {
+						status.textContent = `${visible} matching ${visible === 1 ? 'post' : 'posts'}`;
+						status.classList.remove('hidden');
+					} else {
+						status.classList.add('hidden');
+					}
+				}
+			}
+
+			search?.addEventListener('input', (e) => {
+				query = (e.target as HTMLInputElement).value.trim().toLowerCase();
+				apply();
+			});
+
+			chips.forEach((chip) => {
+				chip.addEventListener('click', () => {
+					const t = chip.dataset.chip || '';
+					activeTag = t && activeTag === t ? '' : t;
+					chips.forEach((c) => setActive(c, (c.dataset.chip || '') === activeTag));
+					apply();
+				});
+			});
+
+			document.getElementById('clear-filters')?.addEventListener('click', () => {
+				activeTag = '';
+				query = '';
+				if (search) search.value = '';
+				chips.forEach((c) => setActive(c, (c.dataset.chip || '') === ''));
+				apply();
+			});
+		</script>
 	</body>
 </html>

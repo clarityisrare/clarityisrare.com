@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Libre+Franklin:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  .ph { background-image: repeating-linear-gradient(45deg, rgba(0,0,0,.05) 0 8px, transparent 8px 16px); }
+</style>
+</helmet>
+
+<section style="padding:64px; display:flex; flex-direction:column; gap:16px; font-family:'Manrope',sans-serif;">
+  <div style="max-width:900px;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:#a2988a;">Turn 2 · Blog page — grouped by category</div>
+    <h1 style="font-size:30px; font-weight:800; margin:8px 0 6px; color:#2b2622;">Categories with sub-posts (3 / 4 / 3)</h1>
+    <p style="font-size:16px; line-height:1.55; color:#5c534a; max-width:660px; margin:0;">Your three titles are <b>categories</b>, not posts — each holds several blogs. Since a category has no body of its own, it becomes a <b>heading that groups its posts</b>. Two treatments below (sub-titles are placeholders you'll rename). Reference by id: <b>2a</b>, <b>2b</b>.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:56px; align-items:flex-start; margin:16px 0 40px;">
+
+    <!-- ===== 2a — STACKED SECTIONS ===== -->
+    <div id="2a" style="position:relative; width:1120px;">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:14px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:500; background:oklch(0.58 0.15 40); color:#fff; padding:4px 10px; border-radius:4px;">2a</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#8a8378;">Stacked sections — each category is a heading band, posts as a card grid below</span>
+      </div>
+      <div style="width:1120px; background:#fbf6f0; border-radius:10px; box-shadow:0 30px 60px -30px rgba(0,0,0,.25); font-family:'Manrope',sans-serif; color:#2b2622; overflow:hidden;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:22px 48px;">
+          <div style="font-size:17px; font-weight:800; letter-spacing:-.02em;">Your Name</div>
+          <div style="display:flex; align-items:center; gap:12px; font-size:14px; font-weight:600;">
+            <span style="color:#6b6259; padding:8px 12px;">Home</span>
+            <span style="color:#6b6259; padding:8px 12px;">About</span>
+            <span style="background:oklch(0.58 0.15 40); color:#fff; padding:8px 16px; border-radius:20px;">Blog</span>
+            <span style="display:flex; align-items:center; gap:7px; color:#6b6259; background:#f1e8dd; padding:8px 14px; border-radius:20px;">Search</span>
+          </div>
+        </div>
+        <div style="padding:36px 48px 8px;">
+          <h2 style="font-size:38px; font-weight:800; letter-spacing:-.02em; margin:0 0 6px;">Blog</h2>
+          <p style="font-size:16px; color:#7a7066; margin:0;">10 posts across 3 topics</p>
+        </div>
+
+        <!-- category 1 -->
+        <div style="padding:30px 48px 8px;">
+          <div style="display:flex; align-items:baseline; gap:14px; border-bottom:2px solid #2b2622; padding-bottom:12px; margin-bottom:20px;">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:oklch(0.58 0.15 40); font-weight:500;">01</span>
+            <h3 style="font-size:24px; font-weight:800; letter-spacing:-.01em; margin:0; flex:1;">Why requirements engineering must change</h3>
+            <span style="font-size:13px; color:#a2988a; font-weight:600;">3 posts</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+            <div style="background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;"><div style="font-size:12px; color:#a2988a; margin-bottom:10px;">5 min read</div><div style="font-size:17px; font-weight:700; line-height:1.3;">The cost of ambiguity in a machine-readable world</div></div>
+            <div style="background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;"><div style="font-size:12px; color:#a2988a; margin-bottom:10px;">7 min read</div><div style="font-size:17px; font-weight:700; line-height:1.3;">From documentation to specification-as-interface</div></div>
+            <div style="background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;"><div style="font-size:12px; color:#a2988a; margin-bottom:10px;">6 min read</div><div style="font-size:17px; font-weight:700; line-height:1.3;">Requirements debt is the new technical debt</div></div>
+          </div>
+        </div>
+
+        <!-- category 2 -->
+        <div style="padding:30px 48px 8px;">
+          <div style="display:flex; align-items:baseline; gap:14px; border-bottom:2px solid #2b2622; padding-bottom:12px; margin-bottom:20px;">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:oklch(0.58 0.15 40); font-weight:500;">02</span>
+            <h3 style="font-size:24px; font-weight:800; letter-spacing:-.01em; margin:0; flex:1;">AI-readable documentation architecture</h3>
+            <span style="font-size:13px; color:#a2988a; font-weight:600;">4 posts</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+            <div style="background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;"><div style="font-size:12px; color:#a2988a; margin-bottom:10px;">8 min read</div><div style="font-size:17px; font-weight:700; line-height:1.3;">Structuring requirements so an LLM can parse them</div></div>
+            <div style="background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;"><div style="font-size:12px; color:#a2988a; margin-bottom:10px;">9 min read</div><div style="font-size:17px; font-weight:700; line-height:1.3;">Single source of truth: linking specs, tests and code</div></div>
+            <div style="background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;"><div style="font-size:12px; color:#a2988a; margin-bottom:10px;">6 min read</div><div style="font-size:17px; font-weight:700; line-height:1.3;">Semantic tagging for traceable requirements</div></div>
+            <div style="background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;"><div style="font-size:12px; color:#a2988a; margin-bottom:10px;">7 min read</div><div style="font-size:17px; font-weight:700; line-height:1.3;">Version-control patterns for living documentation</div></div>
+          </div>
+        </div>
+
+        <!-- category 3 -->
+        <div style="padding:30px 48px 44px;">
+          <div style="display:flex; align-items:baseline; gap:14px; border-bottom:2px solid #2b2622; padding-bottom:12px; margin-bottom:20px;">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:oklch(0.58 0.15 40); font-weight:500;">03</span>
+            <h3 style="font-size:24px; font-weight:800; letter-spacing:-.01em; margin:0; flex:1;">When AI becomes better at the work than we are</h3>
+            <span style="font-size:13px; color:#a2988a; font-weight:600;">3 posts</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+            <div style="background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;"><div style="font-size:12px; color:#a2988a; margin-bottom:10px;">6 min read</div><div style="font-size:17px; font-weight:700; line-height:1.3;">What's left for the human requirements engineer</div></div>
+            <div style="background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;"><div style="font-size:12px; color:#a2988a; margin-bottom:10px;">5 min read</div><div style="font-size:17px; font-weight:700; line-height:1.3;">Reviewing AI-authored specifications</div></div>
+            <div style="background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;"><div style="font-size:12px; color:#a2988a; margin-bottom:10px;">8 min read</div><div style="font-size:17px; font-weight:700; line-height:1.3;">Judgment, not typing: the shifting skill set</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 2b — CATEGORY COLUMNS ===== -->
+    <div id="2b" style="position:relative; width:1120px;">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:14px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:500; background:oklch(0.58 0.15 40); color:#fff; padding:4px 10px; border-radius:4px;">2b</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#8a8378;">Category columns — a table-of-contents index; uneven counts read naturally</span>
+      </div>
+      <div style="width:1120px; background:#fbf6f0; border-radius:10px; box-shadow:0 30px 60px -30px rgba(0,0,0,.25); font-family:'Manrope',sans-serif; color:#2b2622; overflow:hidden;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:22px 48px;">
+          <div style="font-size:17px; font-weight:800; letter-spacing:-.02em;">Your Name</div>
+          <div style="display:flex; align-items:center; gap:12px; font-size:14px; font-weight:600;">
+            <span style="color:#6b6259; padding:8px 12px;">Home</span>
+            <span style="color:#6b6259; padding:8px 12px;">About</span>
+            <span style="background:oklch(0.58 0.15 40); color:#fff; padding:8px 16px; border-radius:20px;">Blog</span>
+            <span style="display:flex; align-items:center; gap:7px; color:#6b6259; background:#f1e8dd; padding:8px 14px; border-radius:20px;">Search</span>
+          </div>
+        </div>
+        <div style="padding:36px 48px 30px;">
+          <h2 style="font-size:38px; font-weight:800; letter-spacing:-.02em; margin:0 0 6px;">Blog</h2>
+          <p style="font-size:16px; color:#7a7066; margin:0;">10 posts across 3 topics</p>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px; padding:0 48px 48px; align-items:start;">
+          <!-- col 1 -->
+          <div style="background:#fff; border:1px solid #eee2d4; border-radius:16px; padding:26px;">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:oklch(0.58 0.15 40); margin-bottom:8px;">01 · 3 posts</div>
+            <h3 style="font-size:20px; font-weight:800; line-height:1.2; margin:0 0 18px;">Why requirements engineering must change</h3>
+            <div style="display:flex; flex-direction:column;">
+              <div style="padding:14px 0; border-top:1px solid #f0e7db;"><div style="font-size:15px; font-weight:700; line-height:1.3; margin-bottom:4px;">The cost of ambiguity in a machine-readable world</div><span style="font-size:12px; color:#a2988a;">5 min read</span></div>
+              <div style="padding:14px 0; border-top:1px solid #f0e7db;"><div style="font-size:15px; font-weight:700; line-height:1.3; margin-bottom:4px;">From documentation to specification-as-interface</div><span style="font-size:12px; color:#a2988a;">7 min read</span></div>
+              <div style="padding:14px 0; border-top:1px solid #f0e7db;"><div style="font-size:15px; font-weight:700; line-height:1.3; margin-bottom:4px;">Requirements debt is the new technical debt</div><span style="font-size:12px; color:#a2988a;">6 min read</span></div>
+            </div>
+          </div>
+          <!-- col 2 -->
+          <div style="background:#fff; border:1px solid #eee2d4; border-radius:16px; padding:26px;">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:oklch(0.58 0.15 40); margin-bottom:8px;">02 · 4 posts</div>
+            <h3 style="font-size:20px; font-weight:800; line-height:1.2; margin:0 0 18px;">AI-readable documentation architecture</h3>
+            <div style="display:flex; flex-direction:column;">
+              <div style="padding:14px 0; border-top:1px solid #f0e7db;"><div style="font-size:15px; font-weight:700; line-height:1.3; margin-bottom:4px;">Structuring requirements so an LLM can parse them</div><span style="font-size:12px; color:#a2988a;">8 min read</span></div>
+              <div style="padding:14px 0; border-top:1px solid #f0e7db;"><div style="font-size:15px; font-weight:700; line-height:1.3; margin-bottom:4px;">Single source of truth: linking specs, tests and code</div><span style="font-size:12px; color:#a2988a;">9 min read</span></div>
+              <div style="padding:14px 0; border-top:1px solid #f0e7db;"><div style="font-size:15px; font-weight:700; line-height:1.3; margin-bottom:4px;">Semantic tagging for traceable requirements</div><span style="font-size:12px; color:#a2988a;">6 min read</span></div>
+              <div style="padding:14px 0; border-top:1px solid #f0e7db;"><div style="font-size:15px; font-weight:700; line-height:1.3; margin-bottom:4px;">Version-control patterns for living documentation</div><span style="font-size:12px; color:#a2988a;">7 min read</span></div>
+            </div>
+          </div>
+          <!-- col 3 -->
+          <div style="background:#fff; border:1px solid #eee2d4; border-radius:16px; padding:26px;">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:oklch(0.58 0.15 40); margin-bottom:8px;">03 · 3 posts</div>
+            <h3 style="font-size:20px; font-weight:800; line-height:1.2; margin:0 0 18px;">When AI becomes better at the work than we are</h3>
+            <div style="display:flex; flex-direction:column;">
+              <div style="padding:14px 0; border-top:1px solid #f0e7db;"><div style="font-size:15px; font-weight:700; line-height:1.3; margin-bottom:4px;">What's left for the human requirements engineer</div><span style="font-size:12px; color:#a2988a;">6 min read</span></div>
+              <div style="padding:14px 0; border-top:1px solid #f0e7db;"><div style="font-size:15px; font-weight:700; line-height:1.3; margin-bottom:4px;">Reviewing AI-authored specifications</div><span style="font-size:12px; color:#a2988a;">5 min read</span></div>
+              <div style="padding:14px 0; border-top:1px solid #f0e7db;"><div style="font-size:15px; font-weight:700; line-height:1.3; margin-bottom:4px;">Judgment, not typing: the shifting skill set</div><span style="font-size:12px; color:#a2988a;">8 min read</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section style="padding:64px; display:flex; flex-direction:column; gap:16px; font-family:'Libre Franklin',system-ui,sans-serif;">
+  <div style="max-width:900px;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:#8a8378;">Turn 1 · Homepage directions</div>
+    <h1 style="font-size:30px; font-weight:700; margin:8px 0 6px; color:#1a1a1a;">Pick a visual direction</h1>
+    <p style="font-size:16px; line-height:1.55; color:#555; max-width:640px; margin:0;">Three takes on the same homepage — same content, different mood. Reference them by id in chat (<b>1a</b>, <b>1b</b>, <b>1c</b>). Once you choose, I'll build the full Home / About / Blog prototype with search, tags, reading time and read-aloud.</p>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:56px; align-items:flex-start; margin-top:16px;">
+
+    <!-- ============ 1a — EDITORIAL NEUTRAL ============ -->
+    <div id="1a" style="position:relative; width:1120px;">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:14px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:500; background:#1a1a1a; color:#fff; padding:4px 10px; border-radius:4px;">1a</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#8a8378; letter-spacing:.04em;">Editorial Neutral — warm paper, ink, all typography</span>
+      </div>
+      <div style="width:1120px; height:840px; overflow:hidden; background:#faf8f4; border:1px solid #e6e1d8; border-radius:10px; box-shadow:0 30px 60px -30px rgba(0,0,0,.25); font-family:'Libre Franklin',sans-serif; color:#1a1a1a;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:26px 56px; border-bottom:1px solid #e6e1d8;">
+          <div style="font-size:18px; font-weight:700; letter-spacing:-.01em;">Your Name</div>
+          <div style="display:flex; align-items:center; gap:34px; font-size:15px; font-weight:500;">
+            <span style="border-bottom:2px solid #1a1a1a; padding-bottom:2px;">Home</span>
+            <span style="color:#6f685e;">About</span>
+            <span style="color:#6f685e;">Blog</span>
+            <span style="display:flex; align-items:center; gap:7px; color:#6f685e; border:1px solid #ddd6ca; padding:7px 12px; border-radius:20px; font-size:13px;">
+              <span style="width:11px; height:11px; border:1.5px solid #6f685e; border-radius:50%; display:inline-block;"></span>Search</span>
+          </div>
+        </div>
+        <div style="padding:70px 56px 44px; max-width:820px;">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:#a2988a; margin-bottom:26px;">Requirements engineering · notes & essays</div>
+          <h1 style="font-size:58px; line-height:1.05; font-weight:800; letter-spacing:-.025em; margin:0 0 26px;">AI doesn't fix bad requirements. It scales them.</h1>
+          <p style="font-size:20px; line-height:1.6; color:#4b463d; max-width:660px; margin:0;">I'm a senior requirements engineer with 16 years across start-ups, SMEs and global players — from process to regulatory. This is where I think out loud about writing requirements that machines, and people, can actually use.</p>
+        </div>
+        <div style="padding:0 56px;">
+          <div style="display:flex; align-items:baseline; justify-content:space-between; border-bottom:1px solid #e6e1d8; padding-bottom:12px; margin-bottom:8px;">
+            <span style="font-size:14px; font-weight:700; letter-spacing:.02em;">Latest writing</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#a2988a;">view all →</span>
+          </div>
+          <div style="display:flex; flex-direction:column;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; gap:24px; padding:20px 0; border-bottom:1px solid #ece7dd;">
+              <div style="font-size:22px; font-weight:600; letter-spacing:-.01em;">Why requirements engineering must change</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#a2988a; white-space:nowrap;">6 min · Practice</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; gap:24px; padding:20px 0; border-bottom:1px solid #ece7dd;">
+              <div style="font-size:22px; font-weight:600; letter-spacing:-.01em;">AI-readable documentation architecture</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#a2988a; white-space:nowrap;">9 min · Architecture</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; gap:24px; padding:20px 0;">
+              <div style="font-size:22px; font-weight:600; letter-spacing:-.01em;">When AI becomes better at the work than we are</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#a2988a; white-space:nowrap;">7 min · Essay</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 1b — TECHNICAL SLATE ============ -->
+    <div id="1b" style="position:relative; width:1120px;">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:14px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:500; background:#1e293b; color:#fff; padding:4px 10px; border-radius:4px;">1b</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#8a8378; letter-spacing:.04em;">Technical Slate — cool greys, one blue accent, developer-precise</span>
+      </div>
+      <div style="width:1120px; height:760px; overflow:hidden; background:#0f172a; border-radius:10px; box-shadow:0 30px 60px -30px rgba(0,0,0,.4); font-family:'Space Grotesk',sans-serif; color:#e2e8f0;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:24px 52px; border-bottom:1px solid #1e2b45;">
+          <div style="display:flex; align-items:center; gap:11px; font-size:17px; font-weight:600;">
+            <span style="width:12px; height:12px; background:oklch(0.62 0.15 250); border-radius:3px; display:inline-block;"></span>Your Name</div>
+          <div style="display:flex; align-items:center; gap:30px; font-family:'IBM Plex Mono',monospace; font-size:13px;">
+            <span style="color:oklch(0.72 0.15 250);">~/home</span>
+            <span style="color:#8296b3;">~/about</span>
+            <span style="color:#8296b3;">~/blog</span>
+            <span style="display:flex; align-items:center; gap:7px; color:#8296b3; background:#16233c; padding:7px 12px; border-radius:6px;">⌘K search</span>
+          </div>
+        </div>
+        <div style="padding:64px 52px 40px; max-width:840px;">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:oklch(0.72 0.15 250); margin-bottom:22px;">// senior requirements engineer · 16 yrs</div>
+          <h1 style="font-size:54px; line-height:1.06; font-weight:700; letter-spacing:-.02em; margin:0 0 24px;">AI doesn't fix bad requirements.<br><span style="color:#7f92ad;">It scales them.</span></h1>
+          <p style="font-size:19px; line-height:1.6; color:#aebacd; max-width:640px; margin:0;">Sixteen years across start-ups, SMEs and global players — from process to regulatory requirements. Notes on writing specs that both machines and teams can actually build from.</p>
+        </div>
+        <div style="padding:0 52px;">
+          <div style="display:flex; gap:18px;">
+            <div style="flex:1; background:#16233c; border:1px solid #223350; border-radius:10px; padding:22px;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:oklch(0.72 0.15 250); margin-bottom:12px;">PRACTICE · 6 MIN</div>
+              <div style="font-size:19px; font-weight:600; line-height:1.25;">Why requirements engineering must change</div>
+            </div>
+            <div style="flex:1; background:#16233c; border:1px solid #223350; border-radius:10px; padding:22px;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:oklch(0.72 0.15 250); margin-bottom:12px;">ARCHITECTURE · 9 MIN</div>
+              <div style="font-size:19px; font-weight:600; line-height:1.25;">AI-readable documentation architecture</div>
+            </div>
+            <div style="flex:1; background:#16233c; border:1px solid #223350; border-radius:10px; padding:22px;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:oklch(0.72 0.15 250); margin-bottom:12px;">ESSAY · 7 MIN</div>
+              <div style="font-size:19px; font-weight:600; line-height:1.25;">When AI becomes better at the work than we are</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 1c — WARM ACCENT ============ -->
+    <div id="1c" style="position:relative; width:1120px;">
+      <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:14px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:500; background:oklch(0.58 0.15 40); color:#fff; padding:4px 10px; border-radius:4px;">1c</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#8a8378; letter-spacing:.04em;">Warm Accent — friendly cream, terracotta accent, personal</span>
+      </div>
+      <div style="width:1120px; height:760px; overflow:hidden; background:#fbf6f0; border-radius:10px; box-shadow:0 30px 60px -30px rgba(0,0,0,.25); font-family:'Manrope',sans-serif; color:#2b2622;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:24px 52px;">
+          <div style="font-size:18px; font-weight:800; letter-spacing:-.02em;">Your Name</div>
+          <div style="display:flex; align-items:center; gap:14px; font-size:15px; font-weight:600;">
+            <span style="background:oklch(0.58 0.15 40); color:#fff; padding:8px 16px; border-radius:20px;">Home</span>
+            <span style="color:#6b6259; padding:8px 12px;">About</span>
+            <span style="color:#6b6259; padding:8px 12px;">Blog</span>
+            <span style="display:flex; align-items:center; gap:7px; color:#6b6259; background:#f1e8dd; padding:8px 14px; border-radius:20px; font-size:14px;">Search</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:44px; padding:52px 52px 40px; align-items:center;">
+          <div style="flex:1;">
+            <div style="display:inline-block; font-size:13px; font-weight:700; color:oklch(0.58 0.15 40); background:oklch(0.58 0.15 40 / .12); padding:6px 14px; border-radius:20px; margin-bottom:22px;">Requirements engineering, examined</div>
+            <h1 style="font-size:52px; line-height:1.08; font-weight:800; letter-spacing:-.025em; margin:0 0 22px;">AI doesn't fix bad requirements — it scales them.</h1>
+            <p style="font-size:19px; line-height:1.6; color:#5c534a; margin:0;">Hi, I'm a senior requirements engineer with 16 years across start-ups, SMEs and global players. I write about making requirements clear enough for people <i>and</i> machines.</p>
+          </div>
+          <div class="ph" style="width:230px; height:280px; border-radius:16px; border:1px solid #e6dccd; flex-shrink:0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:14px;">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#a2988a;">portrait</span>
+          </div>
+        </div>
+        <div style="padding:0 52px;">
+          <div style="font-size:14px; font-weight:800; margin-bottom:14px;">Recent posts</div>
+          <div style="display:flex; gap:16px;">
+            <div style="flex:1; background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;">
+              <div style="display:flex; gap:8px; margin-bottom:12px;"><span style="font-size:11px; font-weight:700; color:oklch(0.58 0.15 40); background:oklch(0.58 0.15 40 / .12); padding:4px 10px; border-radius:12px;">Practice</span><span style="font-size:12px; color:#a2988a; align-self:center;">6 min</span></div>
+              <div style="font-size:18px; font-weight:700; line-height:1.25;">Why requirements engineering must change</div>
+            </div>
+            <div style="flex:1; background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;">
+              <div style="display:flex; gap:8px; margin-bottom:12px;"><span style="font-size:11px; font-weight:700; color:oklch(0.58 0.15 40); background:oklch(0.58 0.15 40 / .12); padding:4px 10px; border-radius:12px;">Architecture</span><span style="font-size:12px; color:#a2988a; align-self:center;">9 min</span></div>
+              <div style="font-size:18px; font-weight:700; line-height:1.25;">AI-readable documentation architecture</div>
+            </div>
+            <div style="flex:1; background:#fff; border:1px solid #eee2d4; border-radius:14px; padding:20px;">
+              <div style="display:flex; gap:8px; margin-bottom:12px;"><span style="font-size:11px; font-weight:700; color:oklch(0.58 0.15 40); background:oklch(0.58 0.15 40 / .12); padding:4px 10px; border-radius:12px;">Essay</span><span style="font-size:12px; color:#a2988a; align-self:center;">7 min</span></div>
+              <div style="font-size:18px; font-weight:700; line-height:1.25;">When AI becomes better at the work than we are</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,98 @@
+---
+interface Props {
+	audio?: string;
+}
+const { audio } = Astro.props;
+const hint = audio
+	? 'Plays the recorded audio for this post.'
+	: "Uses your browser's built-in voice.";
+---
+
+<div>
+	<button
+		id="read-aloud"
+		type="button"
+		data-audio={audio ?? ''}
+		class="inline-flex cursor-pointer items-center gap-2.5 rounded-[26px] bg-accent px-[22px] py-3 font-bold text-white"
+	>
+		<span id="read-aloud-label">▶&nbsp;&nbsp;Read aloud</span>
+		<span
+			id="read-aloud-dot"
+			class="hidden h-[9px] w-[9px] rounded-full bg-white [animation:pulse_1s_infinite]"
+		></span>
+	</button>
+	<div class="mt-2.5 mb-9 text-[13px] text-muted-2">{hint}</div>
+</div>
+
+<script>
+	const btn = document.getElementById('read-aloud');
+	const label = document.getElementById('read-aloud-label');
+	const dot = document.getElementById('read-aloud-dot');
+	const audioSrc = btn?.dataset.audio || '';
+
+	let audioEl: HTMLAudioElement | null = null;
+	let speaking = false;
+
+	function setSpeaking(on: boolean) {
+		speaking = on;
+		if (label) label.textContent = on ? '❚❚  Stop' : '▶  Read aloud';
+		dot?.classList.toggle('hidden', !on);
+	}
+
+	function stop() {
+		try {
+			window.speechSynthesis?.cancel();
+		} catch {}
+		try {
+			audioEl?.pause();
+		} catch {}
+		setSpeaking(false);
+	}
+
+	function gatherText() {
+		const parts: string[] = [];
+		const title = document.getElementById('post-title');
+		if (title?.textContent) parts.push(title.textContent);
+		const subtitle = document.getElementById('post-subtitle');
+		if (subtitle?.textContent) parts.push(subtitle.textContent);
+		const body = document.getElementById('article-body') as HTMLElement | null;
+		if (body?.innerText) parts.push(body.innerText);
+		return parts.join('. ');
+	}
+
+	function speak() {
+		const synth = window.speechSynthesis;
+		if (!synth) return;
+		const u = new SpeechSynthesisUtterance(gatherText());
+		u.lang = 'en-US';
+		u.rate = 1;
+		u.onend = () => setSpeaking(false);
+		u.onerror = () => setSpeaking(false);
+		synth.cancel();
+		synth.speak(u);
+		setSpeaking(true);
+	}
+
+	function playAudio(src: string) {
+		if (!audioEl) {
+			audioEl = new Audio();
+			audioEl.onended = () => setSpeaking(false);
+			audioEl.onerror = () => setSpeaking(false);
+		}
+		if (audioEl.src !== src) audioEl.src = src;
+		audioEl.currentTime = 0;
+		audioEl.play();
+		setSpeaking(true);
+	}
+
+	btn?.addEventListener('click', () => {
+		if (speaking) {
+			stop();
+			return;
+		}
+		if (audioSrc) playAudio(audioSrc);
+		else speak();
+	});
+
+	window.addEventListener('beforeunload', stop);
+</script>

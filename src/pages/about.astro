@@ -1,63 +1,181 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import { Image } from 'astro:assets';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import ScrollControls from '../components/ScrollControls.astro';
+import { AUTHOR_NAME, SITE_TITLE, SOCIAL_LINKS } from '../consts';
+import logoAbout from '../assets/images/logo-about.png';
+import aboutAstro from '../assets/images/about-astro.png';
+import aboutPrompt from '../assets/images/about-prompt.png';
+import aboutLogo from '../assets/images/about-logo.png';
+
+const pClass = 'mb-5 text-[18px] leading-[1.75] text-justify text-pretty text-ink-2';
+const h2Class =
+	'mt-11 mb-[18px] text-[28px] font-extrabold tracking-[-0.02em] text-accent-ink';
+const figImg = 'block h-auto w-full rounded-[14px] border border-line-2';
+const figCap = 'mt-2.5 text-[15px] italic leading-[1.55] text-muted';
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`About · ${SITE_TITLE}`}
+			description={`About ${AUTHOR_NAME} — a senior requirements engineer writing about how the craft is changing.`}
+			image={logoAbout}
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="mb-8 flex justify-center">
+				<Image
+					src={logoAbout}
+					width={960}
+					alt={AUTHOR_NAME}
+					class="h-auto w-auto max-h-[calc(100vh-85px)] max-w-full"
+				/>
+			</div>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+			<article class="mx-auto max-w-[720px] px-4 pb-16">
+				<p class="mb-6 text-[20px] leading-[1.7] text-justify text-pretty text-ink-2">
+					I am {AUTHOR_NAME}, and this is where I write about requirements
+					engineering, the work of turning what a business wants into something a
+					system can actually do. That work is changing quickly, and this page is
+					partly an argument about how. It is also a small illustration of it. I
+					built this whole site myself. A few years ago that would have taken real
+					effort and a long technical slog; today the AI does the main building
+					work, while my part is to direct it and decide when it is right. What
+					changed is not that I became a developer. What changed is where the hard
+					part of the work now sits.
+				</p>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+				<h2 class={h2Class}>Who I am</h2>
+				<p class={pClass}>
+					I have spent most of two decades helping people work out what they
+					actually want, which is seldom what they first asked for, and turning it
+					into something a system can be told precisely. My analysis career began
+					in operations, settling over-the-counter derivatives, automating their
+					processes and building the databases that kept the trades honest. I
+					worked on regulatory programmes when new rules arrived faster than anyone
+					could reasonably implement them, helped stand up the operations of a bank
+					that was opening its doors, and then moved into business analysis and
+					requirements engineering as a profession in its own right, where I have
+					stayed. Today I handle cross-stream initiatives at a large bank, which is
+					a polite way of saying I am given the problems that touch everything and
+					belong to no one.
+				</p>
+				<p class={pClass}>
+					None of this is my first change of medium. In the early internet era,
+					when the web was young and mostly ugly, I ran my own web-design company,
+					bytelab.net. I have watched one way of building give way to another
+					before, and I have learned not to mourn the old one for too long.
+				</p>
+				<p class={pClass}>
+					More recently I put real effort into learning to work with AI properly.
+					The certificates are on my <a
+						href={SOCIAL_LINKS.linkedin}
+						target="_blank"
+						rel="noopener">LinkedIn</a
+					>, but the point behind them is simple. I wanted to understand the tools
+					well enough to direct them, not just prompt them and hope.
+				</p>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+				<h2 class={h2Class}>What I built, and what it shows</h2>
+				<p class={pClass}>
+					This site runs on Astro, lives on <a
+						href={SOCIAL_LINKS.github}
+						target="_blank"
+						rel="noopener">GitHub</a
+					>, and deploys through Cloudflare. I wrote very little of its code by
+					hand. I described what I wanted to Claude, read what it produced,
+					corrected it, and decided when it was right. I have basic Python, SQL and
+					HTML skills, enough to follow along and to know when an answer is merely
+					plausible, but I would not call myself a developer, and I am not about to
+					start.
+				</p>
+				<p class="mb-6 text-[18px] leading-[1.75] text-justify text-pretty text-ink-2">
+					Here is the honest version of what happened at each step.
+				</p>
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+				<figure class="mb-7">
+					<Image src={aboutAstro} widths={[720, 1080]} sizes="(max-width: 760px) 100vw, 720px" alt="" class={figImg} />
+					<figcaption class={figCap}>
+						Choosing Astro. Cloudflare featured it prominently, and it looked like
+						the fastest, simplest route to a static site, so I had Claude bootstrap
+						the project, interviewing me rather than assuming.
+					</figcaption>
+				</figure>
+				<figure class="mb-7">
+					<Image src={aboutPrompt} widths={[720, 1080]} sizes="(max-width: 760px) 100vw, 720px" alt="" class={figImg} />
+					<figcaption class={figCap}>
+						Judging the design rather than just accepting it. I sent back the
+						versions that looked generic until the result actually felt like mine.
+					</figcaption>
+				</figure>
+				<figure class="mb-7">
+					<Image src={aboutLogo} widths={[720, 1080]} sizes="(max-width: 760px) 100vw, 720px" alt="" class={figImg} />
+					<figcaption class={figCap}>
+						Deciding the visual identity. The logo and illustrations came from an
+						image model, the travel photographs are my own, and I chose which
+						belonged where.
+					</figcaption>
+				</figure>
+
+				<p class={pClass}>
+					A personal blog is not a trading platform, and the code an AI writes
+					still has to be judged by someone who can tell almost-right from right. I
+					spent this build doing exactly that: catching the answers that looked
+					plausible and were not, sending back the design that could have been
+					anyone's, deciding what "finished" actually meant. That last stretch,
+					where you settle what the thing should do and then whether it truly does
+					it, is the hard part, and it did not disappear. It moved. It moved toward
+					specification, judgement, and knowing what good looks like, which is the
+					work I already do.
+				</p>
+				<p class={pClass}>
+					That is the quiet argument of this whole page. AI did not replace my
+					expertise. It relocated it, closer to the centre of what I am useful for.
+					<strong class="font-extrabold"
+						>I am not threatened by this shift; I am made more valuable by it.</strong
+					>
+				</p>
+
+				<h2 class={h2Class}>What this blog is and is not</h2>
+				<p class={pClass}>
+					Clarity Is Rare is about requirements engineering and the way our craft
+					is changing. It takes a general view, not a report from any single
+					industry. The name says it: clear requirements are rare, and worth
+					writing about.
+				</p>
+				<p class={pClass}>
+					Nothing here is drawn from my work at any current or former employer.
+					When you see an example, it is one that public research turned up, or one
+					I have constructed to make a point, never something borrowed from a job. I
+					keep that line bright on purpose.
+				</p>
+
+				<h2 class={h2Class}>Say hello</h2>
+				<p class="text-[18px] leading-[1.75] text-justify text-pretty text-ink-2">
+					I write here as {AUTHOR_NAME}, which is a pen name, not a disguise. If you
+					want to know who is behind it, my <a
+						href={SOCIAL_LINKS.linkedin}
+						target="_blank"
+						rel="noopener">LinkedIn</a
+					> will tell you, along with the fuller version of the career I compressed
+					into a paragraph above. You can also follow me on Bluesky at <a
+						href={SOCIAL_LINKS.bluesky}
+						target="_blank"
+						rel="noopener">@clarityisrare.bsky.social</a
+					>. If something here was useful, or wrong, or you think your team could
+					use someone who does this for a living, <a href={SOCIAL_LINKS.email}
+						>write to me</a
+					>.
+				</p>
+			</article>
+		</main>
+		<ScrollControls />
+		<Footer />
+	</body>
+</html>
