@@ -19,6 +19,7 @@ const {
 	tags = [],
 	minutes,
 	publishedOn,
+	pubDate,
 	heroImage,
 	audio,
 } = Astro.props;
@@ -33,6 +34,8 @@ const minutesText = minutes ? `${minutes} min read` : '';
 			title={`${title} · ${SITE_TITLE}`}
 			description={description}
 			image={heroImage}
+			type="article"
+			publishedTime={pubDate.toISOString()}
 		/>
 	</head>
 	<body>
