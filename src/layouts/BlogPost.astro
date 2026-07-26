@@ -6,7 +6,6 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import ReadAloud from '../components/ReadAloud.astro';
 import ScrollControls from '../components/ScrollControls.astro';
-import Subscribe from '../components/Subscribe.astro';
 import { SITE_TITLE } from '../consts';
 import { SERIES, type SeriesId } from '../data/series';
 
@@ -117,7 +116,6 @@ const minutesText = minutes ? `${minutes} min read` : '';
 
 			<div id="article-body" class="post-prose"><slot /></div>
 		</main>
-		<Subscribe />
 		<ScrollControls />
 		<Footer />
 	</body>

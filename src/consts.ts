@@ -12,6 +12,7 @@ export const SOCIAL_LINKS = {
 	github: 'https://github.com/clarityisrare',
 	bluesky: 'https://bsky.app/profile/clarityisrare.bsky.social',
 	email: 'mailto:thinkerbell@clarityisrare.com',
+	rss: '/rss.xml',
 } as const;
 
 // Cloudflare Web Analytics beacon token. Privacy-friendly, cookieless, free.
@@ -19,9 +20,3 @@ export const SOCIAL_LINKS = {
 // enter clarityisrare.com → copy the token from the JS snippet. Paste it here.
 // Empty = no analytics script is emitted (nothing ships until you set this).
 export const CLOUDFLARE_ANALYTICS_TOKEN = '';
-
-// Newsletter signup endpoint. Empty = email capture is off and the Subscribe box
-// surfaces the RSS feed only. To enable email later, create a provider account
-// (e.g. Buttondown or Kit) and paste its form-action URL here; the Subscribe
-// form POSTs an `email` field to it. See src/components/Subscribe.astro.
-export const NEWSLETTER_ACTION_URL = '';
