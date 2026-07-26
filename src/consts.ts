@@ -8,7 +8,7 @@ export const AUTHOR_NAME = 'Thinkerbell';
 export const FOOTER_TAGLINE = 'Built by hand, with LLMs.';
 
 export const SOCIAL_LINKS = {
-	linkedin: 'https://www.linkedin.com/in/pamela-g-1bb53837',
+	linkedin: 'https://www.linkedin.com/in/pamelaglas',
 	github: 'https://github.com/clarityisrare',
 	bluesky: 'https://bsky.app/profile/clarityisrare.bsky.social',
 	email: 'mailto:thinkerbell@clarityisrare.com',
