@@ -1,0 +1,72 @@
+---
+// Subscribe box. Surfaces the RSS feed (always) and an email signup form when
+// NEWSLETTER_ACTION_URL is configured in consts.ts — set that URL and the email
+// form appears with no further changes. Placed at the end of each blog post,
+// where reading intent peaks.
+import { NEWSLETTER_ACTION_URL } from '../consts';
+---
+
+<section
+	class="mx-auto mt-14 w-full max-w-[760px] px-6 max-[760px]:px-4"
+	aria-labelledby="subscribe-heading"
+>
+	<div class="rounded-2xl border border-line bg-accent-soft px-6 py-7 sm:px-8">
+		<h2
+			id="subscribe-heading"
+			class="text-[22px] font-extrabold tracking-[-0.01em] text-accent-ink"
+		>
+			Read the next one
+		</h2>
+		<p class="mt-2 text-[15px] leading-relaxed text-ink-2">
+			New posts land one per week. Follow along however suits you.
+		</p>
+
+		{
+			NEWSLETTER_ACTION_URL && (
+				<form
+					action={NEWSLETTER_ACTION_URL}
+					method="post"
+					target="_blank"
+					class="mt-5 flex flex-col gap-2.5 sm:flex-row"
+				>
+					<label for="subscribe-email" class="sr-only">
+						Email address
+					</label>
+					<input
+						id="subscribe-email"
+						type="email"
+						name="email"
+						required
+						autocomplete="email"
+						placeholder="you@example.com"
+						class="min-w-0 flex-1 rounded-[10px] border border-line-2 bg-white px-4 py-2.5 text-[15px] text-ink placeholder:text-muted-2 focus:border-accent focus:outline-none"
+					/>
+					<button
+						type="submit"
+						class="shrink-0 rounded-[10px] bg-accent px-5 py-2.5 text-[15px] font-bold text-white transition-opacity hover:opacity-90"
+					>
+						Subscribe
+					</button>
+				</form>
+			)
+		}
+
+		<a
+			href="/rss.xml"
+			class="mt-5 inline-flex items-center gap-2 text-[14px] font-bold text-accent-ink-soft hover:text-accent-ink"
+		>
+			<svg
+				width="16"
+				height="16"
+				viewBox="0 0 24 24"
+				fill="currentColor"
+				aria-hidden="true"
+			>
+				<path
+					d="M4 11a9 9 0 0 1 9 9h2.5A11.5 11.5 0 0 0 4 8.5V11zm0 4a5 5 0 0 1 5 5h2.5A7.5 7.5 0 0 0 4 12.5V15zm1.75 5a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5z"
+				></path>
+			</svg>
+			Subscribe via RSS
+		</a>
+	</div>
+</section>

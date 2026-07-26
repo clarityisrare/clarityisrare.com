@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import ReadAloud from '../components/ReadAloud.astro';
 import ScrollControls from '../components/ScrollControls.astro';
+import Subscribe from '../components/Subscribe.astro';
 import { SITE_TITLE } from '../consts';
 import { SERIES, type SeriesId } from '../data/series';
 
@@ -20,6 +21,7 @@ const {
 	minutes,
 	publishedOn,
 	pubDate,
+	updatedDate,
 	heroImage,
 	audio,
 } = Astro.props;
@@ -36,6 +38,8 @@ const minutesText = minutes ? `${minutes} min read` : '';
 			image={heroImage}
 			type="article"
 			publishedTime={pubDate.toISOString()}
+			modifiedTime={updatedDate?.toISOString()}
+			breadcrumbName={title}
 		/>
 	</head>
 	<body>
@@ -113,6 +117,7 @@ const minutesText = minutes ? `${minutes} min read` : '';
 
 			<div id="article-body" class="post-prose"><slot /></div>
 		</main>
+		<Subscribe />
 		<ScrollControls />
 		<Footer />
 	</body>

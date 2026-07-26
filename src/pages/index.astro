@@ -8,20 +8,37 @@ import { AUTHOR_NAME, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import heroSrc from '../assets/images/logo-hero.png';
 import { getRecentPosts } from '../lib/posts';
 
-const hero = await getImage({ src: heroSrc, width: 1672, format: 'webp' });
+const hero = await getImage({
+	src: heroSrc,
+	widths: [640, 960, 1280, 1672],
+	sizes: '100vw',
+	format: 'webp',
+});
 const recent = await getRecentPosts(4);
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead
+			title={`${SITE_TITLE} — Requirements Engineering notes`}
+			description={SITE_DESCRIPTION}
+		/>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<section class="home-hero" style={`--hero:url(${hero.src})`}>
-				<img class="home-hero-img" src={hero.src} alt={AUTHOR_NAME} />
+			<section class="home-hero">
+				<img
+					class="home-hero-img"
+					src={hero.src}
+					srcset={hero.srcSet.attribute}
+					sizes="100vw"
+					alt={AUTHOR_NAME}
+					loading="eager"
+					fetchpriority="high"
+					decoding="async"
+				/>
 				<div
 					class="home-text rounded-[18px] bg-white/50 backdrop-blur-[4px]"
 				>
@@ -80,15 +97,18 @@ const recent = await getRecentPosts(4);
 				display: flex;
 				align-items: center;
 				justify-content: flex-end;
-				background-image: var(--hero);
-				background-repeat: no-repeat;
-				background-position: center center;
-				background-size: contain;
 			}
 			.home-hero-img {
-				display: none;
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				object-position: center;
 			}
 			.home-text {
+				position: relative;
+				z-index: 1;
 				width: 42%;
 				margin-right: 4vw;
 				padding: 32px 34px;
@@ -97,13 +117,13 @@ const recent = await getRecentPosts(4);
 				.home-hero {
 					display: block;
 					height: auto;
-					background: none;
 					/* Match the 16px side gutter used on every other page. */
 					padding: 0 16px;
 				}
 				.home-hero-img {
-					display: block;
+					position: static;
 					width: 100%;
+					height: auto;
 					max-height: calc(100svh - 130px);
 					object-fit: contain;
 				}

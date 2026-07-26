@@ -5,7 +5,7 @@ import type { ImageMetadata } from 'astro';
 import { Font, getImage } from 'astro:assets';
 import FallbackImage from '../assets/images/logo-hero.png';
 import LogoSquare from '../assets/images/logo-square.png';
-import { AUTHOR_NAME, SITE_TITLE } from '../consts';
+import { AUTHOR_NAME, CLOUDFLARE_ANALYTICS_TOKEN, SITE_TITLE, SOCIAL_LINKS } from '../consts';
 
 interface Props {
 	title: string;
@@ -14,6 +14,10 @@ interface Props {
 	type?: 'website' | 'article';
 	/** ISO date string, for articles. */
 	publishedTime?: string;
+	/** ISO date string of the last update, for articles. */
+	modifiedTime?: string;
+	/** Plain post title (no brand suffix), used for the breadcrumb trail. */
+	breadcrumbName?: string;
 }
 
 const {
@@ -22,6 +26,8 @@ const {
 	image = FallbackImage,
 	type = 'website',
 	publishedTime,
+	modifiedTime,
+	breadcrumbName,
 } = Astro.props;
 
 const site = Astro.site!;
@@ -44,27 +50,64 @@ const ogImageURL = new URL(ogImage.src, site).href;
 const logo = await getImage({ src: LogoSquare, width: 512, height: 512, format: 'png' });
 const logoURL = new URL(logo.src, site).href;
 
+// Author identity, reused across schemas. `sameAs` links the persona to its
+// off-site profiles so search engines can build a single entity for the author.
+const author = {
+	'@type': 'Person',
+	name: AUTHOR_NAME,
+	url: new URL('/about/', site).href,
+	sameAs: [SOCIAL_LINKS.linkedin, SOCIAL_LINKS.github, SOCIAL_LINKS.bluesky],
+};
+
+const publisher = {
+	'@type': 'Organization',
+	name: SITE_TITLE,
+	url: site.href,
+	logo: { '@type': 'ImageObject', url: logoURL, width: 512, height: 512 },
+};
+
+const ogImageObject = {
+	'@type': 'ImageObject',
+	url: ogImageURL,
+	width: ogWidth,
+	height: ogHeight,
+};
+
 const jsonLd =
 	type === 'article'
 		? {
 				'@context': 'https://schema.org',
-				'@type': 'BlogPosting',
-				headline: title,
-				description,
-				image: ogImageURL,
-				datePublished: publishedTime,
-				dateModified: publishedTime,
-				author: {
-					'@type': 'Person',
-					name: AUTHOR_NAME,
-					url: new URL('/about/', site).href,
-				},
-				publisher: {
-					'@type': 'Organization',
-					name: SITE_TITLE,
-					logo: { '@type': 'ImageObject', url: logoURL },
-				},
-				mainEntityOfPage: canonicalURL.href,
+				'@graph': [
+					{
+						'@type': 'BlogPosting',
+						headline: breadcrumbName ?? title,
+						description,
+						image: ogImageObject,
+						datePublished: publishedTime,
+						dateModified: modifiedTime ?? publishedTime,
+						author,
+						publisher,
+						mainEntityOfPage: canonicalURL.href,
+					},
+					{
+						'@type': 'BreadcrumbList',
+						itemListElement: [
+							{ '@type': 'ListItem', position: 1, name: 'Home', item: site.href },
+							{
+								'@type': 'ListItem',
+								position: 2,
+								name: 'Blog',
+								item: new URL('/blog/', site).href,
+							},
+							{
+								'@type': 'ListItem',
+								position: 3,
+								name: breadcrumbName ?? title,
+								item: canonicalURL.href,
+							},
+						],
+					},
+				],
 			}
 		: {
 				'@context': 'https://schema.org',
@@ -72,6 +115,7 @@ const jsonLd =
 				name: SITE_TITLE,
 				url: site.href,
 				description,
+				publisher,
 			};
 ---
 
@@ -100,6 +144,7 @@ const jsonLd =
 
 <!-- Open Graph / Facebook / LinkedIn -->
 <meta property="og:type" content={type} />
+<meta property="og:locale" content="en_US" />
 <meta property="og:site_name" content={SITE_TITLE} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
@@ -122,3 +167,15 @@ const jsonLd =
 
 <!-- Structured data (rich results) -->
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+<!-- Cloudflare Web Analytics (only when a token is configured in consts.ts) -->
+{
+	CLOUDFLARE_ANALYTICS_TOKEN && (
+		<script
+			is:inline
+			defer
+			src="https://static.cloudflareinsights.com/beacon.min.js"
+			data-cf-beacon={`{"token": "${CLOUDFLARE_ANALYTICS_TOKEN}"}`}
+		/>
+	)
+}

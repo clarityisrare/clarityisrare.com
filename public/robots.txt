@@ -1,0 +1,5 @@
+# robots.txt for clarityisrare.com
+User-agent: *
+Allow: /
+
+Sitemap: https://clarityisrare.com/sitemap-index.xml
