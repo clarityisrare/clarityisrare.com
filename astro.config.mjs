@@ -47,7 +47,7 @@ function rehypeExternalLinks() {
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://clarityisrare.com',
+  site: 'https://www.clarityisrare.com',
   integrations: [
     mdx(),
     sitemap({
