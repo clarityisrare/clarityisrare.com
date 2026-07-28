@@ -17,7 +17,7 @@ export const COMING_SOON_MODE = true;
 export const SOCIAL_LINKS = {
 	linkedin: 'https://www.linkedin.com/in/pamelaglas',
 	github: 'https://github.com/clarityisrare',
-	bluesky: 'https://bsky.app/profile/clarityisrare.bsky.social',
+	bluesky: 'https://bsky.app/profile/clarityisrare.com',
 	email: 'mailto:thinkerbell@clarityisrare.com',
 	rss: '/rss.xml',
 } as const;
