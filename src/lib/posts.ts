@@ -24,6 +24,11 @@ export async function getPublishedPosts(): Promise<Post[]> {
 	);
 }
 
+/** Every post, drafts included — used to route draft URLs to a placeholder. */
+export async function getAllPosts(): Promise<Post[]> {
+	return getCollection('blog');
+}
+
 export function resolvePost(post: Post): ResolvedPost {
 	return {
 		post,

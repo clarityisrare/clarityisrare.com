@@ -1,22 +1,49 @@
 ---
 import { type CollectionEntry, render } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import ComingSoon from '../../components/ComingSoon.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
 import BlogPost from '../../layouts/BlogPost.astro';
-import { getPublishedPosts } from '../../lib/posts';
+import { SITE_TITLE } from '../../consts';
+import { getAllPosts } from '../../lib/posts';
+import logoM from '../../assets/images/logo-m.png';
 
 export async function getStaticPaths() {
-	// Only build pages for published posts (drafts excluded in production).
-	const posts = await getPublishedPosts();
+	// Build a URL for every post. In production, drafts serve an "Upcoming soon"
+	// placeholder instead of their content (see `comingSoon` below); dev still
+	// renders draft bodies in full for preview.
+	const posts = await getAllPosts();
 	return posts.map((post) => ({
 		params: { slug: post.id },
-		props: post,
+		props: { post, comingSoon: import.meta.env.PROD && post.data.draft },
 	}));
 }
-type Props = CollectionEntry<'blog'>;
+type Props = { post: CollectionEntry<'blog'>; comingSoon: boolean };
 
-const post = Astro.props;
-const { Content } = await render(post);
+const { post, comingSoon } = Astro.props;
+const Content = comingSoon ? null : (await render(post)).Content;
 ---
 
-<BlogPost {...post.data}>
-	<Content />
-</BlogPost>
+{
+	comingSoon ? (
+		<html lang="en">
+			<head>
+				<BaseHead
+					title={`Upcoming soon · ${SITE_TITLE}`}
+					description="This post is on its way. Subscribe to the RSS feed and you'll be notified the moment it goes live."
+					image={logoM}
+				/>
+			</head>
+			<body>
+				<Header />
+				<ComingSoon />
+				<Footer />
+			</body>
+		</html>
+	) : (
+		<BlogPost {...post.data}>
+			<Content />
+		</BlogPost>
+	)
+}

@@ -1,10 +1,23 @@
 // @ts-check
 
+import { readdirSync, readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
+
+// Draft posts get a real URL (serving an "Upcoming soon" placeholder), but must
+// stay out of the sitemap. Collect their slugs from frontmatter at config time.
+const blogDir = fileURLToPath(new URL('./src/content/blog', import.meta.url));
+const draftSlugs = new Set(
+  readdirSync(blogDir)
+    .filter((f) => /\.mdx?$/.test(f))
+    .filter((f) => /^draft:\s*true\b/m.test(readFileSync(`${blogDir}/${f}`, 'utf8')))
+    .map((f) => f.replace(/\.mdx?$/, '')),
+);
 
 // Open every absolute http(s) link (i.e. external links) in a new tab.
 // Internal links (relative paths, e.g. "Continue reading" CTAs) are untouched.
@@ -27,7 +40,15 @@ function rehypeExternalLinks() {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://clarityisrare.com',
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    sitemap({
+      filter: (page) => {
+        const slug = page.replace(/.*\/blog\/([^/]+)\/?$/, '$1');
+        return !draftSlugs.has(slug);
+      },
+    }),
+  ],
 
   markdown: {
     rehypePlugins: [rehypeExternalLinks],
