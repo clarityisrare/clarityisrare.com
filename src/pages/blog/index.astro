@@ -7,9 +7,9 @@ import ScrollControls from '../../components/ScrollControls.astro';
 import { COMING_SOON_MODE, SITE_TITLE, SOCIAL_LINKS } from '../../consts';
 import { getSeriesGroups, postBodyText } from '../../lib/posts';
 
-// While the site is in coming-soon mode the blog is hidden; send visitors who
-// reach /blog directly back to the landing (which shows the coming-soon page).
-if (COMING_SOON_MODE) return Astro.redirect('/');
+// While the site is in coming-soon mode the blog isn't live: return a 404 so the
+// host serves the 404 page (which shows the coming-soon screen) at /blog.
+if (COMING_SOON_MODE) return new Response(null, { status: 404 });
 
 const groups = await getSeriesGroups();
 const all = groups.flatMap((g) => g.posts);
