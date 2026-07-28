@@ -6,10 +6,14 @@ import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import BlogPost from '../../layouts/BlogPost.astro';
 import { SITE_TITLE } from '../../consts';
+import { COMING_SOON_MODE } from '../../consts';
 import { getAllPosts } from '../../lib/posts';
 import logoM from '../../assets/images/logo-m.png';
 
 export async function getStaticPaths() {
+	// In coming-soon mode no post pages are built, so every post URL 404s — and
+	// the 404 shows the coming-soon page. Posts return the moment the flag flips.
+	if (COMING_SOON_MODE) return [];
 	// Build a URL for every post. In production, drafts serve an "Upcoming soon"
 	// placeholder instead of their content (see `comingSoon` below); dev still
 	// renders draft bodies in full for preview.

@@ -7,6 +7,13 @@ export const SITE_DESCRIPTION =
 export const AUTHOR_NAME = 'Thinkerbell';
 export const FOOTER_TAGLINE = 'Built by hand, with LLMs.';
 
+// Temporary "coming soon" takeover. When true, only the landing (`/`) and the
+// About page are real: the landing shows the coming-soon page, every other
+// route shows it too (via the 404), and the header nav shrinks to Home + About.
+// The rest of the site (blog, posts, search) stays in the codebase, just hidden.
+// Flip to `false` to launch the full site — nothing else needs changing.
+export const COMING_SOON_MODE = true;
+
 export const SOCIAL_LINKS = {
 	linkedin: 'https://www.linkedin.com/in/pamelaglas',
 	github: 'https://github.com/clarityisrare',

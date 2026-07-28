@@ -4,8 +4,12 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import ScrollControls from '../../components/ScrollControls.astro';
-import { SITE_TITLE, SOCIAL_LINKS } from '../../consts';
+import { COMING_SOON_MODE, SITE_TITLE, SOCIAL_LINKS } from '../../consts';
 import { getSeriesGroups, postBodyText } from '../../lib/posts';
+
+// While the site is in coming-soon mode the blog is hidden; send visitors who
+// reach /blog directly back to the landing (which shows the coming-soon page).
+if (COMING_SOON_MODE) return Astro.redirect('/');
 
 const groups = await getSeriesGroups();
 const all = groups.flatMap((g) => g.posts);

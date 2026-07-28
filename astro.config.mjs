@@ -19,6 +19,14 @@ const draftSlugs = new Set(
     .map((f) => f.replace(/\.mdx?$/, '')),
 );
 
+// Mirror the `COMING_SOON_MODE` flag from consts.ts (read here so the sitemap
+// can be limited to the two public pages while the takeover is active).
+const constsSrc = readFileSync(
+  fileURLToPath(new URL('./src/consts.ts', import.meta.url)),
+  'utf8',
+);
+const comingSoonMode = /COMING_SOON_MODE\s*=\s*true\b/.test(constsSrc);
+
 // Open every absolute http(s) link (i.e. external links) in a new tab.
 // Internal links (relative paths, e.g. "Continue reading" CTAs) are untouched.
 function rehypeExternalLinks() {
@@ -44,6 +52,9 @@ export default defineConfig({
     mdx(),
     sitemap({
       filter: (page) => {
+        const { pathname } = new URL(page);
+        // Coming-soon takeover: only the landing and About are public.
+        if (comingSoonMode) return pathname === '/' || pathname === '/about/';
         const slug = page.replace(/.*\/blog\/([^/]+)\/?$/, '$1');
         return !draftSlugs.has(slug);
       },

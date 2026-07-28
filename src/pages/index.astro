@@ -1,32 +1,50 @@
 ---
 import { getImage } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
+import ComingSoon from '../components/ComingSoon.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import ScrollControls from '../components/ScrollControls.astro';
-import { AUTHOR_NAME, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { AUTHOR_NAME, COMING_SOON_MODE, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import heroSrc from '../assets/images/logo-hero.png';
+import logoM from '../assets/images/logo-m.png';
 import { getRecentPosts } from '../lib/posts';
 
-const hero = await getImage({
-	src: heroSrc,
-	widths: [640, 960, 1280, 1672],
-	sizes: '100vw',
-	format: 'webp',
-});
-const recent = await getRecentPosts(4);
+// In coming-soon mode the landing shows the placeholder; skip the hero work.
+const hero = COMING_SOON_MODE
+	? null
+	: await getImage({
+			src: heroSrc,
+			widths: [640, 960, 1280, 1672],
+			sizes: '100vw',
+			format: 'webp',
+		});
+const recent = COMING_SOON_MODE ? [] : await getRecentPosts(4);
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead
-			title={`${SITE_TITLE} — Requirements Engineering notes`}
-			description={SITE_DESCRIPTION}
-		/>
+		{
+			COMING_SOON_MODE ? (
+				<BaseHead
+					title={`Upcoming soon · ${SITE_TITLE}`}
+					description="This post is on its way. Subscribe to the RSS feed and you'll be notified the moment it goes live."
+					image={logoM}
+				/>
+			) : (
+				<BaseHead
+					title={`${SITE_TITLE} — Requirements Engineering notes`}
+					description={SITE_DESCRIPTION}
+				/>
+			)
+		}
 	</head>
 	<body>
 		<Header />
+		{COMING_SOON_MODE && <ComingSoon />}
+		{!COMING_SOON_MODE && (
+		<Fragment>
 		<main>
 			<section class="home-hero">
 				<img
@@ -87,6 +105,8 @@ const recent = await getRecentPosts(4);
 			</section>
 		</main>
 		<ScrollControls />
+		</Fragment>
+		)}
 		<Footer />
 
 		<style>
