@@ -1,0 +1,19 @@
+{
+	// Deploy Clarity Is Rare as a STATIC site on Cloudflare Workers (static assets
+	// only — no server/SSR). Astro builds to `dist/` with images pre-optimized to
+	// plain .webp files, which Cloudflare serves directly. This intentionally
+	// overrides Cloudflare's automatic "add an adapter and run as a Worker"
+	// behaviour, which broke images by routing them through a runtime /_image
+	// endpoint (404). Do NOT add `main` or the @astrojs/cloudflare adapter unless
+	// the site actually needs server-side rendering.
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "clarityisrare",
+	"compatibility_date": "2025-05-05",
+	"assets": {
+		"directory": "./dist",
+		// Serve dist/404.html (the coming-soon / not-found page) for any path that
+		// doesn't match a file — this is what makes /blog, old post links, and typos
+		// all land on the coming-soon screen.
+		"not_found_handling": "404-page"
+	}
+}
