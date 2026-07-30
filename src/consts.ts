@@ -7,6 +7,10 @@ export const SITE_DESCRIPTION =
 export const AUTHOR_NAME = 'Thinkerbell';
 export const FOOTER_TAGLINE = 'Built by hand, with LLMs.';
 
+// The open-source companion toolkit (separate GitHub repo). Used by /toolkit.
+export const TOOLKIT_REPO = 'clarityisrare/ai-requirements-toolkit';
+export const TOOLKIT_URL = `https://github.com/${TOOLKIT_REPO}`;
+
 // Temporary "coming soon" takeover. When true, only the landing (`/`) and the
 // About page are real: the landing shows the coming-soon page, every other
 // route shows it too (via the 404), and the header nav shrinks to Home + About.

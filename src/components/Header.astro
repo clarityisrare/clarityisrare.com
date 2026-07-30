@@ -4,9 +4,10 @@ import logo from '../assets/images/logo-wordmark.png';
 import { AUTHOR_NAME, COMING_SOON_MODE } from '../consts';
 
 const path = Astro.url.pathname;
-const isActive = (key: 'home' | 'blog' | 'about') => {
+const isActive = (key: 'home' | 'blog' | 'about' | 'toolkit') => {
 	if (key === 'home') return path === '/' || path === '';
 	if (key === 'blog') return path.startsWith('/blog');
+	if (key === 'toolkit') return path.startsWith('/toolkit');
 	return path.startsWith('/about');
 };
 
@@ -20,11 +21,13 @@ const active =
 const links = COMING_SOON_MODE
 	? ([
 			{ href: '/', label: 'Home', key: 'home' },
+			{ href: '/toolkit', label: 'Toolkit', key: 'toolkit' },
 			{ href: '/about', label: 'About', key: 'about' },
 		] as const)
 	: ([
 			{ href: '/', label: 'Home', key: 'home' },
 			{ href: '/blog', label: 'Blog', key: 'blog' },
+			{ href: '/toolkit', label: 'Toolkit', key: 'toolkit' },
 			{ href: '/about', label: 'About', key: 'about' },
 		] as const);
 
@@ -32,10 +35,12 @@ const links = COMING_SOON_MODE
 const menuLinks = COMING_SOON_MODE
 	? ([
 			{ href: '/', label: 'Home', key: 'home' },
+			{ href: '/toolkit', label: 'Toolkit', key: 'toolkit' },
 			{ href: '/about', label: 'About', key: 'about' },
 		] as const)
 	: ([
 			{ href: '/', label: 'Home', key: 'home' },
+			{ href: '/toolkit', label: 'Toolkit', key: 'toolkit' },
 			{ href: '/about', label: 'About', key: 'about' },
 			{ href: '/blog', label: 'Search', key: null },
 		] as const);

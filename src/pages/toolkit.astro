@@ -1,0 +1,428 @@
+---
+import { getImage } from 'astro:assets';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import ScrollControls from '../components/ScrollControls.astro';
+import { AUTHOR_NAME, SITE_TITLE, TOOLKIT_REPO, TOOLKIT_URL } from '../consts';
+import logoO from '../assets/images/logo-o.png';
+import logoOM from '../assets/images/logo-o-m.png';
+
+// Hero illustration. Desktop uses the wide version as a full-bleed background
+// (same treatment as the home page); phones and tablets get the portrait
+// version, sized to fit the screen fully.
+const heroWide = await getImage({
+	src: logoO,
+	widths: [640, 960, 1280, 1672],
+	sizes: '100vw',
+	format: 'webp',
+});
+const heroTall = await getImage({
+	src: logoOM,
+	widths: [480, 640, 768, 838],
+	sizes: '100vw',
+	format: 'webp',
+});
+
+const pageTitle = `Toolkit · ${SITE_TITLE}`;
+const pageDescription =
+	'A free, open-source requirements toolkit for the AI era — now with Claude Skills that run the whole workflow for you, plus copy-paste prompts, checklists, patterns, templates, diagrams and worked examples.';
+
+// Live GitHub star badge (updates itself), themed to the site accent.
+const starBadge = `https://img.shields.io/github/stars/${TOOLKIT_REPO}?style=for-the-badge&logo=github&label=STARS&color=2f8f83&labelColor=1f5f57`;
+const licenseBadge = `https://img.shields.io/github/license/${TOOLKIT_REPO}?style=for-the-badge&label=LICENSE&color=2f8f83&labelColor=1f5f57`;
+
+const SKILLS_URL = `${TOOLKIT_URL}/tree/main/skills`;
+
+// The headline feature: Claude Skills, one per stage of the requirements lifecycle.
+const skills = [
+	{
+		name: 'elicitation-planner',
+		blurb: 'A thin business request arrives — it frames the problem, maps stakeholders, and plans your discovery or validation workshop.',
+	},
+	{
+		name: 'requirements-writer',
+		blurb: 'Drafts testable, traceable requirements, INVEST user stories, Given/When/Then criteria and measurable NFRs — with battle-tested feature patterns.',
+	},
+	{
+		name: 'requirements-reviewer',
+		blurb: 'Audits existing requirements for ambiguity, risk, gaps and readiness, and classifies every finding by severity.',
+	},
+	{
+		name: 'test-case-generator',
+		blurb: 'Turns acceptance criteria into executable test cases and a traceability matrix, so nothing ships untested.',
+	},
+	{
+		name: 'requirements-diagrams',
+		blurb: 'Generates tailored Mermaid diagrams — context, use case, lifecycle, sequence, traceability — ready to drop into a spec.',
+	},
+];
+
+// What's inside — counts kept in sync with the repo folders.
+const groups = [
+	{
+		title: 'Skills',
+		count: 5,
+		blurb: 'Claude Skills that run each workflow for you — elicitation, writing, review, test cases and diagrams, across the whole lifecycle.',
+		href: SKILLS_URL,
+	},
+	{
+		title: 'Patterns',
+		count: 9,
+		blurb: 'Reusable requirement patterns for common features — uploads, notifications, approvals, access control, search, export, integrations, audit trails.',
+		href: `${TOOLKIT_URL}/tree/main/patterns`,
+	},
+	{
+		title: 'Prompts',
+		count: 9,
+		blurb: 'Copy-paste AI prompts: acceptance criteria, user stories, NFRs, test cases, ambiguity detection, review and elicitation.',
+		href: `${TOOLKIT_URL}/tree/main/prompts`,
+	},
+	{
+		title: 'Checklists',
+		count: 6,
+		blurb: 'Fast pass/fail reviews for requirements, user stories, NFRs, readiness, security & privacy, and AI output.',
+		href: `${TOOLKIT_URL}/tree/main/checklists`,
+	},
+	{
+		title: 'Templates',
+		count: 8,
+		blurb: 'Fill-in-the-blank starting points: requirement, NFR, contract, stakeholder analysis, glossary, decision record, risk register.',
+		href: `${TOOLKIT_URL}/tree/main/templates`,
+	},
+	{
+		title: 'Diagrams',
+		count: 6,
+		blurb: 'Mermaid sources you can drop straight into a spec — context, use case, approval, lifecycle, sequence and traceability.',
+		href: `${TOOLKIT_URL}/tree/main/diagrams`,
+	},
+	{
+		title: 'Examples',
+		count: 3,
+		blurb: 'Worked, before/after walkthroughs that show the tools in action — including what the AI review prompts actually return.',
+		href: `${TOOLKIT_URL}/tree/main/examples`,
+	},
+];
+
+const h2Class =
+	'text-[28px] font-extrabold tracking-[-0.02em] text-accent-ink';
+const pClass = 'text-[18px] leading-[1.75] text-pretty text-ink-2';
+
+const primaryBtn =
+	'inline-flex items-center gap-2.5 rounded-[20px] bg-accent px-6 py-3 text-[16px] font-semibold text-white transition-colors hover:bg-accent-ink';
+const ghostBtn =
+	'inline-flex items-center gap-2.5 rounded-[20px] border border-line-2 bg-white px-6 py-3 text-[16px] font-semibold text-accent-ink transition-colors hover:bg-accent-soft';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={pageTitle} description={pageDescription} image={logoO} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<!-- Hero: full-bleed background illustration + glass text panel (matches home) -->
+			<section class="tk-hero">
+				<picture>
+					<!-- Desktop: wide illustration as a full-bleed background. -->
+					<source
+						media="(min-width: 1025px)"
+						srcset={heroWide.srcSet.attribute}
+						sizes="100vw"
+					/>
+					<!-- Phones + tablets: portrait illustration, sized to fit fully. -->
+					<img
+						class="tk-hero-img"
+						src={heroTall.src}
+						srcset={heroTall.srcSet.attribute}
+						sizes="100vw"
+						alt={`${AUTHOR_NAME} — turning vague requests into clear requirements`}
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					/>
+				</picture>
+				<div class="tk-text rounded-[18px] bg-white/55 backdrop-blur-[4px]">
+					<p
+						class="mb-3 font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-accent"
+					>
+						Open source · MIT · Free forever
+					</p>
+					<h1
+						class="mb-4 text-[40px] font-extrabold leading-[1.1] tracking-[-0.02em] text-pretty text-accent-ink"
+					>
+						The AI Requirements Toolkit
+					</h1>
+					<p class="text-[19px] leading-[1.6] text-pretty text-ink-2">
+						The checklists, prompts, patterns, templates and diagrams I reach for to
+						turn vague requirements into clear, testable ones — now with <strong>Claude
+						Skills that run the whole workflow for you</strong>. Free, open, and ready
+						to drop into your work.
+					</p>
+				</div>
+			</section>
+
+			<!-- Actions: below the hero, so the top area is just headline + description -->
+			<div
+				class="mx-auto flex max-w-[880px] flex-col items-center gap-4 px-8 pt-10 max-[760px]:px-4"
+			>
+				<div class="flex flex-wrap items-center justify-center gap-3">
+					<a href={TOOLKIT_URL} target="_blank" rel="noopener" class={primaryBtn}>
+						<svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+							<path
+								d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"
+							></path>
+						</svg>
+						Star it on GitHub
+					</a>
+					<a href={TOOLKIT_URL} target="_blank" rel="noopener" class={ghostBtn}>
+						Browse the repo
+					</a>
+				</div>
+
+				<div class="flex flex-wrap items-center justify-center gap-2.5">
+					<a href={`${TOOLKIT_URL}/stargazers`} target="_blank" rel="noopener" aria-label="GitHub stars">
+						<img src={starBadge} alt="GitHub stars" height="28" loading="lazy" />
+					</a>
+					<a href={`${TOOLKIT_URL}/blob/main/LICENSE`} target="_blank" rel="noopener" aria-label="License">
+						<img src={licenseBadge} alt="MIT License" height="28" loading="lazy" />
+					</a>
+				</div>
+			</div>
+
+			<div class="mx-auto max-w-[880px] px-8 pb-20 pt-14 max-[760px]:px-4">
+			<!-- Headline feature: Claude Skills -->
+			<section
+				class="rounded-[22px] border border-accent/35 bg-accent-soft p-8 shadow-[0_18px_50px_-24px_rgba(47,143,131,0.55)] max-[760px]:p-6"
+			>
+				<p
+					class="mb-4 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white"
+				>
+					★ New — Claude Skills
+				</p>
+				<h2
+					class="text-[30px] font-extrabold tracking-[-0.02em] text-accent-ink max-[760px]:text-[25px]"
+				>
+					The toolkit that runs itself
+				</h2>
+				<p class="mt-3 max-w-[68ch] text-[18px] leading-[1.7] text-pretty text-ink-2">
+					Copying prompts and filling templates is good. Having Claude do the work is
+					better. Drop these <strong>Skills</strong> into Claude and it <strong>runs the
+					whole workflow for you</strong> — asking the right questions, applying the
+					method, shaping the output with the bundled templates, and self-checking
+					against the bundled checklists. Five skills, one for every stage of the
+					requirements lifecycle, that hand off to each other from first request to
+					final test.
+				</p>
+
+				<ol class="mt-6 grid gap-3 sm:grid-cols-2">
+					{
+						skills.map((s, i) => (
+							<li class="flex gap-3.5 rounded-[14px] border border-line-2 bg-white/75 p-4">
+								<span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-[13px] font-bold text-white">
+									{i + 1}
+								</span>
+								<div>
+									<div class="font-mono text-[14px] font-semibold text-accent-ink">
+										{s.name}
+									</div>
+									<div class="mt-1 text-[15px] leading-[1.55] text-ink-2">
+										{s.blurb}
+									</div>
+								</div>
+							</li>
+						))
+					}
+				</ol>
+
+				<div class="mt-7 flex flex-wrap items-center gap-3">
+					<a href={SKILLS_URL} target="_blank" rel="noopener" class={primaryBtn}>
+						Get the Skills →
+					</a>
+					<span class="text-[15px] text-muted">
+						Free · works in Claude Code &amp; the Claude apps
+					</span>
+				</div>
+			</section>
+
+			<!-- Before / after -->
+			<section class="mt-16">
+				<h2 class={h2Class}>The one move it's built around</h2>
+				<p class="mt-3 mb-7 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2">
+					Most requirements aren't missing — they're vague, and everyone reads them
+					differently. The whole toolkit pushes in one direction: making that vagueness
+					impossible.
+				</p>
+
+				<div class="grid gap-4 sm:grid-cols-2">
+					<div class="rounded-[16px] border border-line-2 bg-accent-softer p-6">
+						<p class="mb-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-muted">
+							Before
+						</p>
+						<p class="text-[17px] leading-[1.6] text-ink-2">
+							“The system should let users upload documents <em>quickly</em> and <em>securely</em>.”
+						</p>
+					</div>
+					<div class="rounded-[16px] border border-accent/30 bg-accent-soft p-6">
+						<p class="mb-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-accent">
+							After
+						</p>
+						<p class="text-[17px] leading-[1.6] text-accent-ink">
+							“The system shall allow authenticated <strong>customers</strong> to
+							upload <strong>PDF</strong> files up to <strong>20&nbsp;MB</strong>,
+							virus-scanned <strong>before</strong> they become available and visible
+							only to the customer and reviewers in the owning department.”
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- What's inside -->
+			<section class="mt-16">
+				<h2 class={h2Class}>What's inside</h2>
+				<p class="mt-3 mb-7 text-[18px] leading-[1.7] text-ink-2">
+					Five Claude Skills plus 40+ plain-Markdown and Mermaid files across seven
+					folders — run a skill, or copy a file and adapt the wording. Your choice.
+				</p>
+
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{
+						groups.map((g) => (
+							<a
+								href={g.href}
+								target="_blank"
+								rel="noopener"
+								class="group flex flex-col rounded-[16px] border border-line bg-white p-6 transition-colors hover:border-accent/40 hover:bg-accent-softer"
+							>
+								<div class="mb-3 flex items-baseline justify-between">
+									<h3 class="text-[19px] font-extrabold tracking-[-0.01em] text-accent-ink">
+										{g.title}
+									</h3>
+									<span class="font-mono text-[13px] font-semibold text-accent">
+										{g.count} files
+									</span>
+								</div>
+								<p class="text-[15px] leading-[1.6] text-ink-2">{g.blurb}</p>
+							</a>
+						))
+					}
+				</div>
+			</section>
+
+			<!-- How to use -->
+			<section class="mt-16">
+				<h2 class={h2Class}>How to use it</h2>
+				<ol class="mt-4 space-y-4">
+					<li class={pClass}>
+						<strong class="font-extrabold text-accent-ink">Browse by task.</strong> Writing
+						criteria? Start in <em>prompts</em>. Reviewing someone else's work? Start in <em>checklists</em>.
+					</li>
+					<li class={pClass}>
+						<strong class="font-extrabold text-accent-ink">Copy, don't depend.</strong> Take
+						what's useful into your own repo or wiki and adapt it to your domain and glossary.
+					</li>
+					<li class={pClass}>
+						<strong class="font-extrabold text-accent-ink">Keep a human in the loop.</strong> The
+						AI prompts and checklists assume a person makes the final call — the tools
+						accelerate the work, they don't own it.
+					</li>
+				</ol>
+			</section>
+
+			<!-- Final CTA -->
+			<section class="mt-16 rounded-[20px] border border-line-2 bg-accent-soft p-8 text-center max-[760px]:p-6">
+				<h2 class={h2Class}>If it saves you time, star it</h2>
+				<p class="mx-auto mt-3 max-w-[56ch] text-[18px] leading-[1.7] text-ink-2">
+					A star is the signal that keeps this growing — it tells me which pieces are
+					worth expanding, and it helps other people find the toolkit. It costs you a
+					click and means a lot.
+				</p>
+				<div class="mt-7 flex justify-center">
+					<a href={TOOLKIT_URL} target="_blank" rel="noopener" class={primaryBtn}>
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+							<path
+								d="M12 17.27l5.18 3.05-1.37-5.88 4.56-3.95-6.01-.52L12 4.5 9.64 9.97l-6.01.52 4.56 3.95-1.37 5.88z"
+							></path>
+						</svg>
+						Star on GitHub
+					</a>
+				</div>
+			</section>
+			</div>
+		</main>
+		<ScrollControls />
+		<Footer />
+
+		<style>
+			.tk-hero {
+				position: relative;
+				width: 100%;
+				height: calc(100vh - 85px);
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+			}
+			/* Let the <picture> wrapper not affect layout, so the <img> positions
+			   against .tk-hero directly. */
+			.tk-hero :global(picture) {
+				display: contents;
+			}
+			.tk-hero-img {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				object-position: center;
+			}
+			.tk-text {
+				position: relative;
+				z-index: 1;
+				width: 44%;
+				margin-right: 4vw;
+				padding: 30px 32px;
+			}
+			/* Phones + tablets (incl. iPad): stack the portrait illustration on top,
+			   sized to fit the screen fully, with the text below it. */
+			@media (max-width: 1024px) {
+				.tk-hero {
+					display: block;
+					height: auto;
+					/* Match the 16px side gutter used on every other page. */
+					padding: 0 16px;
+				}
+				.tk-hero-img {
+					position: static;
+					width: 100%;
+					height: auto;
+					max-height: calc(100svh - 130px);
+					object-fit: contain;
+				}
+				.tk-text {
+					width: auto;
+					margin-right: 0;
+					padding: 20px 0 8px;
+					background: none;
+					backdrop-filter: none;
+					border-radius: 0;
+					text-align: center;
+				}
+				.tk-text :global(h1) {
+					font-size: 34px;
+				}
+				.tk-text :global(p) {
+					font-size: 18px;
+				}
+			}
+			@media (max-width: 560px) {
+				.tk-text :global(h1) {
+					font-size: 30px;
+				}
+				.tk-text :global(p) {
+					font-size: 17px;
+				}
+			}
+		</style>
+	</body>
+</html>
