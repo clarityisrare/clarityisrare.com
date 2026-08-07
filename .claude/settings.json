@@ -1,0 +1,19 @@
+{
+    "env": {
+        "ASTRO_TELEMETRY_DISABLED": "1",
+        "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1",
+        "DO_NOT_TRACK": "1",
+        "HOMEBREW_NO_ANALYTICS": "1"
+    },
+    "enabledMcpjsonServers": [
+        "astro-docs",
+        "playwright",
+        "chrome-devtools"
+    ],
+    "permissions": {
+        "allow": [
+            "mcp__playwright",
+            "mcp__chrome-devtools"
+        ]
+    }
+}
