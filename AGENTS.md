@@ -66,7 +66,10 @@ Settings and decisions to preserve across changes.
   `postBodyText` in `src/lib/posts.ts`) and shows a highlighted snippet plus a live result
   count.
 - Each post has a **read-aloud** control (`ReadAloud.astro`) using browser speech synthesis,
-  or a pre-recorded `audio` file when the frontmatter sets one.
+  or a pre-recorded `audio` file when the frontmatter sets one. Recordings live in
+  `public/audio/<slug>.mp3` (served as-is, not through the Astro asset pipeline) and are
+  referenced by root-absolute path, e.g. `audio: '/audio/failure-modes.mp3'`. With a recording
+  the button plays/pauses and shows a seek bar; without one it falls back to speech synthesis.
 
 ## Documentation
 

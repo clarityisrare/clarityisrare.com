@@ -21,6 +21,28 @@ const hint = audio
 			class="hidden h-[9px] w-[9px] rounded-full bg-white [animation:pulse_1s_infinite]"
 		></span>
 	</button>
+	{
+		audio && (
+			<div id="read-aloud-player" class="mt-3.5 flex max-w-[420px] items-center gap-3">
+				<input
+					id="read-aloud-seek"
+					type="range"
+					min="0"
+					max="0"
+					step="0.1"
+					value="0"
+					aria-label="Seek within the recording"
+					class="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-accent-soft [accent-color:var(--color-accent)]"
+				/>
+				<span
+					id="read-aloud-time"
+					class="shrink-0 font-mono text-[12px] tabular-nums text-muted-2"
+				>
+					0:00 / --:--
+				</span>
+			</div>
+		)
+	}
 	<div class="mt-2.5 mb-9 text-[13px] text-muted-2">{hint}</div>
 </div>
 
@@ -28,15 +50,60 @@ const hint = audio
 	const btn = document.getElementById('read-aloud');
 	const label = document.getElementById('read-aloud-label');
 	const dot = document.getElementById('read-aloud-dot');
+	const seek = document.getElementById('read-aloud-seek') as HTMLInputElement | null;
+	const time = document.getElementById('read-aloud-time');
 	const audioSrc = btn?.dataset.audio || '';
 
 	let audioEl: HTMLAudioElement | null = null;
-	let speaking = false;
+	let playing = false;
+	let scrubbing = false;
 
-	function setSpeaking(on: boolean) {
-		speaking = on;
-		if (label) label.textContent = on ? '❚❚  Stop' : '▶  Read aloud';
+	function setPlaying(on: boolean) {
+		playing = on;
+		if (label) {
+			// A recording can be resumed, so it pauses; speech synthesis only stops.
+			label.textContent = on
+				? audioSrc
+					? '❚❚  Pause'
+					: '❚❚  Stop'
+				: audioSrc && audioEl && audioEl.currentTime > 0
+					? '▶  Resume'
+					: '▶  Read aloud';
+		}
 		dot?.classList.toggle('hidden', !on);
+	}
+
+	function clock(seconds: number) {
+		if (!Number.isFinite(seconds)) return '--:--';
+		const m = Math.floor(seconds / 60);
+		const s = Math.floor(seconds % 60);
+		return `${m}:${String(s).padStart(2, '0')}`;
+	}
+
+	function renderProgress() {
+		if (!audioEl || !time) return;
+		time.textContent = `${clock(audioEl.currentTime)} / ${clock(audioEl.duration)}`;
+		if (seek && !scrubbing) seek.value = String(audioEl.currentTime);
+	}
+
+	function getAudio() {
+		if (!audioEl) {
+			audioEl = new Audio(audioSrc);
+			// Only the header is fetched up front; the file itself streams on play.
+			audioEl.preload = 'metadata';
+			audioEl.addEventListener('loadedmetadata', () => {
+				if (seek) seek.max = String(audioEl!.duration || 0);
+				renderProgress();
+			});
+			audioEl.addEventListener('timeupdate', renderProgress);
+			audioEl.addEventListener('ended', () => {
+				audioEl!.currentTime = 0;
+				setPlaying(false);
+				renderProgress();
+			});
+			audioEl.addEventListener('error', () => setPlaying(false));
+		}
+		return audioEl;
 	}
 
 	function stop() {
@@ -46,7 +113,7 @@ const hint = audio
 		try {
 			audioEl?.pause();
 		} catch {}
-		setSpeaking(false);
+		setPlaying(false);
 	}
 
 	function gatherText() {
@@ -66,33 +133,42 @@ const hint = audio
 		const u = new SpeechSynthesisUtterance(gatherText());
 		u.lang = 'en-US';
 		u.rate = 1;
-		u.onend = () => setSpeaking(false);
-		u.onerror = () => setSpeaking(false);
+		u.onend = () => setPlaying(false);
+		u.onerror = () => setPlaying(false);
 		synth.cancel();
 		synth.speak(u);
-		setSpeaking(true);
-	}
-
-	function playAudio(src: string) {
-		if (!audioEl) {
-			audioEl = new Audio();
-			audioEl.onended = () => setSpeaking(false);
-			audioEl.onerror = () => setSpeaking(false);
-		}
-		if (audioEl.src !== src) audioEl.src = src;
-		audioEl.currentTime = 0;
-		audioEl.play();
-		setSpeaking(true);
+		setPlaying(true);
 	}
 
 	btn?.addEventListener('click', () => {
-		if (speaking) {
+		if (playing) {
 			stop();
 			return;
 		}
-		if (audioSrc) playAudio(audioSrc);
-		else speak();
+		if (audioSrc) {
+			getAudio()
+				.play()
+				.then(() => setPlaying(true))
+				.catch(() => setPlaying(false));
+		} else {
+			speak();
+		}
 	});
+
+	seek?.addEventListener('pointerdown', () => {
+		scrubbing = true;
+	});
+	seek?.addEventListener('input', () => {
+		if (time && audioEl) time.textContent = `${clock(+seek.value)} / ${clock(audioEl.duration)}`;
+	});
+	seek?.addEventListener('change', () => {
+		scrubbing = false;
+		getAudio().currentTime = +seek.value;
+		renderProgress();
+	});
+
+	// Load the duration so the readout is populated before the first play.
+	if (audioSrc) getAudio();
 
 	window.addEventListener('beforeunload', stop);
 </script>

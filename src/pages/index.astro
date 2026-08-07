@@ -19,7 +19,7 @@ const hero = COMING_SOON_MODE
 			sizes: '100vw',
 			format: 'webp',
 		});
-const recent = COMING_SOON_MODE ? [] : await getRecentPosts(4);
+const recent = COMING_SOON_MODE ? [] : await getRecentPosts(3);
 ---
 
 <!doctype html>
@@ -81,15 +81,19 @@ const recent = COMING_SOON_MODE ? [] : await getRecentPosts(4);
 					<a href="/blog" class="text-sm font-bold">All posts →</a>
 				</div>
 				<div
-					class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4"
+					class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-5"
 				>
 					{
 						recent.map((r) => (
 							<a
 								href={r.href}
-								class="rounded-2xl border border-line bg-white p-[22px] transition-shadow hover:shadow-[0_10px_30px_-16px_rgba(0,0,0,0.35)]"
+								class="relative isolate block overflow-hidden rounded-2xl border border-line bg-white p-7 transition-shadow hover:shadow-[0_10px_30px_-16px_rgba(0,0,0,0.35)]"
 							>
-								<div class="mb-3 font-mono text-[11px] text-muted-2">
+								<div
+									class="absolute inset-0 -z-10 bg-cover bg-center opacity-20"
+									style={`background-image:url(${r.series.image.src})`}
+								/>
+								<div class="mb-3 font-mono text-[12px] font-extrabold text-accent-ink">
 									{r.series.title}
 								</div>
 								<div class="mb-3.5 text-[18px] font-bold leading-[1.28] text-ink">

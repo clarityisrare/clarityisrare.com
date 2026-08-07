@@ -16,7 +16,7 @@ export const TOOLKIT_URL = `https://github.com/${TOOLKIT_REPO}`;
 // route shows it too (via the 404), and the header nav shrinks to Home + About.
 // The rest of the site (blog, posts, search) stays in the codebase, just hidden.
 // Flip to `false` to launch the full site — nothing else needs changing.
-export const COMING_SOON_MODE = true;
+export const COMING_SOON_MODE = false;
 
 export const SOCIAL_LINKS = {
 	linkedin: 'https://www.linkedin.com/in/pamelaglas',

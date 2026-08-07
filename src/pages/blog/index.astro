@@ -5,13 +5,21 @@ import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import ScrollControls from '../../components/ScrollControls.astro';
 import { COMING_SOON_MODE, SITE_TITLE, SOCIAL_LINKS } from '../../consts';
+import { SERIES } from '../../data/series';
 import { getSeriesGroups, postBodyText } from '../../lib/posts';
 
 // While the site is in coming-soon mode the blog isn't live: return a 404 so the
 // host serves the 404 page (which shows the coming-soon screen) at /blog.
 if (COMING_SOON_MODE) return new Response(null, { status: 404 });
 
-const groups = await getSeriesGroups();
+// Series with real, linkable posts. Series 2 and 3 aren't live yet — keep
+// this page showing only Series 1, regardless of any draft posts sitting
+// behind the other two (which `getSeriesGroups` would otherwise surface in dev).
+const groups = (await getSeriesGroups()).filter((g) => g.series.id === 'series-01');
+// Series 2 is announced ahead of its posts going live — show the series card
+// with a "Coming soon" note instead of post links. Series 3 isn't announced
+// at all yet.
+const announcedSeries = SERIES['series-02'];
 const all = groups.flatMap((g) => g.posts);
 const totalPostsText = `${all.length} post${all.length === 1 ? '' : 's'} across ${groups.length} topic${groups.length === 1 ? '' : 's'}`;
 
@@ -139,6 +147,28 @@ const tags = [...tagSet].sort().slice(0, 7);
 						</div>
 					))
 				}
+
+				<!-- Series 2: announced, posts not live yet -->
+				<div>
+					<h2 class="mb-3 text-[24px] font-extrabold leading-[1.25] tracking-[-0.01em] text-pretty text-accent-ink">
+						{announcedSeries.title}
+					</h2>
+					<div class="mb-4 h-0.5 bg-accent" />
+					<div class="series-row">
+						<Image
+							src={announcedSeries.image}
+							widths={[390, 780]}
+							sizes="(max-width: 760px) 100vw, 390px"
+							alt=""
+							class="series-img"
+						/>
+						<div class="series-list flex items-center">
+							<p class="py-[18px] text-[15px] font-semibold text-muted">
+								Coming soon
+							</p>
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<!-- Empty state -->

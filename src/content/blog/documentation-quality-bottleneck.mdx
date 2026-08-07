@@ -7,9 +7,11 @@ order: 1
 tags: ['AI', 'Documentation']
 minutes: 12
 heroImage: '../../assets/images/hero-01-1.png'
+audio: '/audio/documentation-quality-bottleneck.mp3'
 ---
 
 import ArrowNote from '../../components/mdx/ArrowNote.astro';
+import CTA from '../../components/mdx/CTA.astro';
 
 **AI doesn't make uncertainty disappear. It makes it look resolved.**
 
@@ -109,9 +111,9 @@ But it is not grounded in missing context.
 
 When documentation is incomplete or unclear, three things typically happen:
 
-1. Gaps are filled with assumptions — missing definitions, undefined edge cases, or absent constraints are silently resolved by the model.
-2. Ambiguity is collapsed into a single interpretation — where multiple meanings exist, the model selects one without showing alternatives.
-3. Uncertainty is not surfaced — the output does not indicate which parts are inferred and which are grounded in source material.
+1. Gaps are filled with assumptions<br />Missing definitions, undefined edge cases, or absent constraints are silently resolved by the model.
+2. Ambiguity is collapsed into a single interpretation<br />Where multiple meanings exist, the model selects one without showing alternatives.
+3. Uncertainty is not surfaced<br />The output does not indicate which parts are inferred and which are grounded in source material.
 
 The result is not random error.
 
@@ -149,7 +151,8 @@ The failure was not "AI hallucination" as an isolated event. It was the absence 
 
 With AI, the failure mode changes:
 
-from errors you can see — to errors you can trust.
+- from errors you can see
+- to errors you can trust
 
 And once output becomes easy to trust, it becomes easy to reuse, share, and operationalize.
 
@@ -172,3 +175,7 @@ If AI scales whatever we feed it, the cheapest lever is no longer a smarter mode
 **None of this needs better AI. It needs a deliberate decision about what we let it amplify.**
 
 So if AI amplifies what's already there, where exactly does it break?
+
+In the next post, I talk about the most common failure modes in AI-assisted requirements analysis and why they often go unnoticed.
+
+<CTA href="/blog/failure-modes/">👉 Continue reading: Failure Modes</CTA>
