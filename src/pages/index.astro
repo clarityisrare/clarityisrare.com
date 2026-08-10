@@ -1,34 +1,29 @@
 ---
 import { getImage } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
-import ComingSoon from '../components/ComingSoon.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import ScrollControls from '../components/ScrollControls.astro';
-import { AUTHOR_NAME, COMING_SOON_MODE, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { AUTHOR_NAME, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import heroSrc from '../assets/images/logo-hero.png';
-import logoM from '../assets/images/logo-m.png';
 import { getRecentPosts } from '../lib/posts';
 
-// In coming-soon mode the landing shows the placeholder; skip the hero work.
-// This is the LCP image, so it carries an AVIF ladder with a WebP fallback —
+// The hero is the LCP image, so it carries an AVIF ladder with a WebP fallback —
 // the art is line work on flat white and compresses hard in both.
-const heroFormats = COMING_SOON_MODE
-	? null
-	: await Promise.all(
-			(['avif', 'webp'] as const).map(async (format) => ({
-				format,
-				image: await getImage({
-					src: heroSrc,
-					widths: [640, 960, 1280, 1920, 2400],
-					sizes: '100vw',
-					format,
-					quality: 55,
-				}),
-			})),
-		);
-const hero = heroFormats?.at(-1)!.image;
-const recent = COMING_SOON_MODE ? [] : await getRecentPosts(3);
+const heroFormats = await Promise.all(
+	(['avif', 'webp'] as const).map(async (format) => ({
+		format,
+		image: await getImage({
+			src: heroSrc,
+			widths: [640, 960, 1280, 1920, 2400],
+			sizes: '100vw',
+			format,
+			quality: 55,
+		}),
+	})),
+);
+const hero = heroFormats.at(-1)!.image;
+const recent = await getRecentPosts(3);
 
 // Card backgrounds sit behind text at 20% opacity, so a small, heavily
 // compressed variant is indistinguishable from the full-size art. Going
@@ -52,30 +47,17 @@ const recentCards = await Promise.all(
 <!doctype html>
 <html lang="en">
 	<head>
-		{
-			COMING_SOON_MODE ? (
-				<BaseHead
-					title={`Upcoming soon · ${SITE_TITLE}`}
-					description="This post is on its way. Subscribe to the RSS feed and you'll be notified the moment it goes live."
-					image={logoM}
-				/>
-			) : (
-				<BaseHead
-					title={`${SITE_TITLE} — Requirements Engineering notes`}
-					description={SITE_DESCRIPTION}
-				/>
-			)
-		}
+		<BaseHead
+			title={`${SITE_TITLE} — Requirements Engineering notes`}
+			description={SITE_DESCRIPTION}
+		/>
 	</head>
 	<body>
 		<Header />
-		{COMING_SOON_MODE && <ComingSoon />}
-		{!COMING_SOON_MODE && (
-		<Fragment>
 		<main>
 			<section class="home-hero">
 				<picture>
-					{heroFormats!
+					{heroFormats
 						.filter((f) => f.format !== 'webp')
 						.map((f) => (
 							<source
@@ -147,8 +129,6 @@ const recentCards = await Promise.all(
 			</section>
 		</main>
 		<ScrollControls />
-		</Fragment>
-		)}
 		<Footer />
 
 		<style>

@@ -46,8 +46,16 @@ const ogImage = await getImage({
 });
 const ogImageURL = new URL(ogImage.src, site).href;
 
-// Publisher logo for structured data.
-const logo = await getImage({ src: LogoSquare, width: 512, height: 512, format: 'png' });
+// Publisher logo for structured data. WebP is on Google's and Bing's supported
+// format list for structured-data images, and costs 22kB here against 281kB as
+// lossless PNG. Switch back to `format: 'png'` if a crawler ever objects.
+const logo = await getImage({
+	src: LogoSquare,
+	width: 512,
+	height: 512,
+	format: 'webp',
+	quality: 80,
+});
 const logoURL = new URL(logo.src, site).href;
 
 // Author identity, reused across schemas. `sameAs` links the persona to its

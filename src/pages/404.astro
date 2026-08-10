@@ -1,61 +1,43 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import ComingSoon from '../components/ComingSoon.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { COMING_SOON_MODE, SITE_TITLE } from '../consts';
-import logoM from '../assets/images/logo-m.png';
+import { SITE_TITLE } from '../consts';
 ---
 
 <html lang="en">
 	<head>
-		{
-			COMING_SOON_MODE ? (
-				<BaseHead
-					title={`Upcoming soon · ${SITE_TITLE}`}
-					description="This post is on its way. Subscribe to the RSS feed and you'll be notified the moment it goes live."
-					image={logoM}
-				/>
-			) : (
-				<BaseHead
-					title={`Page not found · ${SITE_TITLE}`}
-					description="The page you were looking for doesn't exist or has moved."
-				/>
-			)
-		}
+		<BaseHead
+			title={`Page not found · ${SITE_TITLE}`}
+			description="The page you were looking for doesn't exist or has moved."
+		/>
 	</head>
 	<body>
 		<Header />
-		{
-			COMING_SOON_MODE ? (
-				<ComingSoon />
-			) : (
-				<main class="mx-auto w-full max-w-[760px] px-6 py-24 text-center max-[760px]:px-4">
-					<div class="mb-4 font-mono text-[13px] text-muted-2">404</div>
-					<h1 class="mb-5 text-[40px] font-extrabold leading-[1.12] tracking-[-0.02em] text-pretty text-accent-ink">
-						This page isn't here.
-					</h1>
-					<p class="mb-8 text-[18px] leading-[1.6] text-ink-2">
-						The page you were looking for doesn't exist or has moved. Try the
-						blog, or head back home.
-					</p>
-					<div class="flex justify-center gap-4">
-						<a
-							href="/"
-							class="rounded-full bg-accent px-5 py-2.5 text-[14px] font-bold text-white"
-						>
-							← Home
-						</a>
-						<a
-							href="/blog"
-							class="rounded-full border border-line px-5 py-2.5 text-[14px] font-bold text-accent-ink"
-						>
-							Browse the blog
-						</a>
-					</div>
-				</main>
-			)
-		}
+		<main class="mx-auto w-full max-w-[760px] px-6 py-24 text-center max-[760px]:px-4">
+			<div class="mb-4 font-mono text-[13px] text-muted-2">404</div>
+			<h1 class="mb-5 text-[40px] font-extrabold leading-[1.12] tracking-[-0.02em] text-pretty text-accent-ink">
+				This page isn't here.
+			</h1>
+			<p class="mb-8 text-[18px] leading-[1.6] text-ink-2">
+				The page you were looking for doesn't exist or has moved. Try the blog,
+				or head back home.
+			</p>
+			<div class="flex justify-center gap-4">
+				<a
+					href="/"
+					class="rounded-full bg-accent px-5 py-2.5 text-[14px] font-bold text-white"
+				>
+					← Home
+				</a>
+				<a
+					href="/blog"
+					class="rounded-full border border-line px-5 py-2.5 text-[14px] font-bold text-accent-ink"
+				>
+					Browse the blog
+				</a>
+			</div>
+		</main>
 		<Footer />
 	</body>
 </html>

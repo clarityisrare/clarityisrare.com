@@ -1,11 +1,9 @@
 import rss from '@astrojs/rss';
-import { COMING_SOON_MODE, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getPublishedPosts } from '../lib/posts';
 
 export async function GET(context) {
-	// During the coming-soon takeover the feed is intentionally empty: subscribers
-	// join now and get the first item the moment the site launches.
-	const posts = COMING_SOON_MODE ? [] : await getPublishedPosts();
+	const posts = await getPublishedPosts();
 	const items = posts
 		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 		.map((post) => ({

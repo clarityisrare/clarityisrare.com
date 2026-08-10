@@ -1,11 +1,11 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import ScrollControls from '../components/ScrollControls.astro';
 import { AUTHOR_NAME, SITE_TITLE, SOCIAL_LINKS } from '../consts';
-import logoAbout from '../assets/images/logo-about.png';
+import logoAbout from '../assets/images/logo-m.png';
 import aboutAstro from '../assets/images/about-astro.png';
 import aboutPrompt from '../assets/images/about-prompt.png';
 import aboutLogo from '../assets/images/about-logo.png';
@@ -31,10 +31,14 @@ const figCap = 'mt-2.5 text-[15px] italic leading-[1.55] text-muted';
 		<main>
 			<h1 class="sr-only">About {AUTHOR_NAME} — Requirements Engineering</h1>
 			<div class="mb-8 flex justify-center">
-				<Image
+				<Picture
 					src={logoAbout}
+					formats={['avif', 'webp']}
+					fallbackFormat="jpeg"
 					width={960}
+					quality={58}
 					alt={AUTHOR_NAME}
+					pictureAttributes={{ class: 'contents' }}
 					class="h-auto w-auto max-h-[calc(100vh-85px)] max-w-full"
 				/>
 			</div>
@@ -101,7 +105,7 @@ const figCap = 'mt-2.5 text-[15px] italic leading-[1.55] text-muted';
 				</p>
 
 				<figure class="mb-7">
-					<Image src={aboutAstro} widths={[720, 1080]} sizes="(max-width: 760px) 100vw, 720px" alt="" class={figImg} />
+					<Picture src={aboutAstro} formats={['avif', 'webp']} fallbackFormat="jpeg" width={1080} widths={[720, 1080]} sizes="(max-width: 760px) 100vw, 720px" quality={58} alt="" class={figImg} />
 					<figcaption class={figCap}>
 						Choosing Astro. Cloudflare featured it prominently, and it looked like
 						the fastest, simplest route to a static site, so I had Claude bootstrap
@@ -109,14 +113,14 @@ const figCap = 'mt-2.5 text-[15px] italic leading-[1.55] text-muted';
 					</figcaption>
 				</figure>
 				<figure class="mb-7">
-					<Image src={aboutPrompt} widths={[720, 1080]} sizes="(max-width: 760px) 100vw, 720px" alt="" class={figImg} />
+					<Picture src={aboutPrompt} formats={['avif', 'webp']} fallbackFormat="jpeg" width={1080} widths={[720, 1080]} sizes="(max-width: 760px) 100vw, 720px" quality={58} alt="" class={figImg} />
 					<figcaption class={figCap}>
 						Judging the design rather than just accepting it. I sent back the
 						versions that looked generic until the result actually felt like mine.
 					</figcaption>
 				</figure>
 				<figure class="mb-7">
-					<Image src={aboutLogo} widths={[720, 1080]} sizes="(max-width: 760px) 100vw, 720px" alt="" class={figImg} />
+					<Picture src={aboutLogo} formats={['avif', 'webp']} fallbackFormat="jpeg" width={1080} widths={[720, 1080]} sizes="(max-width: 760px) 100vw, 720px" quality={58} alt="" class={figImg} />
 					<figcaption class={figCap}>
 						Deciding the visual identity. The logo and illustrations came from an
 						image model, the travel photographs are my own, and I chose which

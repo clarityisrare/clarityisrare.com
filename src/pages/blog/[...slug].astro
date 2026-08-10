@@ -1,53 +1,23 @@
 ---
 import { type CollectionEntry, render } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import ComingSoon from '../../components/ComingSoon.astro';
-import Footer from '../../components/Footer.astro';
-import Header from '../../components/Header.astro';
 import BlogPost from '../../layouts/BlogPost.astro';
-import { SITE_TITLE } from '../../consts';
-import { COMING_SOON_MODE } from '../../consts';
-import { getAllPosts } from '../../lib/posts';
-import logoM from '../../assets/images/logo-m.png';
+import { getAllPosts, getPublishedPosts } from '../../lib/posts';
 
 export async function getStaticPaths() {
-	// In coming-soon mode no post pages are built, so every post URL 404s — and
-	// the 404 shows the coming-soon page. Posts return the moment the flag flips.
-	if (COMING_SOON_MODE) return [];
-	// Build a URL for every post. In production, drafts serve an "Upcoming soon"
-	// placeholder instead of their content (see `comingSoon` below); dev still
-	// renders draft bodies in full for preview.
-	const posts = await getAllPosts();
+	// Production builds only published posts, so a draft's URL 404s until it goes
+	// live. Dev builds drafts too, so unreleased posts can still be previewed.
+	const posts = import.meta.env.PROD ? await getPublishedPosts() : await getAllPosts();
 	return posts.map((post) => ({
 		params: { slug: post.id },
-		props: { post, comingSoon: import.meta.env.PROD && post.data.draft },
+		props: { post },
 	}));
 }
-type Props = { post: CollectionEntry<'blog'>; comingSoon: boolean };
+type Props = { post: CollectionEntry<'blog'> };
 
-const { post, comingSoon } = Astro.props;
-const Content = comingSoon ? null : (await render(post)).Content;
+const { post } = Astro.props;
+const { Content } = await render(post);
 ---
 
-{
-	comingSoon ? (
-		<html lang="en">
-			<head>
-				<BaseHead
-					title={`Upcoming soon · ${SITE_TITLE}`}
-					description="This post is on its way. Subscribe to the RSS feed and you'll be notified the moment it goes live."
-					image={logoM}
-				/>
-			</head>
-			<body>
-				<Header />
-				<ComingSoon />
-				<Footer />
-			</body>
-		</html>
-	) : (
-		<BlogPost {...post.data}>
-			<Content />
-		</BlogPost>
-	)
-}
+<BlogPost {...post.data}>
+	<Content />
+</BlogPost>

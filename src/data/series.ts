@@ -1,7 +1,7 @@
 import type { ImageMetadata } from 'astro';
 import series01 from '../assets/images/series-01.jpg';
-import series02 from '../assets/images/series-02.png';
-import series03 from '../assets/images/series-03.png';
+import series02 from '../assets/images/series-02.jpg';
+import series03 from '../assets/images/series-03.jpg';
 
 export type SeriesId = 'series-01' | 'series-02' | 'series-03';
 

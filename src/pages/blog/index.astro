@@ -4,13 +4,9 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import ScrollControls from '../../components/ScrollControls.astro';
-import { COMING_SOON_MODE, SITE_TITLE, SOCIAL_LINKS } from '../../consts';
+import { SITE_TITLE, SOCIAL_LINKS } from '../../consts';
 import { SERIES } from '../../data/series';
 import { getSeriesGroups, postBodyText } from '../../lib/posts';
-
-// While the site is in coming-soon mode the blog isn't live: return a 404 so the
-// host serves the 404 page (which shows the coming-soon screen) at /blog.
-if (COMING_SOON_MODE) return new Response(null, { status: 404 });
 
 // Series with real, linkable posts. Series 2 and 3 aren't live yet — keep
 // this page showing only Series 1, regardless of any draft posts sitting
