@@ -1,5 +1,5 @@
 import type { ImageMetadata } from 'astro';
-import series01 from '../assets/images/series-01.png';
+import series01 from '../assets/images/series-01.jpg';
 import series02 from '../assets/images/series-02.png';
 import series03 from '../assets/images/series-03.png';
 

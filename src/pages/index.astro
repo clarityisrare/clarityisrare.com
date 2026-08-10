@@ -11,15 +11,42 @@ import logoM from '../assets/images/logo-m.png';
 import { getRecentPosts } from '../lib/posts';
 
 // In coming-soon mode the landing shows the placeholder; skip the hero work.
-const hero = COMING_SOON_MODE
+// This is the LCP image, so it carries an AVIF ladder with a WebP fallback —
+// the art is line work on flat white and compresses hard in both.
+const heroFormats = COMING_SOON_MODE
 	? null
-	: await getImage({
-			src: heroSrc,
-			widths: [640, 960, 1280, 1672],
-			sizes: '100vw',
-			format: 'webp',
-		});
+	: await Promise.all(
+			(['avif', 'webp'] as const).map(async (format) => ({
+				format,
+				image: await getImage({
+					src: heroSrc,
+					widths: [640, 960, 1280, 1920, 2400],
+					sizes: '100vw',
+					format,
+					quality: 55,
+				}),
+			})),
+		);
+const hero = heroFormats?.at(-1)!.image;
 const recent = COMING_SOON_MODE ? [] : await getRecentPosts(3);
+
+// Card backgrounds sit behind text at 20% opacity, so a small, heavily
+// compressed variant is indistinguishable from the full-size art. Going
+// through getImage matters: `series.image.src` would serve the untouched
+// original (megabytes) instead.
+const recentCards = await Promise.all(
+	recent.map(async (r) => ({
+		...r,
+		bg: (
+			await getImage({
+				src: r.series.image,
+				width: 640,
+				format: 'webp',
+				quality: 50,
+			})
+		).src,
+	})),
+);
 ---
 
 <!doctype html>
@@ -47,16 +74,27 @@ const recent = COMING_SOON_MODE ? [] : await getRecentPosts(3);
 		<Fragment>
 		<main>
 			<section class="home-hero">
-				<img
-					class="home-hero-img"
-					src={hero.src}
-					srcset={hero.srcSet.attribute}
-					sizes="100vw"
-					alt={AUTHOR_NAME}
-					loading="eager"
-					fetchpriority="high"
-					decoding="async"
-				/>
+				<picture>
+					{heroFormats!
+						.filter((f) => f.format !== 'webp')
+						.map((f) => (
+							<source
+								srcset={f.image.srcSet.attribute}
+								sizes="100vw"
+								type={`image/${f.format}`}
+							/>
+						))}
+					<img
+						class="home-hero-img"
+						src={hero.src}
+						srcset={hero.srcSet.attribute}
+						sizes="100vw"
+						alt={AUTHOR_NAME}
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					/>
+				</picture>
 				<div
 					class="home-text rounded-[18px] bg-white/50 backdrop-blur-[4px]"
 				>
@@ -84,14 +122,14 @@ const recent = COMING_SOON_MODE ? [] : await getRecentPosts(3);
 					class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-5"
 				>
 					{
-						recent.map((r) => (
+						recentCards.map((r) => (
 							<a
 								href={r.href}
 								class="relative isolate block overflow-hidden rounded-2xl border border-line bg-white p-7 transition-shadow hover:shadow-[0_10px_30px_-16px_rgba(0,0,0,0.35)]"
 							>
 								<div
 									class="absolute inset-0 -z-10 bg-cover bg-center opacity-20"
-									style={`background-image:url(${r.series.image.src})`}
+									style={`background-image:url(${r.bg})`}
 								/>
 								<div class="mb-3 font-mono text-[12px] font-extrabold text-accent-ink">
 									{r.series.title}
@@ -121,6 +159,11 @@ const recent = COMING_SOON_MODE ? [] : await getRecentPosts(3);
 				display: flex;
 				align-items: center;
 				justify-content: flex-end;
+			}
+			/* Keep the <picture> wrapper out of the box tree entirely, so the
+			   absolute/static positioning below still resolves against .home-hero. */
+			.home-hero picture {
+				display: contents;
 			}
 			.home-hero-img {
 				position: absolute;
