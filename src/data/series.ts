@@ -2,7 +2,7 @@ import type { ImageMetadata } from 'astro';
 import series01 from '../assets/images/series-01.jpg';
 import series02 from '../assets/images/series-02.jpg';
 import series03 from '../assets/images/series-03.jpg';
-import seriesToolkits from '../assets/images/series-toolkits.png';
+import seriesToolkits from '../assets/images/series-toolkits.jpg';
 
 export type SeriesId = 'series-01' | 'series-02' | 'series-03' | 'toolkits';
 
