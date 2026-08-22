@@ -70,9 +70,7 @@ export const TOOLKITS: Record<ToolkitId, Toolkit> = {
 			'Pinpoint citations tagged by how they were obtained',
 			'Conflicts and evidence gaps survive to the executive summary',
 		],
-		// TODO: set to true once Toolkit_RegRep/ is pushed to the repo — until then
-		// the deep links into that folder would 404.
-		published: false,
+		published: true,
 	},
 };
 
