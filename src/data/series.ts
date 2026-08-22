@@ -2,8 +2,9 @@ import type { ImageMetadata } from 'astro';
 import series01 from '../assets/images/series-01.jpg';
 import series02 from '../assets/images/series-02.jpg';
 import series03 from '../assets/images/series-03.jpg';
+import seriesToolkits from '../assets/images/series-toolkits.png';
 
-export type SeriesId = 'series-01' | 'series-02' | 'series-03';
+export type SeriesId = 'series-01' | 'series-02' | 'series-03' | 'toolkits';
 
 export interface Series {
 	id: SeriesId;
@@ -31,7 +32,21 @@ export const SERIES: Record<SeriesId, Series> = {
 		title: 'AI-readable documentation architecture',
 		image: series03,
 	},
+	// Not a narrative series: the posts that introduce the open-source toolkits
+	// promoted under /toolkit. Kept in the same collection so they share the blog
+	// list, search and reading experience.
+	toolkits: {
+		id: 'toolkits',
+		num: '04',
+		title: 'Toolkits',
+		image: seriesToolkits,
+	},
 };
 
 // Canonical reading order of the series.
-export const SERIES_ORDER: SeriesId[] = ['series-01', 'series-02', 'series-03'];
+export const SERIES_ORDER: SeriesId[] = [
+	'series-01',
+	'series-02',
+	'series-03',
+	'toolkits',
+];

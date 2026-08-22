@@ -1,0 +1,93 @@
+---
+// Compact hero for an individual toolkit page: breadcrumb back to the hub,
+// title, lead paragraph (default slot), repo buttons and live GitHub badges.
+// The big illustrated hero lives on /toolkit — the child pages get straight to
+// the point instead of repeating it.
+import { GHOST_BTN, PRIMARY_BTN } from '../lib/ui';
+import {
+	licenseBadge,
+	repoURL,
+	starBadge,
+	TOOLKIT_BRAND,
+	type Toolkit,
+} from '../data/toolkits';
+
+interface Props {
+	toolkit: Toolkit;
+	/** Short mono label above the title. */
+	eyebrow?: string;
+}
+
+const { toolkit, eyebrow = 'Open source · MIT · Free forever' } = Astro.props;
+const url = repoURL(toolkit);
+---
+
+<section class="border-b border-line bg-accent-softer">
+	<div class="mx-auto max-w-[880px] px-8 pt-10 pb-11 max-[760px]:px-4">
+		<a
+			href="/toolkit"
+			class="inline-flex items-center gap-1.5 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-muted transition-colors hover:text-accent-ink"
+		>
+			← {TOOLKIT_BRAND}
+		</a>
+
+		<p
+			class="mt-6 mb-3 font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-accent"
+		>
+			{eyebrow}
+		</p>
+		<h1
+			class="mb-4 text-[40px] font-extrabold leading-[1.1] tracking-[-0.02em] text-pretty text-accent-ink max-[760px]:text-[31px]"
+		>
+			{toolkit.name}
+		</h1>
+		<p
+			class="max-w-[62ch] text-[19px] leading-[1.6] text-pretty text-ink-2 max-[760px]:text-[17px]"
+		>
+			<slot />
+		</p>
+
+		<div class="mt-7 flex flex-wrap items-center gap-3">
+			<a href={url} target="_blank" rel="noopener" class={PRIMARY_BTN}>
+				<svg
+					width="20"
+					height="20"
+					viewBox="0 0 16 16"
+					fill="currentColor"
+					aria-hidden="true"
+				>
+					<path
+						d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"
+					></path>
+				</svg>
+				Star it on GitHub
+			</a>
+			<a href={url} target="_blank" rel="noopener" class={GHOST_BTN}>
+				Browse the repo
+			</a>
+		</div>
+
+		{
+			toolkit.published && (
+				<div class="mt-5 flex flex-wrap items-center gap-2.5">
+					<a href={url} target="_blank" rel="noopener" aria-label="GitHub stars">
+						<img src={starBadge(toolkit)} alt="GitHub stars" height="28" loading="lazy" />
+					</a>
+					<a
+						href={`${url}/blob/main/LICENSE`}
+						target="_blank"
+						rel="noopener"
+						aria-label="License"
+					>
+						<img
+							src={licenseBadge(toolkit)}
+							alt="MIT License"
+							height="28"
+							loading="lazy"
+						/>
+					</a>
+				</div>
+			)
+		}
+	</div>
+</section>

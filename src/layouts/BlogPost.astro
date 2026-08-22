@@ -23,6 +23,7 @@ const {
 	updatedDate,
 	heroImage,
 	audio,
+	readAloud = true,
 } = Astro.props;
 
 const cat = SERIES[series as SeriesId];
@@ -104,7 +105,7 @@ const minutesText = minutes ? `${minutes} min read` : '';
 				}
 			</div>
 
-			<ReadAloud audio={audio} />
+			{readAloud && <ReadAloud audio={audio} />}
 
 			{
 				subtitle && (

@@ -1,0 +1,320 @@
+---
+import { getImage } from 'astro:assets';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import InstallHelpBand from '../../components/InstallHelpBand.astro';
+import ScrollControls from '../../components/ScrollControls.astro';
+import { AUTHOR_NAME, SITE_TITLE } from '../../consts';
+import { repoURL, TOOLKIT_BRAND, toolkitList } from '../../data/toolkits';
+import { GHOST_BTN, H2, PRIMARY_BTN } from '../../lib/ui';
+import logoO from '../../assets/images/logo-o.png';
+import logoOM from '../../assets/images/logo-o-m.png';
+
+// Hero illustration. Desktop uses the wide version as a full-bleed background
+// (same treatment as the home page); phones and tablets get the portrait
+// version, sized to fit the screen fully.
+const heroWide = await getImage({
+	src: logoO,
+	widths: [640, 960, 1280, 1672],
+	sizes: '100vw',
+	format: 'webp',
+});
+const heroTall = await getImage({
+	src: logoOM,
+	widths: [480, 640, 768, 838],
+	sizes: '100vw',
+	format: 'webp',
+});
+
+const pageTitle = `Toolkit · ${SITE_TITLE}`;
+const pageDescription =
+	'Two free, open-source toolkits for the AI era: the Requirements Engineering Toolkit for turning vague requests into testable requirements, and the Regulatory Reporting Toolkit for Swiss and EU reporting regimes. Both install as Claude Code and Codex plugins.';
+
+const toolkits = toolkitList();
+// Only offer a star button for repos that are actually live.
+const published = toolkits.filter((t) => t.published);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={pageTitle} description={pageDescription} image={logoO} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<!-- Hero: full-bleed background illustration + glass text panel (matches home) -->
+			<section class="tk-hero">
+				<picture>
+					<!-- Desktop: wide illustration as a full-bleed background. -->
+					<source
+						media="(min-width: 1025px)"
+						srcset={heroWide.srcSet.attribute}
+						sizes="100vw"
+					/>
+					<!-- Phones + tablets: portrait illustration, sized to fit fully. -->
+					<img
+						class="tk-hero-img"
+						src={heroTall.src}
+						srcset={heroTall.srcSet.attribute}
+						sizes="100vw"
+						alt={`${AUTHOR_NAME} — turning vague requests into clear requirements`}
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					/>
+				</picture>
+				<div class="tk-text rounded-[18px] bg-white/55 backdrop-blur-[4px]">
+					<p
+						class="mb-3 font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-accent"
+					>
+						Open source · MIT · Free forever
+					</p>
+					<h1
+						class="mb-4 text-[40px] font-extrabold leading-[1.1] tracking-[-0.02em] text-pretty text-accent-ink"
+					>
+						{TOOLKIT_BRAND}
+					</h1>
+					<p class="text-[19px] leading-[1.6] text-pretty text-ink-2">
+						Two toolkits that make AI do serious analytical work <em>properly</em> —
+						one for requirements engineering, one for Swiss and EU regulatory
+						reporting. Both ship as <strong>Claude and Codex skills that run the
+						whole workflow for you</strong>. Free, open, and ready to drop into your
+						work.
+					</p>
+				</div>
+			</section>
+
+			<div class="mx-auto max-w-[880px] px-8 pt-14 pb-20 max-[760px]:px-4">
+				<!-- Pick a toolkit -->
+				<section>
+					<h2 class={H2}>Pick your toolkit</h2>
+					<p
+						class="mt-3 mb-7 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						They share a method and a licence, not an audience. Take the one that
+						matches the work in front of you — or both, they install side by side.
+					</p>
+
+					<div class="grid gap-5">
+						{
+							toolkits.map((t, i) => (
+								<a
+									href={t.href}
+									class="group flex flex-col rounded-[20px] border border-line-2 bg-white p-7 transition-all hover:border-accent/45 hover:bg-accent-softer hover:shadow-[0_18px_50px_-30px_rgba(47,143,131,0.6)] max-[760px]:p-6"
+								>
+									<div class="mb-3 flex items-center gap-3">
+										<span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-[14px] font-bold text-white">
+											{i + 1}
+										</span>
+										<h3 class="text-[24px] font-extrabold tracking-[-0.02em] text-accent-ink max-[760px]:text-[21px]">
+											{t.name}
+										</h3>
+									</div>
+
+									<p class="text-[17px] leading-[1.6] text-pretty text-ink-2">
+										{t.tagline}
+									</p>
+
+									<ul class="mt-4 space-y-2">
+										{t.highlights.map((h) => (
+											<li class="flex gap-2.5 text-[15px] leading-[1.55] text-ink-2">
+												<span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+												{h}
+											</li>
+										))}
+									</ul>
+
+									<div class="mt-5 flex flex-wrap items-baseline justify-between gap-3 border-t border-line pt-4">
+										<span class="font-mono text-[12px] uppercase tracking-[0.1em] text-muted">
+											For {t.audience}
+										</span>
+										<span class="font-mono text-[13px] font-semibold text-accent transition-transform group-hover:translate-x-0.5">
+											Open the toolkit →
+										</span>
+									</div>
+								</a>
+							))
+						}
+					</div>
+				</section>
+
+				<!-- Beginner install signpost -->
+				<section class="mt-12">
+					<InstallHelpBand />
+				</section>
+
+				<!-- What they share -->
+				<section class="mt-16">
+					<h2 class={H2}>One idea, two domains</h2>
+					<p
+						class="mt-3 mb-7 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						Both toolkits exist because fluent AI output is not the same thing as
+						trustworthy AI output. Neither of them asks you to be more careful —
+						they make the careless answer structurally hard to produce.
+					</p>
+
+					<div class="grid gap-4 sm:grid-cols-2">
+						<div class="rounded-[16px] border border-line bg-white p-6">
+							<p
+								class="mb-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-accent"
+							>
+								Ambiguity is made visible
+							</p>
+							<p class="text-[15px] leading-[1.6] text-ink-2">
+								One toolkit refuses to let “quickly and securely” survive into a
+								requirement. The other refuses to let an unsourced sentence survive
+								into a regulatory brief. Same move, different vocabulary.
+							</p>
+						</div>
+						<div class="rounded-[16px] border border-line bg-white p-6">
+							<p
+								class="mb-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-accent"
+							>
+								A human still decides
+							</p>
+							<p class="text-[15px] leading-[1.6] text-ink-2">
+								Every skill assumes a qualified person makes the final call. The
+								tools accelerate the work and show their reasoning; they do not own
+								the outcome.
+							</p>
+						</div>
+						<div class="rounded-[16px] border border-line bg-white p-6">
+							<p
+								class="mb-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-accent"
+							>
+								Plain Markdown, no lock-in
+							</p>
+							<p class="text-[15px] leading-[1.6] text-ink-2">
+								Every skill, template and checklist is a Markdown file in a public
+								repo. Install the plugin, or copy the one file you need into your
+								own wiki. Both are fine.
+							</p>
+						</div>
+						<div class="rounded-[16px] border border-line bg-white p-6">
+							<p
+								class="mb-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-accent"
+							>
+								MIT, free, forever
+							</p>
+							<p class="text-[15px] leading-[1.6] text-ink-2">
+								No account, no e-mail, no upsell. Use them commercially, fork them,
+								rename them, adapt them to your domain and glossary.
+							</p>
+						</div>
+					</div>
+				</section>
+
+				<!-- Final CTA -->
+				<section
+					class="mt-16 rounded-[20px] border border-line-2 bg-accent-soft p-8 text-center max-[760px]:p-6"
+				>
+					<h2 class={H2}>If it saves you time, star it</h2>
+					<p class="mx-auto mt-3 max-w-[56ch] text-[18px] leading-[1.7] text-ink-2">
+						A star is the signal that keeps this growing — it tells me which pieces
+						are worth expanding, and it helps other people find the toolkits. It
+						costs you a click and means a lot.
+					</p>
+					<div class="mt-7 flex flex-wrap justify-center gap-3">
+						{
+							published.map((t, i) => (
+								<a
+									href={repoURL(t)}
+									target="_blank"
+									rel="noopener"
+									class={i === 0 ? PRIMARY_BTN : GHOST_BTN}
+								>
+									<svg
+										width="20"
+										height="20"
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										aria-hidden="true"
+									>
+										<path d="M12 17.27l5.18 3.05-1.37-5.88 4.56-3.95-6.01-.52L12 4.5 9.64 9.97l-6.01.52 4.56 3.95-1.37 5.88z" />
+									</svg>
+									Star {t.name.replace(' Toolkit', '')}
+								</a>
+							))
+						}
+					</div>
+				</section>
+			</div>
+		</main>
+		<ScrollControls />
+		<Footer />
+
+		<style>
+			.tk-hero {
+				position: relative;
+				width: 100%;
+				height: calc(100vh - 85px);
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+			}
+			/* Let the <picture> wrapper not affect layout, so the <img> positions
+			   against .tk-hero directly. */
+			.tk-hero :global(picture) {
+				display: contents;
+			}
+			.tk-hero-img {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				object-position: center;
+			}
+			.tk-text {
+				position: relative;
+				z-index: 1;
+				width: 44%;
+				margin-right: 4vw;
+				padding: 30px 32px;
+			}
+			/* Phones + tablets (incl. iPad): stack the portrait illustration on top,
+			   sized to fit the screen fully, with the text below it. */
+			@media (max-width: 1024px) {
+				.tk-hero {
+					display: block;
+					height: auto;
+					/* Match the 16px side gutter used on every other page. */
+					padding: 0 16px;
+				}
+				.tk-hero-img {
+					position: static;
+					width: 100%;
+					height: auto;
+					max-height: calc(100svh - 130px);
+					object-fit: contain;
+				}
+				.tk-text {
+					width: auto;
+					margin-right: 0;
+					padding: 20px 0 8px;
+					background: none;
+					backdrop-filter: none;
+					border-radius: 0;
+					text-align: center;
+				}
+				.tk-text :global(h1) {
+					font-size: 34px;
+				}
+				.tk-text :global(p) {
+					font-size: 18px;
+				}
+			}
+			@media (max-width: 560px) {
+				.tk-text :global(h1) {
+					font-size: 30px;
+				}
+				.tk-text :global(p) {
+					font-size: 17px;
+				}
+			}
+		</style>
+	</body>
+</html>

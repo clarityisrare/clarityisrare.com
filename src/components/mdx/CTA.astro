@@ -3,10 +3,17 @@ interface Props {
 	href: string;
 }
 const { href } = Astro.props;
+
+// The rehypeExternalLinks plugin only rewrites Markdown links, so a CTA to an
+// absolute URL has to open the new tab itself (site convention: external links
+// always open in a new tab, internal ones never do).
+const external = /^https?:\/\//.test(href);
 ---
 
 <a
 	href={href}
+	target={external ? '_blank' : undefined}
+	rel={external ? 'noopener noreferrer' : undefined}
 	class="mt-9 block rounded-2xl bg-accent-soft px-6 py-[22px] text-[18px] font-bold leading-[1.5] text-accent-ink transition-colors hover:bg-accent-softer"
 >
 	<slot />

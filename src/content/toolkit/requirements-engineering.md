@@ -1,0 +1,81 @@
+# The Requirements Engineering Toolkit, in plain words
+
+A business request usually arrives as a single sentence. *"Let users upload documents
+quickly and securely."* Everyone nods — and everyone pictures something different. The
+difference does not surface in the meeting. It surfaces in testing, in a change request,
+or after go-live.
+
+The Requirements Engineering Toolkit exists to close that gap earlier. It is a set of
+guided workflows and ready-made materials that take a request from *"we need something
+like this"* to requirements a developer can build and a tester can prove.
+
+## What it does
+
+The toolkit follows the natural life of a requirement, one step at a time.
+
+**It helps you start.** Before a single requirement is written, it turns a thin request
+into a workshop plan: who to talk to, what to ask them, which words need a shared
+definition, and what is still unknown.
+
+**It drafts the requirements.** Understanding becomes wording — testable requirements,
+user stories, Given/When/Then acceptance criteria, and non-functional requirements with
+real numbers instead of adjectives. Common features such as uploads, approvals,
+notifications and access control come with their questions already worked out, so the
+same detail is not rediscovered on every project.
+
+**It reviews what exists.** Any requirement, story or set of acceptance criteria can be
+audited for ambiguity, gaps and risk. Findings come back rated by severity, with the
+open questions left explicitly for a person to answer.
+
+**It writes the test cases.** Acceptance criteria are turned into concrete test cases,
+and a traceability matrix links business goal → requirement → story → test, so a
+coverage hole is visible instead of assumed away.
+
+**It draws the diagrams.** Context diagrams, use-case overviews, state machines,
+sequence diagrams and traceability graphs, generated for your system and ready to paste
+into a specification.
+
+## What the difference looks like
+
+Before:
+
+> The system should let users upload documents quickly and securely, and notify the
+> right people when something happens.
+
+After:
+
+> The system shall allow authenticated **customers** to upload **PDF** files up to
+> **20 MB**. Each file shall be **virus-scanned before it becomes available** and be
+> **visible only to the customer and reviewers in the owning department**. When an
+> upload completes, the system shall **notify the assigned reviewer within 1 minute**.
+
+The second version is longer, and that is the point. Every added word removes a decision
+that would otherwise be made — differently — by a developer, a tester and a stakeholder,
+each on their own, weeks later.
+
+## Who it is for
+
+**Business analysts** get the questions to ask before committing to a solution, and
+wording that survives the handover to IT without a translation round.
+
+**Requirements engineers** get a repeatable method, a quality gate before development
+starts, and traceability that holds up in a review.
+
+**Developers** get requirements that answer the questions they would otherwise have to
+guess at: which roles, which limits, which error cases, which events.
+
+## What else is inside
+
+Beyond the guided workflows, the toolkit ships more than forty stand-alone pieces:
+checklists for requirement, story and non-functional quality, copy-paste prompts,
+reusable requirement patterns for recurring features, fill-in templates for glossaries,
+stakeholder maps, decision records and risk registers, plus worked before/after examples
+showing a full run from first workshop to finished test cases.
+
+It is free, open source, and written in plain Markdown, so anything in it can be copied
+into your own wiki, repository or template and adapted to your domain.
+
+One principle runs through all of it: the toolkit does the drafting and the checking,
+and a person stays accountable for the final call.
+
+[See what is inside and how to get it →](/toolkit/requirements-engineering)

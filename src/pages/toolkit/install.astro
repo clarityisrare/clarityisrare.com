@@ -1,0 +1,699 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import InstallBox from '../../components/InstallBox.astro';
+import ScrollControls from '../../components/ScrollControls.astro';
+import { SITE_TITLE } from '../../consts';
+import {
+	claudeInstall,
+	codexInstall,
+	marketplaceName,
+	repoURL,
+	TOOLKIT_BRAND,
+	toolkitList,
+} from '../../data/toolkits';
+import { GHOST_BTN, H2 } from '../../lib/ui';
+import logoO from '../../assets/images/logo-o.png';
+
+const toolkits = toolkitList();
+const [reqToolkit] = toolkits;
+
+const pageTitle = `Install guide · ${SITE_TITLE}`;
+const pageDescription =
+	'A step-by-step install guide for the AI Requirements Toolkit, written for people who have never used GitHub or a terminal — Claude desktop app, Claude Code, Codex, and a copy-paste route that needs no install at all.';
+
+const h3 = 'text-[20px] font-extrabold tracking-[-0.01em] text-accent-ink';
+const stepBody = 'mt-2 text-[16px] leading-[1.7] text-pretty text-ink-2';
+
+const faqs = [
+	{
+		q: 'In Codex: “marketplace not found”, or the marketplace command errors',
+		a: 'Codex needs its own <strong>GitHub plugin</strong> before it can read a catalogue from GitHub. Type <code>/plugins</code> in the Codex terminal window, find the GitHub icon, double-click it to install, start a new session, then run the two commands again. See <a href="#route-codex">Route C</a>. Claude Code does not need this — it reads GitHub by itself.',
+	},
+	{
+		q: 'Do I need a GitHub account?',
+		a: 'No. The repositories are public — you can read every file without signing in, and the install commands do not ask you to log in. An account only matters if you want to star the repo or open an issue.',
+	},
+	{
+		q: 'Do I need to know how to code?',
+		a: 'No. You type two commands once, and everything after that is a normal conversation in plain English. The toolkits contain Markdown text files — instructions for the assistant — not software that runs on your computer.',
+	},
+	{
+		q: 'Is it free?',
+		a: 'The toolkits are free and MIT-licensed, forever. The assistant is not: Claude Code needs a Claude Pro, Max, Team or Enterprise plan — the free Claude plan does not include it. Codex needs a paid ChatGPT plan.',
+	},
+	{
+		q: '“/plugin” is not recognised',
+		a: 'Your Claude Code is too old. Run <code>claude update</code>, or reinstall using the command for your system above, then restart it and try again. Check what you have with <code>claude --version</code>.',
+	},
+	{
+		q: 'It installed, but nothing seems different',
+		a: 'Check the message the install printed. If it says <code>Run /reload-plugins to activate</code>, run that command. Otherwise close the assistant and start it again — some installs only take effect in a new session.',
+	},
+	{
+		q: 'The skills still do not show up',
+		a: 'Clear the plugin cache and reinstall: close the assistant, run <code>rm -rf ~/.claude/plugins/cache</code> in your terminal, start it again, and repeat the two install commands.',
+	},
+	{
+		q: 'How do I know a skill actually ran?',
+		a: 'Claude names the skill it is using as it starts working. You can also force one by typing its full name, for example <code>/requirements-toolkit:requirements-writer</code>, which removes any doubt.',
+	},
+	{
+		q: 'Can I install both toolkits?',
+		a: 'Yes. They are separate marketplaces and separate plugins, and they do not interfere with each other. Run each toolkit’s two commands in turn.',
+	},
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={pageTitle} description={pageDescription} image={logoO} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<!-- Compact hero -->
+			<section class="border-b border-line bg-accent-softer">
+				<div class="mx-auto max-w-[880px] px-8 pt-10 pb-11 max-[760px]:px-4">
+					<a
+						href="/toolkit"
+						class="inline-flex items-center gap-1.5 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-muted transition-colors hover:text-accent-ink"
+					>
+						← {TOOLKIT_BRAND}
+					</a>
+					<p
+						class="mt-6 mb-3 font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-accent"
+					>
+						Step by step · no experience assumed
+					</p>
+					<h1
+						class="mb-4 text-[40px] font-extrabold leading-[1.1] tracking-[-0.02em] text-pretty text-accent-ink max-[760px]:text-[31px]"
+					>
+						How to install the toolkits
+					</h1>
+					<p
+						class="max-w-[62ch] text-[19px] leading-[1.6] text-pretty text-ink-2 max-[760px]:text-[17px]"
+					>
+						Enough people have written to me about this that it deserves its own page.
+						If you have never used GitHub or typed a command into a terminal, start
+						here — there is also a route that skips installing anything at all.
+					</p>
+				</div>
+			</section>
+
+			<div class="mx-auto max-w-[880px] px-8 pt-12 pb-20 max-[760px]:px-4">
+				<!-- What you're installing -->
+				<section>
+					<h2 class={H2}>First, what you are actually installing</h2>
+					<p
+						class="mt-3 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						Nothing frightening. Each toolkit is a folder of <strong>Markdown text
+						files</strong> — the same kind of document you would write in Word, just
+						plain text. They contain instructions: how to run a requirements workshop,
+						what makes an acceptance criterion testable, which questions to ask before
+						comparing two regulations.
+					</p>
+					<p
+						class="mt-4 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						Installing a “plugin” hands those instructions to your AI assistant so it
+						follows the method without you pasting anything. No program is installed on
+						your computer beyond the assistant itself, and no code runs behind your back
+						— you can read every file first, on GitHub, in your browser.
+					</p>
+
+					<div
+						class="mt-6 rounded-[16px] border border-accent/30 bg-accent-soft p-6 max-[760px]:p-5"
+					>
+						<p
+							class="mb-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-accent"
+						>
+							Two words you will meet
+						</p>
+						<p class="text-[16px] leading-[1.65] text-ink-2">
+							A <strong>marketplace</strong> is just a catalogue — telling your
+							assistant “this GitHub repository has things you can install”. A{' '}
+							<strong>plugin</strong> is one item from that catalogue. That is why
+							installing takes two commands instead of one: point at the catalogue, then
+							pick from it.
+						</p>
+					</div>
+				</section>
+
+				<!-- Route chooser -->
+				<section class="mt-16">
+					<h2 class={H2}>Pick a route</h2>
+					<p
+						class="mt-3 mb-7 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						All four get you to the same place. Take the first one if the words
+						“terminal” or “command line” make you tense.
+					</p>
+
+					<div class="grid gap-4">
+						<a
+							href="#route-desktop"
+							class="group flex gap-4 rounded-[16px] border border-accent/35 bg-accent-soft p-6 transition-colors hover:border-accent/55"
+						>
+							<span class="text-[24px] leading-none" aria-hidden="true">🖥️</span>
+							<span>
+								<span class="block text-[18px] font-extrabold text-accent-ink">
+									A · Claude desktop app <span class="font-normal text-accent"
+										>— recommended</span
+									>
+								</span>
+								<span class="mt-1 block text-[15px] leading-[1.6] text-ink-2">
+									Download an app, click through a normal installer, type two commands
+									into a chat box. No terminal.
+								</span>
+							</span>
+						</a>
+						<a
+							href="#route-cli"
+							class="group flex gap-4 rounded-[16px] border border-line-2 bg-white p-6 transition-colors hover:border-accent/40 hover:bg-accent-softer"
+						>
+							<span class="text-[24px] leading-none" aria-hidden="true">⌨️</span>
+							<span>
+								<span class="block text-[18px] font-extrabold text-accent-ink">
+									B · Claude Code in a terminal
+								</span>
+								<span class="mt-1 block text-[15px] leading-[1.6] text-ink-2">
+									The classic route. One install command, then the same two commands as
+									above.
+								</span>
+							</span>
+						</a>
+						<a
+							href="#route-codex"
+							class="group flex gap-4 rounded-[16px] border border-line-2 bg-white p-6 transition-colors hover:border-accent/40 hover:bg-accent-softer"
+						>
+							<span class="text-[24px] leading-none" aria-hidden="true">🤖</span>
+							<span>
+								<span class="block text-[18px] font-extrabold text-accent-ink">
+									C · Codex, in the ChatGPT terminal
+								</span>
+								<span class="mt-1 block text-[15px] leading-[1.6] text-ink-2">
+									Same idea, one extra step: Codex needs its <strong>GitHub plugin</strong>{' '}
+									installed before it can find the toolkit.
+								</span>
+							</span>
+						</a>
+						<a
+							href="#route-copy"
+							class="group flex gap-4 rounded-[16px] border border-line-2 bg-white p-6 transition-colors hover:border-accent/40 hover:bg-accent-softer"
+						>
+							<span class="text-[24px] leading-none" aria-hidden="true">📋</span>
+							<span>
+								<span class="block text-[18px] font-extrabold text-accent-ink">
+									D · No install at all
+								</span>
+								<span class="mt-1 block text-[15px] leading-[1.6] text-ink-2">
+									Open the files on GitHub, copy the one you need, paste it into any
+									chat. Works with any assistant, on any plan.
+								</span>
+							</span>
+						</a>
+					</div>
+				</section>
+
+				<!-- Route A -->
+				<section class="mt-16 scroll-mt-24" id="route-desktop">
+					<p
+						class="mb-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-accent"
+					>
+						Route A
+					</p>
+					<h2 class={H2}>Claude desktop app — no terminal</h2>
+					<p
+						class="mt-3 mb-8 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						Claude Code — the thing that runs the skills — also comes as a normal
+						desktop application. You install it the way you install any other app.
+					</p>
+
+					<ol class="tk-steps">
+						<li>
+							<h3 class={h3}>Check your Claude plan</h3>
+							<p class={stepBody}>
+								You need <strong>Claude Pro, Max, Team or Enterprise</strong>. The free
+								Claude plan does not include Claude Code, and the install will not work
+								without one of those.
+							</p>
+						</li>
+						<li>
+							<h3 class={h3}>Download and install the app</h3>
+							<p class={stepBody}>
+								Get it from <a
+									href="https://claude.com/download"
+									target="_blank"
+									rel="noopener">claude.com/download</a
+								> for macOS or Windows (Linux is available as a beta). Open the downloaded
+								file and follow the installer, exactly like any other program.
+							</p>
+							<p class="mt-2 text-[15px] leading-[1.6] text-muted">
+								On Windows you also need <a
+									href="https://git-scm.com/downloads/win"
+									target="_blank"
+									rel="noopener">Git for Windows</a
+								> installed the first time you open the Code tab — install it, then restart
+								the app.
+							</p>
+						</li>
+						<li>
+							<h3 class={h3}>Sign in and open the <em>Code</em> tab</h3>
+							<p class={stepBody}>
+								Launch Claude, sign in with your Claude account, and click the{' '}
+								<strong>Code</strong> tab at the top. Choose any folder when it asks —
+								it does not have to be a software project. A folder for your
+								requirements documents is perfect.
+							</p>
+						</li>
+						<li>
+							<h3 class={h3}>Type the two install commands</h3>
+							<p class={stepBody}>
+								In the chat box, type the first line and press Enter, then the second.
+								They start with a slash — that is how you tell Claude it is a command
+								rather than a question.
+							</p>
+							<div class="mt-4">
+								<InstallBox
+									label={`Install the ${reqToolkit.name}`}
+									commands={claudeInstall(reqToolkit)}
+									note="Copy both lines with the button, then paste and send them one at a time."
+								/>
+							</div>
+						</li>
+						<li>
+							<h3 class={h3}>Confirm it worked</h3>
+							<p class={stepBody}>
+								Click the <strong>+</strong> button next to the prompt box and choose{' '}
+								<strong>Plugins</strong> — you should see the toolkit listed with its
+								skills. If the install message said <code class="tk-code"
+									>Run /reload-plugins to activate</code
+								>, send <code class="tk-code">/reload-plugins</code> first.
+							</p>
+						</li>
+					</ol>
+				</section>
+
+				<!-- Route B -->
+				<section class="mt-16 scroll-mt-24" id="route-cli">
+					<p
+						class="mb-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-accent"
+					>
+						Route B
+					</p>
+					<h2 class={H2}>Claude Code in a terminal</h2>
+					<p
+						class="mt-3 mb-8 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						A terminal is a window where you type instructions instead of clicking them.
+						On a Mac, press <kbd class="tk-kbd">⌘</kbd> + <kbd class="tk-kbd">Space</kbd
+						>, type <em>Terminal</em>, press Enter. On Windows, press the Start button
+						and type <em>PowerShell</em>.
+					</p>
+
+					<ol class="tk-steps">
+						<li>
+							<h3 class={h3}>Install Claude Code</h3>
+							<p class={stepBody}>
+								Copy the line for your system, paste it into the terminal window, press
+								Enter, and wait for it to finish.
+							</p>
+							<div class="mt-4 space-y-3">
+								<InstallBox
+									label="macOS, Linux, WSL"
+									commands={['curl -fsSL https://claude.ai/install.sh | bash']}
+								/>
+								<InstallBox
+									label="Windows PowerShell"
+									commands={['irm https://claude.ai/install.ps1 | iex']}
+								/>
+							</div>
+						</li>
+						<li>
+							<h3 class={h3}>Check it installed</h3>
+							<p class={stepBody}>
+								Type <code class="tk-code">claude --version</code> and press Enter. You
+								should see a version number. If you get <em>command not found</em>, close
+								the terminal, open a new one, and try again — the new command only
+								appears in fresh windows.
+							</p>
+						</li>
+						<li>
+							<h3 class={h3}>Start it in a folder</h3>
+							<p class={stepBody}>
+								Type <code class="tk-code">claude</code> and press Enter. The first time,
+								it opens your browser so you can log in with your Claude account. Any
+								folder works — it does not need to be code.
+							</p>
+						</li>
+						<li>
+							<h3 class={h3}>Add the toolkit</h3>
+							<p class={stepBody}>
+								Now you are talking to Claude. Send these two lines, one at a time.
+							</p>
+							<div class="mt-4">
+								<InstallBox
+									label={`Install the ${reqToolkit.name}`}
+									commands={claudeInstall(reqToolkit)}
+									note={`If the install message says <span class="font-mono text-white/70">Run /reload-plugins to activate</span>, send <span class="font-mono text-white/70">/reload-plugins</span> next.`}
+								/>
+							</div>
+						</li>
+						<li>
+							<h3 class={h3}>Confirm and use it</h3>
+							<p class={stepBody}>
+								Send <code class="tk-code">/plugin list</code> to see what is installed.
+								Then just describe your task in plain English — “<em>help me turn this
+								business request into testable requirements</em>” — and the right skill
+								picks itself up. To be explicit, type the skill's full name, e.g.{' '}
+								<code class="tk-code">/requirements-toolkit:requirements-writer</code>.
+							</p>
+						</li>
+					</ol>
+				</section>
+
+				<!-- Route C -->
+				<section class="mt-16 scroll-mt-24" id="route-codex">
+					<p
+						class="mb-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-accent"
+					>
+						Route C
+					</p>
+					<h2 class={H2}>Codex, in the ChatGPT terminal</h2>
+					<p
+						class="mt-3 mb-8 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						Both toolkits also ship as Codex plugins. Install Codex following{' '}
+						<a
+							href="https://developers.openai.com/codex/"
+							target="_blank"
+							rel="noopener">OpenAI's instructions</a
+						>, then run the same kind of commands inside it. One extra step here that
+						Claude does not need — and it is the first one.
+					</p>
+
+					<ol class="tk-steps">
+						<li>
+							<h3 class={h3}>Install the GitHub plugin first</h3>
+							<div
+								class="mt-3 rounded-[16px] border-2 border-accent bg-accent-soft p-6 max-[760px]:p-5"
+							>
+								<p class="text-[16px] leading-[1.7] text-ink-2">
+									Codex cannot read a catalogue from GitHub until its <strong
+										>GitHub plugin</strong
+									> is installed, so this has to happen before anything else. In the Codex
+									terminal window, open the plugin browser:
+								</p>
+								<pre class="tk-pre">/plugins</pre>
+								<p class="mt-3 text-[16px] leading-[1.7] text-ink-2">
+									A list of available plugins appears. Find the <strong>GitHub</strong> icon
+									and <strong>double-click it</strong> to install. Then start a new Codex
+									session so it is active.
+								</p>
+								<p class="mt-3 text-[14px] leading-[1.6] text-muted">
+									Skip this and the next step fails with a marketplace error. Claude Code
+									resolves GitHub on its own, which is why routes A and B have no equivalent
+									step.
+								</p>
+							</div>
+						</li>
+						<li>
+							<h3 class={h3}>Add the toolkit</h3>
+							<p class={stepBody}>
+								With the GitHub plugin in place, send these lines one at a time.
+							</p>
+							<div class="mt-4">
+								<InstallBox
+									label="Install in Codex"
+									commands={codexInstall(reqToolkit)}
+									note={'If the skills still do not appear afterwards, start a new Codex session.'}
+								/>
+							</div>
+						</li>
+					</ol>
+				</section>
+
+				<!-- Route D -->
+				<section class="mt-16 scroll-mt-24" id="route-copy">
+					<p
+						class="mb-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-accent"
+					>
+						Route D
+					</p>
+					<h2 class={H2}>No install at all</h2>
+					<p
+						class="mt-3 mb-8 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						The toolkits were plain text files before they were plugins, and they still
+						are. This route works on a free plan, on a locked-down work laptop, and with
+						any assistant you already use.
+					</p>
+
+					<ol class="tk-steps">
+						<li>
+							<h3 class={h3}>Open the repository in your browser</h3>
+							<p class={stepBody}>
+								No account, no download. GitHub is just a website showing folders of
+								documents.
+							</p>
+							<div class="mt-4 flex flex-wrap gap-3">
+								{
+									toolkits.map((t) => (
+										<a
+											href={repoURL(t)}
+											target="_blank"
+											rel="noopener"
+											class={GHOST_BTN}
+										>
+											{t.name} →
+										</a>
+									))
+								}
+							</div>
+						</li>
+						<li>
+							<h3 class={h3}>Open the folder you need</h3>
+							<p class={stepBody}>
+								In the requirements toolkit: <em>prompts</em> for something to paste,{' '}
+								<em>checklists</em> to review someone's work, <em>templates</em> to
+								start a document, <em>patterns</em> for a feature you have specified
+								before. Click a <code class="tk-code">.md</code> file to read it.
+							</p>
+						</li>
+						<li>
+							<h3 class={h3}>Copy it and paste it into your chat</h3>
+							<p class={stepBody}>
+								Use the copy button at the top right of the file view, paste it into
+								Claude, ChatGPT or your company assistant, and add your own material
+								underneath. That is the whole trick — the plugin version just saves you
+								the pasting.
+							</p>
+						</li>
+					</ol>
+				</section>
+
+				<!-- Keeping it current -->
+				<section class="mt-16">
+					<h2 class={H2}>Updating and removing</h2>
+					<div class="mt-6 grid gap-4 sm:grid-cols-2">
+						<div class="min-w-0 rounded-[16px] border border-line-2 bg-white p-6">
+							<h3 class={h3}>Get the latest version</h3>
+							<p class="mt-2 text-[15px] leading-[1.65] text-ink-2">
+								New skills and fixes land in the repo over time. Refresh the catalogue,
+								then reinstall:
+							</p>
+							<pre
+								class="tk-pre">/plugin marketplace update {marketplaceName(reqToolkit)}</pre>
+						</div>
+						<div class="min-w-0 rounded-[16px] border border-line-2 bg-white p-6">
+							<h3 class={h3}>Remove it again</h3>
+							<p class="mt-2 text-[15px] leading-[1.65] text-ink-2">
+								Nothing is left behind, and you can reinstall any time:
+							</p>
+							<pre
+								class="tk-pre">/plugin uninstall {reqToolkit.plugin}@{marketplaceName(reqToolkit)}</pre>
+						</div>
+					</div>
+				</section>
+
+				<!-- Both toolkits' commands, for reference -->
+				<section class="mt-16">
+					<h2 class={H2}>Every command, in one place</h2>
+					<p
+						class="mt-3 mb-7 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						If you skipped the walkthrough, this is all of it. The two toolkits are
+						independent — install one, or both.
+					</p>
+					<div class="grid gap-5">
+						{
+							toolkits.map((t) => (
+								<div class="min-w-0 rounded-[18px] border border-line-2 bg-white p-6 max-[760px]:p-5">
+									<div class="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+										<h3 class={h3}>{t.name}</h3>
+										<a
+											href={t.href}
+											class="font-mono text-[13px] font-semibold text-accent"
+										>
+											What it does →
+										</a>
+									</div>
+									<InstallBox label="Claude Code" commands={claudeInstall(t)} />
+								</div>
+							))
+						}
+					</div>
+				</section>
+
+				<!-- FAQ -->
+				<section class="mt-16">
+					<h2 class={H2}>When something goes wrong</h2>
+					<div class="mt-6 grid gap-3">
+						{
+							faqs.map((f) => (
+								<details class="tk-faq group rounded-[14px] border border-line bg-white px-6 py-4 transition-colors hover:border-accent/35 max-[760px]:px-5">
+									<summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-[17px] font-bold text-accent-ink">
+										{f.q}
+										<span
+											class="tk-faq-mark shrink-0 font-mono text-[18px] text-accent"
+											aria-hidden="true"
+										>
+											+
+										</span>
+									</summary>
+									<p class="tk-answer mt-3 text-[16px] leading-[1.7] text-ink-2">
+										<Fragment set:html={f.a} />
+									</p>
+								</details>
+							))
+						}
+					</div>
+
+					<p class="mt-7 text-[16px] leading-[1.7] text-ink-2">
+						Still stuck? Open an issue on the repo, or{' '}
+						<a href="mailto:thinkerbell@clarityisrare.com">write to me</a> — the questions
+						I get are what built this page.
+					</p>
+				</section>
+			</div>
+		</main>
+		<ScrollControls />
+		<Footer />
+
+		<style>
+			/* Numbered steps with a rail, matching the pipeline treatment elsewhere. */
+			.tk-steps {
+				counter-reset: step;
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			.tk-steps > li {
+				position: relative;
+				counter-increment: step;
+				padding: 0 0 30px 58px;
+			}
+			.tk-steps > li:last-child {
+				padding-bottom: 0;
+			}
+			.tk-steps > li::before {
+				content: counter(step);
+				position: absolute;
+				left: 0;
+				top: -2px;
+				z-index: 1;
+				display: flex;
+				height: 38px;
+				width: 38px;
+				align-items: center;
+				justify-content: center;
+				border-radius: 999px;
+				background: var(--color-accent);
+				color: #fff;
+				font-weight: 700;
+				font-size: 16px;
+			}
+			.tk-steps > li:not(:last-child)::after {
+				content: '';
+				position: absolute;
+				left: 18px;
+				top: 40px;
+				bottom: 6px;
+				width: 2px;
+				background: var(--color-line-2);
+			}
+			@media (max-width: 560px) {
+				.tk-steps > li {
+					padding-left: 46px;
+				}
+				.tk-steps > li::before {
+					height: 32px;
+					width: 32px;
+					font-size: 15px;
+				}
+				.tk-steps > li:not(:last-child)::after {
+					left: 15px;
+					top: 34px;
+				}
+			}
+
+			.tk-code,
+			.tk-answer :global(code) {
+				font-family: var(--font-mono);
+				font-size: 0.88em;
+				background: var(--color-accent-softer);
+				border-radius: 6px;
+				padding: 2px 6px;
+			}
+
+			/* Answers are set from `set:html`, so their links need styling here. */
+			.tk-answer :global(a) {
+				font-weight: 600;
+			}
+
+			.tk-kbd {
+				font-family: var(--font-mono);
+				font-size: 0.85em;
+				border: 1px solid var(--color-line-2);
+				border-bottom-width: 2px;
+				border-radius: 5px;
+				padding: 1px 6px;
+				background: #fff;
+			}
+
+			.tk-pre {
+				margin: 12px 0 0;
+				/* Wrap rather than scroll: a clipped command reads as if that is the
+				   whole command, and this page is written for people who would not
+				   think to drag inside a code block. */
+				max-width: 100%;
+				white-space: pre-wrap;
+				overflow-wrap: anywhere;
+				overflow-x: auto;
+				border-radius: 10px;
+				background: var(--color-accent-ink);
+				color: #fff;
+				font-family: var(--font-mono);
+				font-size: 13px;
+				line-height: 1.6;
+				padding: 12px 14px;
+			}
+
+			/* FAQ disclosure */
+			.tk-faq summary::-webkit-details-marker {
+				display: none;
+			}
+			.tk-faq[open] .tk-faq-mark {
+				transform: rotate(45deg);
+			}
+			.tk-faq-mark {
+				transition: transform 0.15s ease;
+			}
+		</style>
+	</body>
+</html>

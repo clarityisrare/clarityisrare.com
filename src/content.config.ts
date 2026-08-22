@@ -17,7 +17,7 @@ const blog = defineCollection({
 			// Human-entered publish date shown verbatim on the blog list, e.g. '31.07.2026'.
 			publishedOn: z.string().optional(),
 			// Which series (category) the post belongs to, and its position within it.
-			series: z.enum(['series-01', 'series-02', 'series-03']),
+			series: z.enum(['series-01', 'series-02', 'series-03', 'toolkits']),
 			order: z.number(),
 			tags: z.array(z.string()).default([]),
 			// Reading time in minutes (from the design hand-off).
@@ -25,6 +25,9 @@ const blog = defineCollection({
 			heroImage: z.optional(image()),
 			// Optional pre-recorded narration for the read-aloud feature.
 			audio: z.string().optional(),
+			// Set false to hide the read-aloud control on a post (e.g. short
+			// announcement pieces that are not part of the narrated series).
+			readAloud: z.boolean().default(true),
 			draft: z.boolean().default(false),
 		}),
 });

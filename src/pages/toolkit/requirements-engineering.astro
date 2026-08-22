@@ -1,0 +1,361 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import InstallBox from '../../components/InstallBox.astro';
+import InstallHelpBand from '../../components/InstallHelpBand.astro';
+import ScrollControls from '../../components/ScrollControls.astro';
+import ToolkitIntro from '../../components/ToolkitIntro.astro';
+import { SITE_TITLE } from '../../consts';
+import {
+	claudeInstall,
+	codexInstall,
+	marketplaceName,
+	repoURL,
+	treeURL,
+	TOOLKITS,
+} from '../../data/toolkits';
+import { BODY, H2, PRIMARY_BTN } from '../../lib/ui';
+import logoO from '../../assets/images/logo-o.png';
+
+const toolkit = TOOLKITS['requirements-engineering'];
+const other = TOOLKITS['regulatory-reporting'];
+const url = repoURL(toolkit);
+
+const pageTitle = `${toolkit.name} · ${SITE_TITLE}`;
+const pageDescription =
+	'A free, open-source requirements engineering toolkit for the AI era — Claude/Codex skills that run the whole workflow for you, plus copy-paste prompts, checklists, patterns, templates, diagrams and worked examples.';
+
+const SKILLS_URL = treeURL(toolkit, 'skills');
+
+// The headline feature: Claude/Codex skills, one per stage of the requirements lifecycle.
+const skills = [
+	{
+		name: 'requirements-start',
+		blurb:
+			'A thin business request arrives — it frames the problem, maps stakeholders, and plans your discovery or validation workshop.',
+	},
+	{
+		name: 'requirements-writer',
+		blurb:
+			'Drafts testable, traceable requirements, INVEST user stories, Given/When/Then criteria and measurable NFRs — with battle-tested feature patterns.',
+	},
+	{
+		name: 'requirements-reviewer',
+		blurb:
+			'Audits existing requirements for ambiguity, risk, gaps and readiness, and classifies every finding by severity.',
+	},
+	{
+		name: 'requirements-test-cases',
+		blurb:
+			'Turns acceptance criteria into executable test cases and a traceability matrix, so nothing ships untested.',
+	},
+	{
+		name: 'requirements-diagrams',
+		blurb:
+			'Generates tailored Mermaid diagrams — context, use case, lifecycle, sequence, traceability — ready to drop into a spec.',
+	},
+];
+
+// What's inside — counts kept in sync with the repo folders.
+const groups = [
+	{
+		title: 'Skills',
+		count: 5,
+		blurb:
+			'Claude/Codex skills that run each workflow for you — elicitation, writing, review, test cases and diagrams, across the whole lifecycle.',
+		href: SKILLS_URL,
+	},
+	{
+		title: 'Patterns',
+		count: 9,
+		blurb:
+			'Reusable requirement patterns for common features — uploads, notifications, approvals, access control, search, export, integrations, audit trails.',
+		href: treeURL(toolkit, 'patterns'),
+	},
+	{
+		title: 'Prompts',
+		count: 9,
+		blurb:
+			'Copy-paste AI prompts: acceptance criteria, user stories, NFRs, test cases, ambiguity detection, review and elicitation.',
+		href: treeURL(toolkit, 'prompts'),
+	},
+	{
+		title: 'Checklists',
+		count: 6,
+		blurb:
+			'Fast pass/fail reviews for requirements, user stories, NFRs, readiness, security & privacy, and AI output.',
+		href: treeURL(toolkit, 'checklists'),
+	},
+	{
+		title: 'Templates',
+		count: 8,
+		blurb:
+			'Fill-in-the-blank starting points: requirement, NFR, contract, stakeholder analysis, glossary, decision record, risk register.',
+		href: treeURL(toolkit, 'templates'),
+	},
+	{
+		title: 'Diagrams',
+		count: 6,
+		blurb:
+			'Mermaid sources you can drop straight into a spec — context, use case, approval, lifecycle, sequence and traceability.',
+		href: treeURL(toolkit, 'diagrams'),
+	},
+	{
+		title: 'Examples',
+		count: 7,
+		blurb:
+			'Worked, before/after walkthroughs that show the tools in action — including what the AI review prompts actually return.',
+		href: treeURL(toolkit, 'examples'),
+	},
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={pageTitle} description={pageDescription} image={logoO} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<ToolkitIntro toolkit={toolkit}>
+				The checklists, prompts, patterns, templates and diagrams I reach for to turn
+				vague requirements into clear, testable ones — now with <strong
+					>Claude/Codex skills that run the whole workflow for you</strong
+				>.
+			</ToolkitIntro>
+
+			<div class="mx-auto max-w-[880px] px-8 pt-12 pb-20 max-[760px]:px-4">
+				<!-- Headline feature: Claude/Codex skills -->
+				<section
+					class="rounded-[22px] border border-accent/35 bg-accent-soft p-8 shadow-[0_18px_50px_-24px_rgba(47,143,131,0.55)] max-[760px]:p-6"
+				>
+					<p
+						class="mb-4 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white"
+					>
+						★ Claude/Codex skills
+					</p>
+					<h2
+						class="text-[30px] font-extrabold tracking-[-0.02em] text-accent-ink max-[760px]:text-[25px]"
+					>
+						The toolkit that runs itself
+					</h2>
+					<p class="mt-3 max-w-[68ch] text-[18px] leading-[1.7] text-pretty text-ink-2">
+						Copying prompts and filling templates is good. Having Claude or Codex do the
+						work is better. Drop these <strong>skills</strong> into Claude or Codex and it{
+							' '
+						}
+						<strong>runs the whole workflow for you</strong> — asking the right
+						questions, applying the method, shaping the output with the bundled
+						templates, and self-checking against the bundled checklists. Five skills, one
+						for every stage of the requirements lifecycle, that hand off to each other
+						from first request to final test.
+					</p>
+
+					<ol class="mt-6 grid gap-3 sm:grid-cols-2">
+						{
+							skills.map((s, i) => (
+								<li class="flex gap-3.5 rounded-[14px] border border-line-2 bg-white/75 p-4">
+									<span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-[13px] font-bold text-white">
+										{i + 1}
+									</span>
+									<div>
+										<div class="font-mono text-[14px] font-semibold text-accent-ink">
+											{s.name}
+										</div>
+										<div class="mt-1 text-[15px] leading-[1.55] text-ink-2">
+											{s.blurb}
+										</div>
+									</div>
+								</li>
+							))
+						}
+					</ol>
+
+					<div class="mt-7 space-y-4">
+						<InstallBox
+							label="Install in Claude Code"
+							commands={claudeInstall(toolkit)}
+							note={`Adds this repo as a plugin marketplace, then installs all five skills. Update later with <span class="font-mono text-white/70">/plugin marketplace update ${marketplaceName(toolkit)}</span>.`}
+						/>
+						<InstallBox
+							label="Install in Codex"
+							commands={codexInstall(toolkit)}
+							note={'In Codex, install the <span class="font-mono text-white/70">GitHub</span> plugin first — it&rsquo;s what resolves the marketplace from GitHub — then run the commands above.'}
+						/>
+					</div>
+
+					<div class="mt-6 flex flex-wrap items-center gap-3">
+						<a href={SKILLS_URL} target="_blank" rel="noopener" class={PRIMARY_BTN}>
+							Browse the skills →
+						</a>
+						<span class="text-[15px] text-muted">
+							Free · prefer one skill? Copy its folder by hand.
+						</span>
+					</div>
+				</section>
+
+				<!-- Beginner install signpost -->
+				<section class="mt-8">
+					<InstallHelpBand />
+				</section>
+
+				<!-- Before / after -->
+				<section class="mt-16">
+					<h2 class={H2}>The one move it's built around</h2>
+					<p
+						class="mt-3 mb-7 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						Most requirements aren't missing — they're vague, and everyone reads them
+						differently. The whole toolkit pushes in one direction: making that vagueness
+						impossible.
+					</p>
+
+					<div class="grid gap-4 sm:grid-cols-2">
+						<div class="rounded-[16px] border border-line-2 bg-accent-softer p-6">
+							<p
+								class="mb-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-muted"
+							>
+								Before
+							</p>
+							<p class="text-[17px] leading-[1.6] text-ink-2">
+								“The system should let users upload documents <em>quickly</em> and{' '}
+								<em>securely</em>.”
+							</p>
+						</div>
+						<div class="rounded-[16px] border border-accent/30 bg-accent-soft p-6">
+							<p
+								class="mb-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-accent"
+							>
+								After
+							</p>
+							<p class="text-[17px] leading-[1.6] text-accent-ink">
+								“The system shall allow authenticated <strong>customers</strong> to upload{
+									' '
+								}
+								<strong>PDF</strong> files up to <strong>20&nbsp;MB</strong>,
+								virus-scanned <strong>before</strong> they become available and visible
+								only to the customer and reviewers in the owning department.”
+							</p>
+						</div>
+					</div>
+				</section>
+
+				<!-- What's inside -->
+				<section class="mt-16">
+					<h2 class={H2}>What's inside</h2>
+					<p class="mt-3 mb-7 text-[18px] leading-[1.7] text-ink-2">
+						Five Claude/Codex skills plus 40+ plain-Markdown and Mermaid files across
+						seven folders — run a skill, or copy a file and adapt the wording. Your
+						choice.
+					</p>
+
+					<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+						{
+							groups.map((g) => (
+								<a
+									href={g.href}
+									target="_blank"
+									rel="noopener"
+									class="group flex flex-col rounded-[16px] border border-line bg-white p-6 transition-colors hover:border-accent/40 hover:bg-accent-softer"
+								>
+									<div class="mb-3 flex items-baseline justify-between">
+										<h3 class="text-[19px] font-extrabold tracking-[-0.01em] text-accent-ink">
+											{g.title}
+										</h3>
+										<span class="font-mono text-[13px] font-semibold text-accent">
+											{g.count} files
+										</span>
+									</div>
+									<p class="text-[15px] leading-[1.6] text-ink-2">{g.blurb}</p>
+								</a>
+							))
+						}
+					</div>
+				</section>
+
+				<!-- How to use -->
+				<section class="mt-16">
+					<h2 class={H2}>How to use it</h2>
+					<ol class="mt-4 space-y-4">
+						<li class={BODY}>
+							<strong class="font-extrabold text-accent-ink">Browse by task.</strong>{' '}
+							Writing criteria? Start in <em>prompts</em>. Reviewing someone else's work?
+							Start in <em>checklists</em>.
+						</li>
+						<li class={BODY}>
+							<strong class="font-extrabold text-accent-ink">Copy, don't depend.</strong>{
+								' '
+							}
+							Take what's useful into your own repo or wiki and adapt it to your domain
+							and glossary.
+						</li>
+						<li class={BODY}>
+							<strong class="font-extrabold text-accent-ink"
+								>Keep a human in the loop.</strong
+							>{' '}
+							The AI prompts and checklists assume a person makes the final call — the
+							tools accelerate the work, they don't own it.
+						</li>
+					</ol>
+				</section>
+
+				<!-- Cross-link to the other toolkit -->
+				<section class="mt-16">
+					<a
+						href={other.href}
+						class="group flex flex-col rounded-[18px] border border-line-2 bg-accent-softer p-7 transition-colors hover:border-accent/40 hover:bg-accent-soft max-[760px]:p-6"
+					>
+						<span
+							class="font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-muted"
+						>
+							The other toolkit
+						</span>
+						<span class="mt-2 text-[21px] font-extrabold tracking-[-0.01em] text-accent-ink">
+							{other.name}
+						</span>
+						<span class="mt-2 text-[16px] leading-[1.6] text-ink-2">
+							{other.tagline}
+						</span>
+						<span
+							class="mt-4 font-mono text-[13px] font-semibold text-accent transition-transform group-hover:translate-x-0.5"
+						>
+							Open the toolkit →
+						</span>
+					</a>
+				</section>
+
+				<!-- Final CTA -->
+				<section
+					class="mt-10 rounded-[20px] border border-line-2 bg-accent-soft p-8 text-center max-[760px]:p-6"
+				>
+					<h2 class={H2}>If it saves you time, star it</h2>
+					<p class="mx-auto mt-3 max-w-[56ch] text-[18px] leading-[1.7] text-ink-2">
+						A star is the signal that keeps this growing — it tells me which pieces are
+						worth expanding, and it helps other people find the toolkit. It costs you a
+						click and means a lot.
+					</p>
+					<div class="mt-7 flex justify-center">
+						<a href={url} target="_blank" rel="noopener" class={PRIMARY_BTN}>
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="currentColor"
+								aria-hidden="true"
+							>
+								<path
+									d="M12 17.27l5.18 3.05-1.37-5.88 4.56-3.95-6.01-.52L12 4.5 9.64 9.97l-6.01.52 4.56 3.95-1.37 5.88z"
+								></path>
+							</svg>
+							Star on GitHub
+						</a>
+					</div>
+				</section>
+			</div>
+		</main>
+		<ScrollControls />
+		<Footer />
+	</body>
+</html>

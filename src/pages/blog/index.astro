@@ -8,14 +8,29 @@ import { SITE_TITLE, SOCIAL_LINKS } from '../../consts';
 import { SERIES } from '../../data/series';
 import { getSeriesGroups, postBodyText } from '../../lib/posts';
 
-// Series with real, linkable posts. Series 2 and 3 aren't live yet — keep
-// this page showing only Series 1, regardless of any draft posts sitting
-// behind the other two (which `getSeriesGroups` would otherwise surface in dev).
-const groups = (await getSeriesGroups()).filter((g) => g.series.id === 'series-01');
+// Sections with real, linkable posts: Series 1 and Toolkits. Series 2 and 3
+// aren't live yet — keep them out regardless of any draft posts sitting behind
+// them (which `getSeriesGroups` would otherwise surface in dev).
+const allGroups = await getSeriesGroups();
+const groups = allGroups.filter(
+	(g) => g.series.id === 'series-01' || g.series.id === 'toolkits',
+);
 // Series 2 is announced ahead of its posts going live — show the series card
 // with a "Coming soon" note instead of post links. Series 3 isn't announced
 // at all yet.
 const announcedSeries = SERIES['series-02'];
+
+// Rendered in page order: Series 1, the announced Series 2 card, then Toolkits.
+const sections = [
+	...groups
+		.filter((g) => g.series.id === 'series-01')
+		.map((g) => ({ series: g.series, posts: g.posts })),
+	{ series: announcedSeries, posts: null },
+	...groups
+		.filter((g) => g.series.id === 'toolkits')
+		.map((g) => ({ series: g.series, posts: g.posts })),
+];
+
 const all = groups.flatMap((g) => g.posts);
 const totalPostsText = `${all.length} post${all.length === 1 ? '' : 's'} across ${groups.length} topic${groups.length === 1 ? '' : 's'}`;
 
@@ -88,8 +103,8 @@ const tags = [...tagSet].sort().slice(0, 7);
 			<!-- Results -->
 			<div class="flex flex-col gap-[52px]">
 				{
-					groups.map((g) => (
-						<div data-cat>
+					sections.map((g) => (
+						<div data-cat={g.posts ? '' : undefined}>
 							<h2 class="mb-3 text-[24px] font-extrabold leading-[1.25] tracking-[-0.01em] text-pretty text-accent-ink">
 								{g.series.title}
 							</h2>
@@ -102,69 +117,55 @@ const tags = [...tagSet].sort().slice(0, 7);
 									alt=""
 									class="series-img"
 								/>
-								<div class="series-list">
-									{g.posts.map((r) => (
-										<a
-											href={r.href}
-											data-post
-											data-title={r.post.data.title.toLowerCase()}
-											data-tags={r.post.data.tags.join(' ').toLowerCase()}
-											data-body={postBodyText(r.post)}
-											class="block border-b border-line-2 py-[18px]"
-										>
-											<div class="mb-2.5 text-[18px] font-bold leading-[1.35] text-ink">
-												{r.post.data.title}
-											</div>
-											<div class="flex flex-wrap items-center gap-2.5">
-												{r.post.data.publishedOn && (
-													<span class="text-[13px] text-muted-2">
-														Published on {r.post.data.publishedOn}
-													</span>
-												)}
-												{r.minutesText && (
-													<span class="text-[13px] text-muted-2">
-														{r.minutesText}
-													</span>
-												)}
-												{r.post.data.tags.map((t) => (
-													<span class="rounded-[12px] bg-accent-soft px-[9px] py-[3px] text-[11px] font-semibold text-accent-ink">
-														{t}
-													</span>
-												))}
-											</div>
-											<div
-												data-snippet
-												class="mt-2.5 hidden text-[13px] leading-[1.55] text-muted"
-											/>
-										</a>
-									))}
-								</div>
+								{!g.posts ? (
+									<div class="series-list flex items-center">
+										<p class="py-[18px] text-[15px] font-semibold text-muted">
+											Coming soon
+										</p>
+									</div>
+								) : (
+									<div class="series-list">
+										{g.posts.map((r) => (
+											<a
+												href={r.href}
+												data-post
+												data-title={r.post.data.title.toLowerCase()}
+												data-tags={r.post.data.tags.join(' ').toLowerCase()}
+												data-body={postBodyText(r.post)}
+												class="block border-b border-line-2 py-[18px]"
+											>
+												<div class="mb-2.5 text-[18px] font-bold leading-[1.35] text-ink">
+													{r.post.data.title}
+												</div>
+												<div class="flex flex-wrap items-center gap-2.5">
+													{r.post.data.publishedOn && (
+														<span class="text-[13px] text-muted-2">
+															Published on {r.post.data.publishedOn}
+														</span>
+													)}
+													{r.minutesText && (
+														<span class="text-[13px] text-muted-2">
+															{r.minutesText}
+														</span>
+													)}
+													{r.post.data.tags.map((t) => (
+														<span class="rounded-[12px] bg-accent-soft px-[9px] py-[3px] text-[11px] font-semibold text-accent-ink">
+															{t}
+														</span>
+													))}
+												</div>
+												<div
+													data-snippet
+													class="mt-2.5 hidden text-[13px] leading-[1.55] text-muted"
+												/>
+											</a>
+										))}
+									</div>
+								)}
 							</div>
 						</div>
 					))
 				}
-
-				<!-- Series 2: announced, posts not live yet -->
-				<div>
-					<h2 class="mb-3 text-[24px] font-extrabold leading-[1.25] tracking-[-0.01em] text-pretty text-accent-ink">
-						{announcedSeries.title}
-					</h2>
-					<div class="mb-4 h-0.5 bg-accent" />
-					<div class="series-row">
-						<Image
-							src={announcedSeries.image}
-							widths={[390, 780]}
-							sizes="(max-width: 760px) 100vw, 390px"
-							alt=""
-							class="series-img"
-						/>
-						<div class="series-list flex items-center">
-							<p class="py-[18px] text-[15px] font-semibold text-muted">
-								Coming soon
-							</p>
-						</div>
-					</div>
-				</div>
 			</div>
 
 			<!-- Empty state -->

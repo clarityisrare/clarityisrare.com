@@ -1,0 +1,92 @@
+---
+// A dark terminal-style block of slash commands with a copy button.
+// The <script> below is bundled once no matter how many boxes a page renders.
+interface Props {
+	/** Small label above the commands, e.g. "Install in Claude Code". */
+	label: string;
+	commands: string[];
+	/** Optional footnote rendered under the commands. */
+	note?: string;
+}
+
+const { label, commands, note } = Astro.props;
+---
+
+<!--
+  `min-w-0` matters: the commands are `whitespace-nowrap` and scroll inside their
+  own wrapper, but a flex/grid ancestor would otherwise size itself to the widest
+  command and push the whole page sideways on a phone.
+-->
+<div
+	class="min-w-0 rounded-[16px] border border-accent-ink/20 bg-accent-ink p-5 max-[760px]:p-4"
+	data-install={commands.join('\n')}
+>
+	<div class="mb-3 flex items-center justify-between gap-3">
+		<span
+			class="font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white/60"
+		>
+			{label}
+		</span>
+		<button
+			type="button"
+			class="tk-copy inline-flex items-center gap-1.5 rounded-[10px] border border-white/25 px-2.5 py-1 font-mono text-[12px] font-semibold text-white/85 transition-colors hover:bg-white/10"
+			aria-label={`Copy the commands for: ${label}`}
+		>
+			<svg
+				class="h-3.5 w-3.5"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				aria-hidden="true"
+			>
+				<rect x="9" y="9" width="11" height="11" rx="2"></rect>
+				<path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+			</svg>
+			<span class="tk-copy-label">Copy</span>
+		</button>
+	</div>
+	<div class="space-y-1.5">
+		{
+			commands.map((cmd) => (
+				<div class="overflow-x-auto">
+					<code class="block whitespace-nowrap font-mono text-[14px] leading-[1.6] text-white/95 max-[760px]:text-[13px]">
+						<span class="mr-2 select-none text-accent">›</span>
+						{cmd}
+					</code>
+				</div>
+			))
+		}
+	</div>
+	{
+		note && (
+			<p class="mt-3.5 text-[13px] leading-[1.55] text-white/55">
+				<Fragment set:html={note} />
+			</p>
+		)
+	}
+</div>
+
+<script>
+	// Copy the block's commands to the clipboard.
+	document.querySelectorAll<HTMLButtonElement>('.tk-copy').forEach((btn) => {
+		btn.addEventListener('click', async () => {
+			const box = btn.closest<HTMLElement>('[data-install]');
+			const text = box?.dataset.install ?? '';
+			if (!text) return;
+			try {
+				await navigator.clipboard.writeText(text);
+				const label = btn.querySelector<HTMLElement>('.tk-copy-label');
+				if (label) {
+					const prev = label.textContent;
+					label.textContent = 'Copied';
+					window.setTimeout(() => {
+						label.textContent = prev;
+					}, 1600);
+				}
+			} catch {
+				/* clipboard unavailable — no-op */
+			}
+		});
+	});
+</script>

@@ -7,9 +7,8 @@ export const SITE_DESCRIPTION =
 export const AUTHOR_NAME = 'Thinkerbell';
 export const FOOTER_TAGLINE = 'Built by hand, with LLMs.';
 
-// The open-source companion toolkit (separate GitHub repo). Used by /toolkit.
-export const TOOLKIT_REPO = 'clarityisrare/ai-requirements-toolkit';
-export const TOOLKIT_URL = `https://github.com/${TOOLKIT_REPO}`;
+// The open-source companion toolkits each live in their own GitHub repo and are
+// described in `src/data/toolkits.ts`, which is what the /toolkit pages read.
 
 export const SOCIAL_LINKS = {
 	linkedin: 'https://www.linkedin.com/in/pamelaglas',

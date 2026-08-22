@@ -1,0 +1,665 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import InstallBox from '../../components/InstallBox.astro';
+import InstallHelpBand from '../../components/InstallHelpBand.astro';
+import ScrollControls from '../../components/ScrollControls.astro';
+import ToolkitIntro from '../../components/ToolkitIntro.astro';
+import { SITE_TITLE } from '../../consts';
+import {
+	blobURL,
+	claudeInstall,
+	codexInstall,
+	marketplaceName,
+	repoURL,
+	treeURL,
+	TOOLKITS,
+} from '../../data/toolkits';
+import { H2, PRIMARY_BTN } from '../../lib/ui';
+import logoO from '../../assets/images/logo-o.png';
+
+const toolkit = TOOLKITS['regulatory-reporting'];
+const other = TOOLKITS['requirements-engineering'];
+const url = repoURL(toolkit);
+
+const pageTitle = `${toolkit.name} · ${SITE_TITLE}`;
+const pageDescription =
+	'A free, open-source multi-agent toolkit for Swiss and EU regulatory reporting questions — six jurisdiction-isolated subject matter experts (FMIA Art. 39 and 104, EMIR, MiFIR, MiFID II, FinSA) feeding a comparison, convergence, quality and executive reporting pipeline with pinpoint citations and an audit trail.';
+
+// The six jurisdiction-isolated subject matter experts. Each runs in its own
+// context window, so one regime cannot bleed into another's analysis.
+const smes = [
+	{
+		agent: 'sme-fmia-art-39',
+		regime: 'FinfraG / FMIA Art. 39',
+		scope: 'Swiss trading venue transaction reporting',
+		flag: '🇨🇭',
+	},
+	{
+		agent: 'sme-fmia-art-104',
+		regime: 'FinfraG / FMIA Art. 104',
+		scope: 'Swiss derivatives reporting to a trade repository',
+		flag: '🇨🇭',
+	},
+	{
+		agent: 'sme-emir',
+		regime: 'EMIR + REFIT',
+		scope: 'EU derivatives reporting, clearing, risk mitigation',
+		flag: '🇪🇺',
+	},
+	{
+		agent: 'sme-mifir-transaction-reporting',
+		regime: 'MiFIR Art. 26, RTS 22/23/24',
+		scope: 'EU transaction reporting',
+		flag: '🇪🇺',
+	},
+	{
+		agent: 'sme-mifid2-client-classification',
+		regime: 'MiFID II',
+		scope: 'Client classification and investor protection',
+		flag: '🇪🇺',
+	},
+	{
+		agent: 'sme-finsa-client-segmentation',
+		regime: 'FinSA / FIDLEG Art. 4',
+		scope: 'Swiss client segmentation and conduct duties',
+		flag: '🇨🇭',
+	},
+];
+
+// The four structural guarantees — the reason the output is worth trusting.
+const guarantees = [
+	{
+		title: 'Jurisdiction isolation',
+		body: 'Each expert runs in its own context window. The EMIR expert cannot see the FinfraG analysis, so it cannot unconsciously import it — the isolation is architectural, not a prompt asking the model to be careful.',
+	},
+	{
+		title: 'Citations tagged by origin',
+		body: 'Every requirement names its article and paragraph, tagged <code>[CORPUS]</code>, <code>[RETRIEVED &lt;date&gt;]</code>, <code>[SECONDARY]</code> or <code>[UNVERIFIED]</code>. You can always tell how a citation was obtained before you rely on it.',
+	},
+	{
+		title: 'Stable finding IDs',
+		body: '<code>EMIR-REQ-003</code>, <code>CMP-FND-007</code>, <code>CNV-LOC-002</code>. Every downstream statement names the upstream finding behind it, and anything unattributable is removed before delivery.',
+	},
+	{
+		title: 'Conflicts and gaps survive',
+		body: 'Disagreements between regimes and holes in the evidence are findings, not defects to be tidied away. They reach the executive summary intact, instead of being smoothed into a confident paragraph.',
+	},
+];
+
+// The pipeline. SMEs run in parallel; everything downstream runs in sequence,
+// gated on its inputs actually existing.
+const stages = [
+	{
+		name: 'reg-orchestrator',
+		title: 'Routes the question',
+		body: 'Asks for any decisive fact you left out, decides which experts the question actually needs, and names the gap when a regime is out of scope rather than routing to the nearest-looking expert.',
+	},
+	{
+		name: '6 × SME subagents',
+		title: 'Analyse in parallel, in isolation',
+		body: 'Each expert analyses its own regime and nothing else, producing sourced findings with stable IDs.',
+		parallel: true,
+	},
+	{
+		name: 'reg-comparison',
+		title: 'Compares without inventing equivalence',
+		body: 'Functional comparison only. Legal equivalence is a determination for competent authorities, and the stage refuses to declare it.',
+	},
+	{
+		name: 'reg-convergence',
+		title: 'Finds where the regimes genuinely align',
+		body: 'Structured reasoning over comparison findings that are already sourced — separating real convergence from surface similarity.',
+	},
+	{
+		name: 'reg-output-quality',
+		title: 'Strips anything unattributable',
+		body: 'Checks organisation, attribution and coverage against the bundled checklists before a single sentence reaches you.',
+	},
+	{
+		name: 'reg-executive-output',
+		title: 'Writes the brief',
+		body: 'Selection and compression over findings that are already settled — with the conflicts and gaps still visible.',
+	},
+];
+
+// Grounding mode is the single biggest determinant of how much the output is worth.
+const modes = [
+	{
+		num: '1',
+		name: 'Hybrid',
+		tag: 'Default',
+		behaviour:
+			'Local corpus first, official web fallback, anything left over tagged [UNVERIFIED] with an evidence gap.',
+		best: 'Most work. Fast and deterministic where the corpus covers the ground, current where it does not.',
+	},
+	{
+		num: '2',
+		name: 'Live web',
+		tag: null,
+		behaviour:
+			'Every citation retrieved during the run from official domains. Failed retrieval becomes a gap, never a recollection.',
+		best: 'When currency matters most — a live rule change, a new ESMA Q&A.',
+	},
+	{
+		num: '3',
+		name: 'Corpus only',
+		tag: null,
+		behaviour:
+			'Strictly offline. Anything outside the corpus is a gap, including things the model is confident it knows.',
+		best: 'Audit-sensitive, reproducible runs — same question, same corpus, same evidence base.',
+	},
+];
+
+const groups = [
+	{
+		title: 'Agents',
+		count: 6,
+		blurb:
+			'The six SME subagents — isolated context, run in parallel, one regime each.',
+		href: treeURL(toolkit, 'agents'),
+	},
+	{
+		title: 'Skills',
+		count: 5,
+		blurb:
+			'The pipeline stages: orchestration, comparison, convergence, output quality and executive reporting.',
+		href: treeURL(toolkit, 'skills'),
+	},
+	{
+		title: 'Reference',
+		count: 9,
+		blurb:
+			'The shared method — pipeline, regulatory map, taxonomy, finding IDs, source governance, grounding modes, confidence, output contracts.',
+		href: treeURL(toolkit, 'reference'),
+	},
+	{
+		title: 'Templates',
+		count: 4,
+		blurb: 'SME finding, executive brief, run manifest and the run configuration.',
+		href: treeURL(toolkit, 'templates'),
+	},
+	{
+		title: 'Checklists',
+		count: 4,
+		blurb:
+			'The quality gates each stage is measured against — SME quality, comparison integrity, output and executive QA.',
+		href: treeURL(toolkit, 'checklists'),
+	},
+	{
+		title: 'Examples',
+		count: 1,
+		blurb:
+			'A full end-to-end worked run, from the question to the executive brief and the artifacts on disk.',
+		href: blobURL(toolkit, 'examples/worked-example.md'),
+	},
+];
+
+const sampleQuestion = `Compare the reporting obligation under EMIR and FinfraG Art. 104 for an OTC interest rate swap between a Swiss bank and an EU non-financial counterparty below the clearing threshold, and tell me whether one platform can serve both.`;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={pageTitle} description={pageDescription} image={logoO} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<ToolkitIntro toolkit={toolkit}>
+				A multi-agent pipeline for Swiss and EU regulatory reporting questions. Six
+				jurisdiction-isolated experts analyse their own regime and nothing else — and{' '}
+				<strong>nothing downstream is allowed to invent, resolve, or quietly smooth
+				over what they found</strong>.
+			</ToolkitIntro>
+
+			<div class="mx-auto max-w-[880px] px-8 pt-12 pb-20 max-[760px]:px-4">
+				<!-- The problem -->
+				<section>
+					<h2 class={H2}>The problem it solves</h2>
+					<p
+						class="mt-3 mb-6 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						Ask a general-purpose assistant whether a swap is reportable under EMIR or
+						FinfraG and you get a fluent answer with no way to tell which parts are the
+						legal text, which are the regulator's guidance, which are the model's
+						inference, and which are simply wrong. Ask it to compare two regimes and it
+						will find similarities — because that is what “compare” invites, even where
+						the regimes are structurally different.
+					</p>
+					<p class="max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2">
+						This toolkit makes those distinctions <strong>structural rather than
+						aspirational</strong>:
+					</p>
+
+					<div class="mt-7 grid gap-4 sm:grid-cols-2">
+						{
+							guarantees.map((g) => (
+								<div class="rounded-[16px] border border-line-2 bg-white p-6">
+									<h3 class="mb-2 text-[17px] font-extrabold tracking-[-0.01em] text-accent-ink">
+										{g.title}
+									</h3>
+									<p class="reg-body text-[15px] leading-[1.6] text-ink-2">
+										<Fragment set:html={g.body} />
+									</p>
+								</div>
+							))
+						}
+					</div>
+
+					<p class="mt-5 text-[15px] leading-[1.6] text-muted">
+						Plus an audit trail on disk: every run writes a dated directory of artifacts
+						a reviewer can walk months later.
+					</p>
+				</section>
+
+				<!-- Covered regimes -->
+				<section class="mt-16">
+					<h2 class={H2}>Covered regimes</h2>
+					<p
+						class="mt-3 mb-7 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						Six experts, each holding one regime and refusing to speak for any other.
+					</p>
+
+					<ul class="grid gap-3">
+						{
+							smes.map((s) => (
+								<li class="flex gap-4 rounded-[14px] border border-line bg-white p-5 max-[560px]:flex-col max-[560px]:gap-2">
+									<span class="shrink-0 text-[22px] leading-none" aria-hidden="true">
+										{s.flag}
+									</span>
+									<div class="min-w-0">
+										<div class="text-[17px] font-extrabold text-accent-ink">
+											{s.regime}
+										</div>
+										<div class="mt-0.5 text-[15px] leading-[1.55] text-ink-2">
+											{s.scope}
+										</div>
+										<code class="mt-2 block overflow-x-auto font-mono text-[13px] text-muted">
+											{s.agent}
+										</code>
+									</div>
+								</li>
+							))
+						}
+					</ul>
+
+					<div
+						class="mt-5 rounded-[14px] border border-accent/30 bg-accent-soft p-5 text-[15px] leading-[1.65] text-ink-2"
+					>
+						<strong class="text-accent-ink">Counterpart pairs:</strong> FMIA Art. 39 ↔ MiFIR
+						Art. 26 · FMIA Art. 104 ↔ EMIR Art. 9 · FinSA Art. 4 ↔ MiFID II client
+						classification. The last pair is <strong>structurally asymmetric</strong> — three
+						Swiss segments against four EU categories, on tests that differ in kind — so a
+						matching label on either side is a thing to check rather than to accept.
+					</div>
+
+					<p class="mt-5 text-[15px] leading-[1.65] text-muted">
+						<strong class="text-ink-2">Out of scope:</strong> FinIA/FINIG, AMLA/GwG, SFTR,
+						CSDR, Dodd-Frank, UK EMIR/MiFIR, APAC regimes, AnaCredit, MMSR, Basel/CRR and the
+						Swiss Banking Act. The orchestrator names the gap rather than routing to the
+						nearest-looking expert.
+					</p>
+				</section>
+
+				<!-- The pipeline -->
+				<section class="mt-16">
+					<h2 class={H2}>The pipeline</h2>
+					<p
+						class="mt-3 mb-7 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						Experts run in parallel; every downstream stage runs in sequence, gated on
+						its inputs actually existing. Stages that are not needed are not run — a
+						single-regulation question runs one expert and the output stage.
+					</p>
+
+					<ol class="reg-flow">
+						{
+							stages.map((s, i) => (
+								<li class="reg-stage">
+									<span class="reg-num">{i + 1}</span>
+									<div class="min-w-0 flex-1">
+										<div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+											<code class="font-mono text-[14px] font-semibold text-accent-ink">
+												{s.name}
+											</code>
+											{s.parallel && (
+												<span class="rounded-full bg-accent px-2 py-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-white">
+													in parallel
+												</span>
+											)}
+										</div>
+										<div class="mt-1 text-[16px] font-bold text-ink">{s.title}</div>
+										<p class="mt-1 text-[15px] leading-[1.6] text-ink-2">{s.body}</p>
+										{s.parallel && (
+											<div class="mt-3 flex flex-wrap gap-2">
+												{smes.map((sme) => (
+													<code class="rounded-[8px] border border-line-2 bg-accent-softer px-2 py-1 font-mono text-[12px] text-accent-ink">
+														{sme.agent}
+													</code>
+												))}
+											</div>
+										)}
+									</div>
+								</li>
+							))
+						}
+					</ol>
+				</section>
+
+				<!-- Quick start -->
+				<section class="mt-16">
+					<h2 class={H2}>What asking it looks like</h2>
+					<p
+						class="mt-3 mb-6 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						You ask in plain language. The orchestrator asks for any decisive fact you
+						left out, tells you which experts it is about to run, and writes everything
+						to a dated folder.
+					</p>
+
+					<figure
+						class="rounded-[16px] border border-line-2 bg-accent-softer p-6 max-[760px]:p-5"
+					>
+						<blockquote
+							class="border-l-2 border-accent pl-4 text-[17px] leading-[1.65] text-pretty text-ink-2"
+						>
+							{sampleQuestion}
+						</blockquote>
+						<figcaption class="mt-4 text-[14px] leading-[1.6] text-muted">
+							Output lands in <code class="font-mono text-ink-2"
+								>.reg-analysis/&lt;date&gt;-&lt;slug&gt;/</code
+							> — the brief, the underlying findings, and the run manifest recording which
+							grounding mode produced them.
+						</figcaption>
+					</figure>
+				</section>
+
+				<!-- Grounding modes -->
+				<section class="mt-16">
+					<h2 class={H2}>How citations are obtained</h2>
+					<p
+						class="mt-3 mb-7 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						This is the single biggest determinant of how much the output is worth, so
+						it is a setting you choose rather than a behaviour you have to infer. The
+						mode in force is recorded in every run manifest and in the footer of every
+						output.
+					</p>
+
+					<div class="grid gap-4">
+						{
+							modes.map((m) => (
+								<div class="flex gap-4 rounded-[16px] border border-line-2 bg-white p-6 max-[560px]:flex-col max-[560px]:gap-3">
+									<span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent text-[15px] font-bold text-white">
+										{m.num}
+									</span>
+									<div class="min-w-0">
+										<div class="flex flex-wrap items-center gap-2">
+											<h3 class="text-[18px] font-extrabold tracking-[-0.01em] text-accent-ink">
+												{m.name}
+											</h3>
+											{m.tag && (
+												<span class="rounded-full border border-accent/40 bg-accent-soft px-2 py-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-accent-ink">
+													{m.tag}
+												</span>
+											)}
+										</div>
+										<p class="mt-2 text-[15px] leading-[1.6] text-ink-2">{m.behaviour}</p>
+										<p class="mt-2 text-[14px] leading-[1.6] text-muted">
+											<strong class="text-ink-2">Best for:</strong> {m.best}
+										</p>
+									</div>
+								</div>
+							))
+						}
+					</div>
+
+					<p class="mt-5 text-[15px] leading-[1.65] text-muted">
+						An empty corpus is fine — the default mode degrades gracefully and tags what
+						it could not verify.
+					</p>
+				</section>
+
+				<!-- Install -->
+				<section
+					class="mt-16 rounded-[22px] border border-accent/35 bg-accent-soft p-8 shadow-[0_18px_50px_-24px_rgba(47,143,131,0.55)] max-[760px]:p-6"
+				>
+					<p
+						class="mb-4 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white"
+					>
+						★ Install it
+					</p>
+					<h2
+						class="text-[30px] font-extrabold tracking-[-0.02em] text-accent-ink max-[760px]:text-[25px]"
+					>
+						Two commands, then ask your question
+					</h2>
+					<p class="mt-3 max-w-[68ch] text-[18px] leading-[1.7] text-pretty text-ink-2">
+						The whole pipeline — six subagents, five skills and the shared method —
+						ships as one plugin. Nothing to configure before your first run.
+					</p>
+
+					<div class="mt-7 space-y-4">
+						<InstallBox
+							label="Install in Claude Code"
+							commands={claudeInstall(toolkit)}
+							note={`Adds this repo as a plugin marketplace, then installs the whole pipeline. Update later with <span class="font-mono text-white/70">/plugin marketplace update ${marketplaceName(toolkit)}</span>.`}
+						/>
+						<InstallBox
+							label="Install in Codex"
+							commands={codexInstall(toolkit)}
+							note={'In Codex, install the <span class="font-mono text-white/70">GitHub</span> plugin first — it&rsquo;s what resolves the marketplace from GitHub — then run the commands above.'}
+						/>
+					</div>
+
+					<div class="mt-6">
+						<InstallHelpBand />
+					</div>
+				</section>
+
+				<!-- What's inside -->
+				<section class="mt-16">
+					<h2 class={H2}>What's inside</h2>
+					<p class="mt-3 mb-7 text-[18px] leading-[1.7] text-ink-2">
+						Everything is plain Markdown in a public repo. The skills reference one
+						shared copy of the method rather than each carrying its own, so there is one
+						version to read and one version to change.
+					</p>
+
+					<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+						{
+							groups.map((g) => (
+								<a
+									href={g.href}
+									target="_blank"
+									rel="noopener"
+									class="group flex flex-col rounded-[16px] border border-line bg-white p-6 transition-colors hover:border-accent/40 hover:bg-accent-softer"
+								>
+									<div class="mb-3 flex items-baseline justify-between">
+										<h3 class="text-[19px] font-extrabold tracking-[-0.01em] text-accent-ink">
+											{g.title}
+										</h3>
+										<span class="font-mono text-[13px] font-semibold text-accent">
+											{g.count} files
+										</span>
+									</div>
+									<p class="text-[15px] leading-[1.6] text-ink-2">{g.blurb}</p>
+								</a>
+							))
+						}
+					</div>
+				</section>
+
+				<!-- Limits -->
+				<section class="mt-16">
+					<h2 class={H2}>What it does not do</h2>
+					<p
+						class="mt-3 mb-7 max-w-[70ch] text-[18px] leading-[1.7] text-pretty text-ink-2"
+					>
+						Stated here rather than buried in the repo, because knowing the boundary is
+						part of using it safely.
+					</p>
+
+					<ul class="grid gap-3">
+						<li class="rounded-[14px] border border-line bg-white p-5">
+							<strong class="text-accent-ink">Decision support, not legal advice.</strong
+							>{' '}
+							<span class="text-ink-2"
+								>Every output carries that statement. The final call belongs to a
+								qualified compliance, legal or regulatory reporting professional.</span
+							>
+						</li>
+						<li class="rounded-[14px] border border-line bg-white p-5">
+							<strong class="text-accent-ink">Functional comparison only.</strong>{' '}
+							<span class="text-ink-2"
+								>Legal equivalence is a determination for competent authorities. The
+								pipeline compares what regimes require and refuses to declare them
+								equivalent.</span
+							>
+						</li>
+						<li class="rounded-[14px] border border-line bg-white p-5">
+							<strong class="text-accent-ink"
+								>The output is only as good as the grounding.</strong
+							>{' '}
+							<span class="text-ink-2"
+								>In the default hybrid mode, check the <code
+									class="font-mono text-[14px]">[UNVERIFIED]</code
+								> tags before relying on anything. They are there so you can.</span
+							>
+						</li>
+						<li class="rounded-[14px] border border-line bg-white p-5">
+							<strong class="text-accent-ink">Regulation moves.</strong>{' '}
+							<span class="text-ink-2"
+								>Every output states its as-of date and flags the pending changes it
+								knows about. Check the horizon items rather than trusting them.</span
+							>
+						</li>
+					</ul>
+				</section>
+
+				<!-- Cross-link to the other toolkit -->
+				<section class="mt-16">
+					<a
+						href={other.href}
+						class="group flex flex-col rounded-[18px] border border-line-2 bg-accent-softer p-7 transition-colors hover:border-accent/40 hover:bg-accent-soft max-[760px]:p-6"
+					>
+						<span
+							class="font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-muted"
+						>
+							The other toolkit
+						</span>
+						<span class="mt-2 text-[21px] font-extrabold tracking-[-0.01em] text-accent-ink">
+							{other.name}
+						</span>
+						<span class="mt-2 text-[16px] leading-[1.6] text-ink-2">{other.tagline}</span>
+						<span
+							class="mt-4 font-mono text-[13px] font-semibold text-accent transition-transform group-hover:translate-x-0.5"
+						>
+							Open the toolkit →
+						</span>
+					</a>
+				</section>
+
+				<!-- Final CTA -->
+				<section
+					class="mt-10 rounded-[20px] border border-line-2 bg-accent-soft p-8 text-center max-[760px]:p-6"
+				>
+					<h2 class={H2}>If it saves you time, star it</h2>
+					<p class="mx-auto mt-3 max-w-[56ch] text-[18px] leading-[1.7] text-ink-2">
+						A star tells me which regimes are worth adding next.
+					</p>
+					<div class="mt-7 flex justify-center">
+						<a href={url} target="_blank" rel="noopener" class={PRIMARY_BTN}>
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="currentColor"
+								aria-hidden="true"
+							>
+								<path
+									d="M12 17.27l5.18 3.05-1.37-5.88 4.56-3.95-6.01-.52L12 4.5 9.64 9.97l-6.01.52 4.56 3.95-1.37 5.88z"
+								></path>
+							</svg>
+							Star on GitHub
+						</a>
+					</div>
+				</section>
+			</div>
+		</main>
+		<ScrollControls />
+		<Footer />
+
+		<style>
+			/* Inline <code> inside the guarantee cards, set from `set:html`. */
+			.reg-body :global(code) {
+				font-family: var(--font-mono);
+				font-size: 13px;
+				background: var(--color-accent-softer);
+				border-radius: 6px;
+				padding: 1px 5px;
+				white-space: nowrap;
+			}
+
+			/* Pipeline: a vertical rail with numbered stages hanging off it. */
+			.reg-flow {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: grid;
+				gap: 0;
+			}
+			.reg-stage {
+				position: relative;
+				display: flex;
+				gap: 18px;
+				padding: 0 0 26px 0;
+			}
+			.reg-stage:last-child {
+				padding-bottom: 0;
+			}
+			/* The connector between one stage and the next. */
+			.reg-stage:not(:last-child)::before {
+				content: '';
+				position: absolute;
+				left: 17px;
+				top: 36px;
+				bottom: 8px;
+				width: 2px;
+				background: var(--color-line-2);
+			}
+			.reg-num {
+				position: relative;
+				z-index: 1;
+				display: flex;
+				height: 36px;
+				width: 36px;
+				flex: 0 0 36px;
+				align-items: center;
+				justify-content: center;
+				border-radius: 999px;
+				background: var(--color-accent);
+				color: #fff;
+				font-weight: 700;
+				font-size: 15px;
+			}
+			@media (max-width: 560px) {
+				.reg-stage {
+					gap: 14px;
+				}
+				.reg-stage:not(:last-child)::before {
+					left: 15px;
+				}
+				.reg-num {
+					height: 32px;
+					width: 32px;
+					flex-basis: 32px;
+					font-size: 14px;
+				}
+			}
+		</style>
+	</body>
+</html>
