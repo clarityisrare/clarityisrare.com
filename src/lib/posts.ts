@@ -53,9 +53,18 @@ export async function getReadingOrderPosts(): Promise<ResolvedPost[]> {
 	return posts.sort(byReadingOrder).map(resolvePost);
 }
 
-/** The first `count` posts in reading order — the home "Recent posts" grid. */
+/**
+ * The home "Recent posts" grid: the newest `count` posts of the narrative
+ * series, oldest first. Reading order *is* publication order for those series,
+ * so taking the tail keeps the grid on the leading edge — each weekly release
+ * pushes the oldest card off the left and lands the new post on the right.
+ * Toolkit posts are excluded; they have their own hub under /toolkit.
+ */
 export async function getRecentPosts(count = 4): Promise<ResolvedPost[]> {
-	return (await getReadingOrderPosts()).slice(0, count);
+	const narrative = (await getReadingOrderPosts()).filter(
+		(r) => r.series.id !== 'toolkits',
+	);
+	return narrative.slice(-count);
 }
 
 /**
