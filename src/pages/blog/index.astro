@@ -15,16 +15,12 @@ const PUBLIC_SERIES = ['series-01', 'series-02', 'toolkits'] as const;
 // instead of post links.
 const announcedSeries = SERIES['series-02'];
 
-// The list shows released posts only. `getSeriesGroups` includes drafts in dev
-// so unreleased posts stay previewable at their own URL, but they must not
-// appear here — otherwise the dev list advertises placeholder posts that the
-// production list (and the reader) will never see. Filtering here also keeps a
-// series behind its "Coming soon" card until it really has something to read.
+// `getSeriesGroups` is released-only and drops empty series, so a series with
+// nothing published yet simply isn't here — and falls back to its card below.
 const allGroups = await getSeriesGroups();
-const groups = allGroups
-	.filter((g) => (PUBLIC_SERIES as readonly string[]).includes(g.series.id))
-	.map((g) => ({ ...g, posts: g.posts.filter((r) => !r.post.data.draft) }))
-	.filter((g) => g.posts.length > 0);
+const groups = allGroups.filter((g) =>
+	(PUBLIC_SERIES as readonly string[]).includes(g.series.id),
+);
 
 const sections = PUBLIC_SERIES.flatMap((id) => {
 	const group = groups.find((g) => g.series.id === id);

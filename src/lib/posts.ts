@@ -47,10 +47,21 @@ function byReadingOrder(a: Post, b: Post): number {
 	return s !== 0 ? s : a.data.order - b.data.order;
 }
 
-/** All published posts in canonical reading order. */
+/**
+ * Released posts in canonical reading order — the basis for every listing.
+ *
+ * Drafts are excluded here even in dev. They stay previewable at their own URL
+ * (see `getAllPosts`), but a listing that shows them makes the dev site
+ * disagree with production about what exists: unwritten placeholders take the
+ * newest slots in reading order, so they'd push the real posts off the home
+ * grid and advertise pages a reader will never see.
+ */
 export async function getReadingOrderPosts(): Promise<ResolvedPost[]> {
 	const posts = await getPublishedPosts();
-	return posts.sort(byReadingOrder).map(resolvePost);
+	return posts
+		.filter((p) => !p.data.draft)
+		.sort(byReadingOrder)
+		.map(resolvePost);
 }
 
 /**
