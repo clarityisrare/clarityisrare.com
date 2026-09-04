@@ -8,28 +8,30 @@ import { SITE_TITLE, SOCIAL_LINKS } from '../../consts';
 import { SERIES } from '../../data/series';
 import { getSeriesGroups, postBodyText } from '../../lib/posts';
 
-// Sections with real, linkable posts: Series 1 and Toolkits. Series 2 and 3
-// aren't live yet — keep them out regardless of any draft posts sitting behind
-// them (which `getSeriesGroups` would otherwise surface in dev).
-const allGroups = await getSeriesGroups();
-const groups = allGroups.filter(
-	(g) => g.series.id === 'series-01' || g.series.id === 'toolkits',
-);
-// Series 2 is announced ahead of its posts going live — show the series card
-// with a "Coming soon" note instead of post links. Series 3 isn't announced
-// at all yet.
+// Public sections, in page order. Series 3 isn't announced at all yet.
+const PUBLIC_SERIES = ['series-01', 'series-02', 'toolkits'] as const;
+// Series 2 is announced ahead of its posts going live — until one of them is
+// actually released it shows as a series card with a "Coming soon" note
+// instead of post links.
 const announcedSeries = SERIES['series-02'];
 
-// Rendered in page order: Series 1, the announced Series 2 card, then Toolkits.
-const sections = [
-	...groups
-		.filter((g) => g.series.id === 'series-01')
-		.map((g) => ({ series: g.series, posts: g.posts })),
-	{ series: announcedSeries, posts: null },
-	...groups
-		.filter((g) => g.series.id === 'toolkits')
-		.map((g) => ({ series: g.series, posts: g.posts })),
-];
+// A series is listed once it has at least one released post. Drafts alone don't
+// promote it, so the placeholder posts `getSeriesGroups` surfaces in dev stay
+// behind the "Coming soon" card until the series really goes live.
+const allGroups = await getSeriesGroups();
+const groups = allGroups.filter(
+	(g) =>
+		(PUBLIC_SERIES as readonly string[]).includes(g.series.id) &&
+		g.posts.some((r) => !r.post.data.draft),
+);
+
+const sections = PUBLIC_SERIES.flatMap((id) => {
+	const group = groups.find((g) => g.series.id === id);
+	if (group) return [{ series: group.series, posts: group.posts }];
+	return id === announcedSeries.id
+		? [{ series: announcedSeries, posts: null }]
+		: [];
+});
 
 const all = groups.flatMap((g) => g.posts);
 const totalPostsText = `${all.length} post${all.length === 1 ? '' : 's'} across ${groups.length} topic${groups.length === 1 ? '' : 's'}`;
