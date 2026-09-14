@@ -1,0 +1,92 @@
+---
+title: 'Amplification'
+description: "Requirements work is now carried further than we could reach by hand — and the human job that survives is directing the machine that does the reaching."
+pubDate: 2026-09-14
+series: 'series-02'
+order: 2
+tags: ['AI', 'Practice']
+minutes: 12
+heroImage: '../../assets/images/hero-02-2.png'
+audio: '/audio/amplification.mp3'
+publishedOn: '14.09.2026'
+draft: false
+---
+
+import Lead from '../../components/mdx/Lead.astro';
+import CTA from '../../components/mdx/CTA.astro';
+
+<Lead>Requirements work is being carried further than we could reach by hand. The human job that survives is directing the machine that does the reaching.</Lead>
+
+Give a requirements engineer of a few years ago a new project and you could guess how the first weeks would go. Collect the questions before the workshop. Draft the discovery agenda. Run the session, write it up, turn the notes into user stories, and review the set again, and again, and again. Then ship, and wait for the requirement nobody thought to write down to surface in production as a defect with your name near it. The work was real and often skilled, but a lot of it was the same careful, repetitive reaching for gaps, done by hand, and never quite complete.
+
+Point that same job at a capable AI today and the shape of the day changes. It runs the research, drafts the workshop, and proposes the user stories, and your job moves to the front of the sentence: you read what it produced, judge it, and decide what to keep. This is the move the whole article is about. The human goes from **author to director**, from producing the work to directing a machine that produces it. It is not a smaller job. Done well it is a scarcer one.
+
+Anyone paying for a change should care about this too, not just the people who build it, because the cheapest mistake in software is the one caught before a line of code is written, and that is what this points at.
+
+One condition, stated plainly before anything else. This only holds for teams that did the unglamorous work the [first article in this series](/blog/imitation/) described: building a foundation of clear intent and reachable reasoning that a machine can actually read. Where that foundation exists, the machine amplifies. Where it does not, it still writes fast, confident fiction, and pointing it at a mess just reproduces the mess more quickly.
+
+## The reach is real
+
+The honest objection is that this is just autocomplete with a marketing budget. It deserves a straight answer, because it is wrong in a specific way. What is new is not that the machine finishes your sentence. It is that the machine reaches into places a tired human does not think to look. Give an agent a code library and a way to test it and it will probe an input space no person would sit down and enumerate; one 2025 experiment pointed exactly such an agent at a hundred popular Python packages and it [filed hundreds of real bug reports](https://arxiv.org/html/2510.09907v1), with fixes landing in projects as mainstream as NumPy. That is code rather than requirements, but the same reach shows up closer to home: point a language model at a requirements document and it will [detect ambiguity in real safety-critical specifications](https://www.ipr.mdu.se/pdf_publications/7221.pdf). Point it at a whole system design instead of a single requirement and it reads across the boundaries between components, [surfacing the security and interaction risks](https://arxiv.org/html/2505.04101v2) that only show up when you look at how the parts fit together.
+
+There is a catch, and it matters more than the reach. This wider output is noisy. When that testing agent ran, only about half of what it first reported was a real bug; the good findings rose to the top only after the results were ranked. So the machine widens the set of answers. It does not tell you which of them are right. Surfacing is not deciding, and that gap is exactly where the human role now lives.
+
+## Where the human directs
+
+To make that concrete, I will lean on a [requirements toolkit I built](https://www.clarityisrare.com/toolkit) for exactly this kind of work. Treat it as one worked example, not as proof of anything; the argument above stands on the studies, not on my tool. What the toolkit is good for is showing what "directing" actually looks like when you stop describing it and watch it happen. It runs a small, ordinary project, a document archive for a business, through four steps: discovery, drafting, review, and test cases. A human sits at every seam.
+
+In discovery, the machine asks the coverage questions a good analyst would ask, about scope, document types, and how long records must be kept, and you feed it the answers. This is the assistant it genuinely is, no more and no less. The [research on automated elicitation](https://arxiv.org/html/2507.02564v1) lands in the same place:
+
+> While LLMs may not yet fully automate the requirements elicitation process, they can serve as powerful support tools for requirements engineers.
+
+It then drafts the requirements and acceptance criteria. The interesting step is the third one, the review, because it is where the tool refuses to pretend. It hands back a list of findings, ranked by severity, and then a section under a heading it will not answer itself:
+
+> Open questions — for a human, not for me to answer
+
+Everything under that heading is a decision the machine can surface but cannot own. One of them is a blocker: a monthly storage budget that collides with a legal retention rule, which the tool flags as **a decision the owner must make with cost data**. That is the item the business lead who commissioned the work has to settle, and no confident paragraph can settle it for them.
+
+Another finding notes that a three-year migration scope reads as a conflict with a ten-year retention rule, a risk only visible to someone who knows the business is three years old. That is the architect's call, the kind of trade-off that goes into an architecture decision record with a name against it, the same whole-system reading applied at requirements scale. The requirements engineer gets a sharper, smaller moment: the tool flags a vague line, one that says the system should notify the right people when something happens, as too vague to build, and it is the engineer, not the machine, who rules on exactly who is told and on which events, turning a sentence everyone would have read differently into one testable rule.
+
+The tool even raises a compliance exposure that sits outside the project's stated scope, because a real reviewer would mention it.
+
+Then it gives a verdict, which is not a green light:
+
+> Accept with changes — not ready for development.
+
+and it is explicit about who is accountable:
+
+> A human — you… — owns every call here.
+
+For the change manager rolling this out to a team, that verdict is a quality gate with a name on it, not a rubber stamp. The developer has a call of their own at the end. The last step generates the test cases and checks its own coverage, reporting that "every test traces to an AC; every FR now has ≥1 test. No coverage holes remain", and it is the developer who decides whether that coverage is really enough to start building or whether a thin area needs one more case first. What they are handed is better to begin with: fewer ambiguous tickets, because the requirement that reaches them is already testable, so an ambiguity that could have become a defect halfway through the build was caught before it arrived. And when the machine fills a gap on its own, by adding a story that no workshop had asked for, it says so and asks you to confirm it rather than shipping it quietly.
+
+That is the shape of the redesigned work, and notice what it is not. It is not a faster feeling. It is a set of things you can check: findings you can weigh, coverage you can trace, open questions with your decision recorded against them. The reach is the machine's. The call, and the accountability for it, stays with the person. The verification that used to be an afterthought is now the job. That checking is not cheap by default; bolt the machine onto the old flow and the review burden climbs instead, which is the whole reason the work has to be rebuilt around it. Done that way the verification is a promotion; skipped, it is the hidden tax the critics warn about.
+
+## Already here, if you rebuilt the work
+
+None of this is a forecast. Adoption is already ordinary; the 2025 [Stack Overflow developer survey](https://survey.stackoverflow.co/2025/ai) found that 84% of developers use or plan to use these tools. But adoption is not the same as amplification, and the honest picture is uneven. [McKinsey's 2025 state-of-AI work](https://www.colabsoftware.com/post/mckinseys-state-of-ai-2025-what-separates-high-performers-from-the-rest) found that most organisations now use generative AI somewhere, yet only a small fraction capture real value from it, and the ones that do are markedly more likely to have redesigned their workflows rather than bolted a chatbot onto the old ones. A much-quoted [MIT study](https://www.forbes.com/sites/jasonsnyder/2025/08/26/mit-finds-95-of-genai-pilots-fail-because-companies-avoid-friction/) that most enterprise AI pilots fail points the same way. That headline number is disputed and worth treating with care, but its underlying finding is not: the tools built into how work is actually done succeeded far more often than generic pilots.
+
+It would be dishonest to skip past the hardest number. At the level of whole firms, the boom is not in the aggregate figures yet. A large 2026 survey of executives found that [89% saw no change in productivity](https://www.theregister.com/2026/02/18/ai_productivity_survey/) from AI over three years, despite widespread adoption. That is the old pattern of a new technology whose gains take years to reach the numbers, the productivity paradox economists have watched before, and it is exactly what you would expect of a stage only some teams have reached. The claim here is deliberately bounded: the first fruits are real, and they are landing where the work was redesigned around directing the machine, not everywhere a licence was purchased. For anyone running that change, redesign is not an attitude but a set of specifics: a named owner on each gate, the open questions routed to the person who can actually answer them, and verification booked as a scheduled step in the flow rather than a favour done when someone finds the time.
+
+## Worth doing, and where it bites
+
+The reason to bother is old and unglamorous. A requirement that is wrong or missing costs more the later it is caught, and nothing is cheaper to fix than a mistake still sitting in a sentence. [Boehm and Basili's defect-reduction work](https://betterembsw.blogspot.com/2016/08/boehms-top-10-software-defect-reduction.html) put the gap between fixing a problem at requirements time and after delivery at as much as two orders of magnitude, nearer five to one on small, low-risk systems, and other researchers [find no consistent late penalty](https://arxiv.org/abs/1609.04886) at all in modern iterative projects. So take it as a direction rather than a precise law: a machine that surfaces the ambiguity and the missing edge case at the point of writing is working on the cheapest defects there are. One team that used AI this way [reported around ten percent fewer bugs](https://www.thoughtworks.com/insights/blog/generative-ai/using-ai-requirements-analysis-case-study) because edge cases were better covered, which is one team's early signal and should be read as no more than that.
+
+The same reach that helps is also where the work bites back. Because the machine writes fluent, plausible prose, its wrong answers look exactly as finished as its right ones. A [QA consultancy](https://henix-blog.medium.com/ai-generated-requirements-are-dangerous-without-qa-8a8c6b9dbf91) put the failure mode bluntly:
+
+> AI predicts language patterns, not business truth.
+
+Generic acceptance criteria that read as complete, an edge case quietly missing, a domain rule confidently invented: these are the silent defects, and they are the reason the call has to stay human.
+
+There is a second, slower cost. A skill you stop practising fades, so a team that lets the machine decide everything will, over time, lose the judgement it needs to overrule the machine when it matters. That makes it a management problem before a personal one, a question of staffing and training rather than willpower. The promotion to director is real, but only for the people who keep deciding on real work often enough to stay sharp. Handed off deliberately, with the busywork delegated and the harder judgement kept and exercised, the same habit can keep that judgement sharp.
+
+It is worth not resting any of this on how fast the work feels, either; experienced developers in [one controlled study](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) believed AI had sped them up while the clock showed it had slowed them down.
+
+## The promotion you earn
+
+So the role grows more demanding, and more valuable, but it is not handed to you. You earn it every time you actually rule on the open question instead of approving the confident answer without checking it. It is the commissioner who, handed a confident answer, still asks whether the monthly storage budget really clears the legal retention rule before signing anything. That is the difference between a director and a rubber stamp, and it is a choice made one decision at a time, at every level from the analyst triaging a list to the lead who decides how the whole team will triage.
+
+Two larger questions belong to the next article. Whether a person and a machine together decide better than either alone is genuinely unsettled, and where these pairings win it tends to be when the person already outperforms the machine alone, so better to leave that open than dress a hope as a finding. Whether the director is simply the next human layer waiting to be automated is the sharpest worry of all. The honest reply for now is the one the first article reached: what does not get cheaper as the model improves is knowing what is worth wanting, and being answerable for the choice. Neither was ever a fact the model could learn.
+
+The machine has carried us further, and faster. Whether it carried our judgement along with it, or quietly away from us, is the question the final article in this series takes up, and for a while yet the answer is still ours to write.
+
+<CTA href="/blog/">👉 Coming soon: Series 2, Blog 3 — Discovery</CTA>

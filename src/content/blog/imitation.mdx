@@ -1,0 +1,91 @@
+---
+title: 'Imitation'
+subtitle: 'First, the Machine Copied the Hand'
+description: "Today's AI is still copying the hand, not reasoning with us — and the one gap no model closes is the reasoning nobody wrote down."
+pubDate: 2026-09-04
+series: 'series-02'
+order: 1
+tags: ['AI', 'Practice']
+minutes: 11
+heroImage: '../../assets/images/hero-02-1.png'
+audio: '/audio/imitation.mp3'
+publishedOn: '04.09.2026'
+draft: false
+---
+
+import Lead from '../../components/mdx/Lead.astro';
+import CTA from '../../components/mdx/CTA.astro';
+
+<Lead>Give a modern AI your requirements work and it will hand something back within seconds.</Lead>
+
+What comes back reads well. It is confident, structured, and plausible, and for a moment it looks like the work is done. It is worth asking what the machine actually did. **Today's AI is still copying the hand, not reasoning with us.** It generates work that looks right but sits below human judgement, and when we point it at the documents we already have, it invents wherever the reasoning was never written down. What moves it forward is not more documents. It is a person who keeps a firm grip on intent and judgement, and who makes the reasoning behind decisions reachable, so that whatever the next model reads, it reads our reasons rather than its own inventions. Even that narrows the gap. It does not close it. Whatever your role on the change, two jobs stay yours: saying what is actually wanted, and judging whether what comes back is right. The machine can draft everything around them; it cannot do either one for you.
+
+This is the first of a series on why requirements engineering must change, and the honest place to begin is where we actually are. Not the future the vendors advertise, but the interim we are living in now, and the two roads out of it: one that looks like progress and mostly leads back to yesterday's work, and one that is harder and actually goes somewhere.
+
+## The shortcut that scales the mess
+
+The tempting move is to offload: point the AI at whatever documentation the organisation already owns and let it do the work on top of that. It fails in two ways.
+
+The first is the documents. I have argued elsewhere that documentation quality is the real bottleneck in AI-assisted requirements work, and I will not argue it again here. The material most teams own is wrong, out of date, or missing, and [that is the normal condition, not the exception](https://opensourcesurvey.org/2017/). Point a machine at it and you automate your way to a faster wrong answer.
+
+The second failure is worse, because it does not look like one. When the AI reaches for a detail nobody wrote down, it does not stop and say so. It fills the gap with something that fits.
+
+> We argue that language models hallucinate because the training and evaluation procedures reward guessing over acknowledging uncertainty.
+
+That is structural, not something you can fully prompt away. One study of AI coding assistants found that even on newer frontier models, [5 to 6% of the software packages they recommended did not exist](https://socket.dev/blog/slopsquatting-targets-across-frontier-llms); on weaker open-source models it was close to a fifth. The rate is falling, and that matters. But it is falling toward a floor that sits exactly where the reasoning was never written down, because that is the one gap no model closes by getting better at what it can already read. Pointed at what nobody recorded, the machine still invents. In requirements work an invented rule is more dangerous than a blank, because the blank gets questioned and the invention gets shipped. Do this across a team and you have not fixed the mess, you have institutionalised it.
+
+## What the machine can and cannot do yet
+
+The output is often genuinely good, which is why offloading tempts anyone at all. So we should be precise about the line. The most telling evidence is not a benchmark but a surprise. When experienced developers were given modern AI tools to work on code they knew intimately, a controlled study found the tools [slowed them down](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/), and the researchers put it down to the implicit requirements and unwritten knowledge that live in people rather than in anything the model could reach. That is the imitation gap in one line: the machine is fluent where the knowledge is written, and lost where it is not. The narrower studies point the same way. Asked to make architecture decisions, a leading 2024 model produced ones researchers called "relevant and accurate", yet found they "fall short of human-level performance". Take these as signals, not laws, one is a model generation old and off in the domain next door, but together they land in the same place: good, and not yet as good as a person who knows the business.
+
+The honest objection is that today's models do not feel like they are copying. They feel like they are reasoning. They weigh options and raise concerns. And they do, after a fashion. But what looks like reasoning is fluent recombination of what the model can reach: its training, and whatever context we hand it. It rearranges reasons it can see. It does not originate the reason nobody wrote down, raise the objection a careful colleague would raise, or mention the option rejected in a meeting that left no record. It recombines our reasons. It does not yet author its own. You can watch the seam yourself: ask it to weigh a trade-off you have described and it will weigh it well, then wait for it to raise the constraint you never mentioned, the one that lives only in your head, and you will still be waiting. Everything else turns on that line.
+
+## The work worth doing now
+
+We have long known that the reasons behind a decision, and the options ruled out, are worth keeping. And we have long failed to keep them. The reason is not a mystery, it is effort. Writing down the why has always felt like a gift to a future colleague who might never arrive, so it loses to the next task, every time.
+
+That missing why is exactly what the machine cannot reach.
+
+> One of the hardest things to track during the life of a project is the motivation behind certain decisions.
+
+The what is written down somewhere, however badly. The why almost never is, and reconstructing it would mean originating it, which we just saw the machine cannot do.
+
+What changes now is the economics of writing it down. The rationale is no longer a letter to a stranger who might arrive years from now. It is read on the very next task, by a machine that consumes it immediately and acts on it. When the reader is always present and always hungry, the reason to write finally arrives together with the writing. For anyone running the change, this is the lever that never existed before: the incentive to capture the why finally aligns with the work instead of fighting it, so you are no longer asking people to document for a stranger who may never arrive. The capture still has to be light, a few lines at the moment of the decision, never a report.
+
+So the redesigned work is not more documents. It is one authoritative source, kept current, with the reasoning that shaped it reachable underneath. This is not the old call for heavier documentation, quite the opposite: a single current source is the lightweight kind, and what has to endure is not the document but the intent and the reasons it carries. Records like that were always how we held each other to account, and I have leaned on an approved specification more than once to show the agreed work was done when someone else's was not. With AI the same discipline takes on a second job: the single source is also what the machine reads instead of inventing. The human part does not move. Deciding what is wanted, and whether the answer is right, stays where the hard part of the work now lives. What changes is that the reasons have to be reachable.
+
+Others have names for pieces of this, [spec-driven development](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/) and [context engineering](https://www.gartner.com/en/articles/context-engineering). For my own part I use a plainer phrase, specification prompting: stating intent and making its reasoning reachable so a machine can act without guessing. I do not offer it as a discovery or a proven method, only as a label for a habit.
+
+One example shows the whole of it. Take a requirement written the way most teams write it: "Refunds are issued to the customer." True, and empty. Hand that to a machine, ask it to build the flow, and it will not pause at the gap, it will fill it, inventing a threshold above which a refund needs no second approval, because some number had to go there and none was given. The invented rule ships, looks deliberate, and is wrong. The reason it is wrong lives in a meeting two years ago, where a refund fraud cost real money and the team agreed that anything above €50,000 needs a second sign-off. Nobody wrote the reason down, so the machine cannot read it, so it guesses.
+
+Specification prompting is only this: write the missing line at the moment you know it. "Refunds are issued to the customer; anything above €50,000 needs manager approval, because after the 2023 fraud we do not let one person release large sums." Two clauses, and one of them is the why. Now there is nothing to invent. The machine reads the reason, builds the gate, and, the part that matters later, when a stronger model asks whether the threshold should move, it argues with a recorded reason instead of silently overwriting a blank. The what tells it to build the gate. The why tells it not to quietly remove one.
+
+There is early, thin evidence it pays. Fed the record of past decisions, a model [did better than the same model working from a blank slate](https://arxiv.org/abs/2504.08207). That is a small, recent study, a hint rather than a proof; the stronger reason is ordinary sense. A machine that can read your reasons repeats fewer of our mistakes than one left to invent them.
+
+## The objections worth taking seriously
+
+Three objections keep me honest.
+
+The serious one is the bitter lesson, and its sharpest form, quoted by engineers who have watched the pattern before, is blunt:
+
+> Add structures needed for the given level of compute and data available. Remove them later, because these shortcuts will bottleneck further improvement.
+
+Build an elaborate, hand-tuned knowledge base for today's models and you may be building tomorrow's bottleneck, a rigid thing a stronger model would rather route around. That is a real warning, and the honest reply is to concede it. The context file we write for today's agent is scaffolding, and a better model may well discard it. Grant that, and the durable claim gets sharper rather than weaker, because two things survive that no model progress manufactures: what we actually want, and the reasons nobody ever wrote down. A stronger model infers more from less. It still cannot infer the constraint that lives only in someone's head, or the option ruled out in a meeting that left no trace. Even the tooling most eager to hand work to autonomous agents concedes the point, recommending you write the agent a short context file:
+
+> A CLAUDE.md file gives Claude the project context it can't infer
+
+That is the argument made by the people least inclined to make it.
+
+The second objection is that offloading already works. It does. Developers with an AI assistant [finished a task 55.8% faster](https://arxiv.org/abs/2302.06590), and the lift is real. I am not calling the machine useless, and I am not sorting engineers into the diligent who redesign and the lazy who offload. Where the context is already good and reachable, offloading is simply the right move, and I would not argue otherwise. The claim here is about the common case, where the context is not: there, offloading does not fail loudly, it strands you, doing yesterday's work faster and never reaching the work that comes next.
+
+The third objection is that this is just requirements engineering, or waterfall, renamed. If it meant a detailed specification signed off up front and thrown downstream, then yes, we have been there, and it did not work. It does not mean that. Intent and judgement are a live grip held throughout, not a gate passed once, and the record is light and current, written as decisions are made. What separates it from waterfall is that it stays alive.
+
+## How we will know the stage has turned
+
+It would be a poor argument if nothing could ever prove it wrong, so here is what would. Today the machine recombines the reasons we give it. The stage turns when it begins, across real projects and with all the context we care to hand it, to originate the reasons we did not: to raise the objection we had closed the book on, surface the option nobody put in front of it, and be shown right by what happens next rather than by our approval. The day a model reopens a decision your team had already settled, on a ground none of you had considered, and the project is better for it, the stage has turned. If that keeps not happening however much we feed it, the stage has not turned and this thesis is wrong.
+
+Two cautions keep it honest. Making reasoning reachable narrows the gap; it does not close it. Even grounded, purpose-built systems still [invent between a sixth and a third of the time](https://reglab.stanford.edu/publications/hallucination-free-assessing-the-reliability-of-leading-ai-legal-research-tools/). Redesign buys a direction, not a guarantee, and the person checking the machine's work is not an optional extra. That person is the point.
+
+The interesting question is what happens when the machine does begin to originate rather than copy, handing us the options and the risks we would have missed on our own. That is the next stage, and the next article. For now the work is nearer and plainer. We are in the copying stage, and the task is not to make the machine do our work. It is to become the kind of engineer whose reasons are worth copying, and soon enough, worth building on.
+
+<CTA href="/blog/amplification/">👉 Continue reading: Amplification</CTA>
