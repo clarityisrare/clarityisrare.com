@@ -47,15 +47,35 @@ function byReadingOrder(a: Post, b: Post): number {
 	return s !== 0 ? s : a.data.order - b.data.order;
 }
 
-/** All published posts in canonical reading order. */
+/**
+ * Released posts in canonical reading order — the basis for every listing.
+ *
+ * Drafts are excluded here even in dev. They stay previewable at their own URL
+ * (see `getAllPosts`), but a listing that shows them makes the dev site
+ * disagree with production about what exists: unwritten placeholders take the
+ * newest slots in reading order, so they'd push the real posts off the home
+ * grid and advertise pages a reader will never see.
+ */
 export async function getReadingOrderPosts(): Promise<ResolvedPost[]> {
 	const posts = await getPublishedPosts();
-	return posts.sort(byReadingOrder).map(resolvePost);
+	return posts
+		.filter((p) => !p.data.draft)
+		.sort(byReadingOrder)
+		.map(resolvePost);
 }
 
-/** The first `count` posts in reading order — the home "Recent posts" grid. */
+/**
+ * The home "Recent posts" grid: the newest `count` posts of the narrative
+ * series, oldest first. Reading order *is* publication order for those series,
+ * so taking the tail keeps the grid on the leading edge — each weekly release
+ * pushes the oldest card off the left and lands the new post on the right.
+ * Toolkit posts are excluded; they have their own hub under /toolkit.
+ */
 export async function getRecentPosts(count = 4): Promise<ResolvedPost[]> {
-	return (await getReadingOrderPosts()).slice(0, count);
+	const narrative = (await getReadingOrderPosts()).filter(
+		(r) => r.series.id !== 'toolkits',
+	);
+	return narrative.slice(-count);
 }
 
 /**
