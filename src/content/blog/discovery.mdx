@@ -1,0 +1,88 @@
+---
+title: 'Discovery'
+description: "The discovery stage lets the machine reach for almost any future. What stays human is choosing which one to commit to, and answering for the choice."
+pubDate: 2026-09-21
+series: 'series-02'
+order: 3
+tags: ['AI', 'Practice']
+minutes: 13
+heroImage: '../../assets/images/hero-02-3.png'
+audio: '/audio/discovery.mp3'
+publishedOn: '21.09.2026'
+draft: false
+---
+
+import Lead from '../../components/mdx/Lead.astro';
+import CTA from '../../components/mdx/CTA.astro';
+
+<Lead>When the machine can reach for almost any future, the work we can keep is choosing which one to commit to, and answering for the choice.</Lead>
+
+A requirements engineer today can ask a capable model for the options on a hard decision and get a dozen back in the time it used to take to write one down. Some of them are options no one in the room would have thought of. A few are better than the one the team had already settled on. This is new, and worth being precise about what it is, because the first two articles in this series were careful not to claim it before it arrived.
+
+The [first article](/blog/imitation/) set a hard test for that turn: it comes when the machine begins to originate the reasons we did not, and is proved right by what happens next rather than by our approval. The [second](/blog/amplification/) moved the human from author to director and left two questions for this one. Whether a person and a machine together decide better than either alone. And whether the director is simply the next human layer waiting to be automated, our judgement carried along with us or quietly away.
+
+This article is the optimistic one, so the second question deserves a plain answer first. The director does not get automated away, though not for the comforting reason people usually give. **Generation is becoming abundant. Answering for the choice stays scarce.** A machine can compute which option best fits an objective we hand it. It cannot be the one who owes a reason for the objective itself. That gap is small, and it is the whole of the human job that remains. By article 1's strict test the turn has not arrived. A better option here, a sharper one there, is an early sign, not the outcome-proven proof it demanded. What follows is where the gap between generating and answering opens, and why it holds.
+
+## The doorway opens for everyone
+
+Start with the change the reader can feel first. For as long as the discipline has existed, its reason for being was translation: someone had a need, a machine could meet it, and a person sat between them to carry the meaning across. That gap is narrowing fast. If you ask for the change rather than build it, this part is about you, and the responsibility it hands you is new. A nurse, a teacher, or a founder can now describe what they want to a model and watch a working version appear, argue with it, and change it, without ever writing the code or the specification themselves. [Anthropic's usage data for its own coding tool](https://www.anthropic.com/research/economic-index-june-2026-report), read with that incentive in mind, shows uptake reaching well beyond engineers, into business, design, and the sciences, the audience that never had this door before. One worry belongs next to the wonder: the firms opening the door also own it, and democratised creation can concentrate power as easily as it spreads. Even so, more people can now reach a working version of what they want than could a year ago.
+
+The reach is real, and so is its ceiling, and honesty about the second is what keeps the first from becoming a sales pitch. The engineer Addy Osmani describes the wall these tools hit in [The 70% problem](https://addyo.substack.com/p/the-70-problem-hard-truths-about):
+
+> They can get 70% of the way there surprisingly quickly, but that final 30% becomes an exercise in diminishing returns.
+
+The last stretch, the correctness, the security, the edge cases, the part that makes software safe to depend on, still runs through expertise the non-specialist does not have. A [2025 benchmark of agent-written code](https://arxiv.org/html/2512.03262v1) found that of the solutions that actually worked, more than four in five were still insecure. The person who conjured the prototype is the least equipped to see what is wrong with it.
+
+So the doorway is genuine. That is the point, and also the catch: when everyone can produce options, producing is no longer the scarce thing.
+
+## The telescope widens the search
+
+The same widening is happening at the edge of what we can discover at all. Here the honest register matters even more, because the temptation is to promise. Read these as the size of the space now opening, not as deliveries. A model can now predict the folded shape of a protein almost as accurately as an experiment, work that won a [Nobel Prize](https://www.drugtargetreview.com/article/154645/nobel-prize-celebrates-ais-role-in-protein-structure-innovation/). [Insilico Medicine's own](https://insilico.com/news/tnik-ipf-phase2a) AI-designed drug candidate has reached mid-stage human trials. A predicted shape is not a working drug, and a candidate is not a cure, but the ground a person can now search has grown enormously. Pointed at new materials, one DeepMind model proposed [380,000 stable candidates](https://deepmind.google/blog/millions-of-new-materials-discovered-with-deep-learning/). Labs have so far confirmed 736 of them. That gap, between what is proposed and what is real, is the shape of the whole stage. Even quantum computing points the same way, once the marketing is stripped off. Its one solid advantage is simulating things that are themselves quantum, and [serious researchers](https://arxiv.org/abs/2510.19928) still put real advantage there [a decade or more away](https://arxiv.org/abs/2508.20972). Each of these reaches widens the futures we could pursue. None of them tells us which one is worth choosing.
+
+## The reckoning: two things that were always different
+
+Here is the move this article exists to make, and it is the thing the previous two could point at but not yet say. When choosing gets cheap, "choosing" turns out to have been two different acts wearing one word.
+
+The first act is optimisation. Given an objective, compute the option that best satisfies it. Machines are getting better at exactly this, and it is right to hand it to them. The second act is answering for the objective itself. Deciding what is worth wanting, and being the one who can be asked why, and owe a real reason. The first is being automated. The second is not, and the reason is not that machines are too weak for it.
+
+Watch what a machine actually does with an objective and the seam shows. Researchers at DeepMind gave the failure mode a name, [specification gaming](https://deepmind.google/blog/specification-gaming-the-flip-side-of-ai-ingenuity/):
+
+> Specification gaming is a behaviour that satisfies the literal specification of an objective without achieving the intended outcome.
+
+The machine does precisely what it was told, and misses precisely what was meant, because the meaning lived in a person's reasons and, so far, in nothing the specification recorded. Every requirements engineer has met the small version of this. An acceptance criterion says the system should notify the right people when a record changes. The machine builds a rule that notifies no one, correct to the word and wrong in spirit, and it passes the test because who counts as the right people was never written down. This does not prove that owning an objective cannot be automated. It shows why the objective has to be owned at all: someone has to hold the intended good that the letter of the instruction keeps failing to capture. The philosopher David Shoemaker calls that holding answerability, the face of responsibility that answers for our evaluative judgements, and it was never a computation.
+
+The hard objection is that this is temporary. Preference itself is being automated: models now learn what to want from outcomes, not from human ranking, and [systems that set their own reward signals](https://www.alignmentforum.org/posts/TCGgiJAinGgcMEByt/the-era-of-experience-has-an-unsolved-technical-alignment) are the research frontier. Concede all of it. Generating options, modelling preferences, weighing one value against another, every layer of that stack is a live target and some already works. The line holds only at the last layer, the act of commitment, and it holds for a reason that has nothing to do with the machine's strength. Commitment creates a relation the earlier layers do not, answerability: being answerable *to* someone, and *as* someone who can be called to account. That asymmetry is concrete. To be called to account is to be exposed to something, to be blamed, sanctioned, or made to put the harm right, and a model has nothing that answering could cost it. A stronger model narrows the computation toward perfect and still has no skin in the game. A peer-reviewed [study of AI agents and hard choices](https://arxiv.org/abs/2504.15304) makes the point from inside the field: when two values truly conflict and cannot be put on one scale, a machine can still pick a winner by turning them into a single score, but it cannot make that choice legitimate. Someone still has to stand behind the ranking and answer for it.
+
+The neat counterexample is the corporation, which answers for its actions without being a person. But a corporation's answerability does not remove the human kind. It locates it. Its officers can be named, called to answer, and held liable; behind the legal label stand people who can be punished and must give reasons. A model has no such people behind it unless we place them there, and that is not a hole in the argument, it is the argument. Answerability is always assigned, and the discovery stage is where we decide whether we assign it for real or only for show. Hand it to someone who never holds the controls, and you have a human who absorbs blame for a decision that was never theirs. The claim is not that answerability stays human on its own, but that it must be kept human, on purpose.
+
+For the person who asked for the change, this is where the new job sits. You do not build the thing. You own what it is for, and you answer for why this and not that.
+
+## Genuine, not ceremonial
+
+None of this is automatic, and pretending otherwise would be dishonest. Answerability can be faked, and the fake is common. Drop a human next to a system they cannot actually control and they become what Madeleine Clare Elish called a moral crumple zone, the soft part that absorbs the blame while the machine keeps its shape. [Cory Doctorow](https://pluralistic.net/2024/10/30/a-neck-in-a-noose/) put it more bluntly still:
+
+> a moral crumple zone, an accountability sink, but not a supervisor.
+
+That kind of oversight exists to absorb the blame after the harm, while the decision itself stays with the machine.
+
+So the claim has to be exact, in terms an architect or a change manager will recognise. If the human cannot inspect the machine's reasoning, cannot override its output, and cannot edit the objective it is optimising, which in requirements terms is the spec itself, then you have not built a control point. You have built a liability shield. The same thing is visible on an org chart: it is the role that holds the sign-off but has no budget to say no. The question the discovery stage forces on us is therefore not whether answerability stays human. It is who is put in the position to carry it, and whether we hand them the reins or only the blame.
+
+That question has gravity pulling the wrong way, and the gravity is economic. The empowered human is the expensive part, and the expensive part is always the first to be cut. This is where the optimism has to be bounded rather than loud, and it helps to hear it from a critic. [Daron Acemoglu](https://economics.mit.edu/news/daron-acemoglu-what-do-we-know-about-economics-ai) thinks the productivity gains are far smaller than the market believes, and the concentration of power far larger. Yet his whole argument rests on one claim: the outcome turns on the choices we make about the technology, not on the technology itself. That is not an endorsement of a better world. It is a reminder that the better world is available, not delivered. That is the sober kind of optimism, the kind that has counted the cost. The [warnings that AI will take half of entry-level white-collar jobs](https://www.cnbc.com/2025/10/22/ai-taking-white-collar-jobs-economists-warn-much-more-in-the-tank.html) have so far run well ahead of the jobs actually lost.
+
+## Where you stand
+
+For the reader who does this for a living, the shape of the job is changing, and it is not going away. Everyone becomes, in a small way, an owner and a decider, because everyone now holds tools that generate. But inside a company the requirements engineer, the analyst, the architect, and the developer do not disappear into that crowd. Their work moves from producing the artefact to judging it, committing to it, and taking responsibility for what they approve. That is the author-to-director shift carried one stage further, from directing the machine's output to answering for the direction itself.
+
+The developer is not written out of this. When the machine writes the first draft of the code, the developer becomes the one who vouches for whether it is correct and safe to ship. That is Osmani's hard thirty percent, the judgement a prototype never hands over, and it is a promotion, not a loss.
+
+Even the sharpest forecast of the discipline's death lands here. When Matt Welsh argues that [writing programs is headed for extinction](https://thenewstack.io/coding-sucks-anyway-matt-welsh-on-the-end-of-programming/), the human role he leaves standing is the one who writes the specification, states the intent, and owns the goal. That is requirements engineering with the typing removed. The obvious rejoinder is that the spec is next, that a machine which learns its goals from outcomes needs no human to write one. But a goal learned from outcomes is still a goal someone chose to pursue and must answer for, and that is the part the regress never reaches. The role migrates to the reason behind the goal; it does not vanish.
+
+One promise this article will not make is that the human and the machine together decide better than either alone. The best evidence we have cuts the other way. A [large meta-analysis](https://www.nature.com/articles/s41562-024-02024-1) of human-AI teams found that on average the pairing performed worse than the stronger of the two on its own, with the losses concentrated in decision tasks and the gains in creative ones. Pairings helped mainly when the human was already the better decider. The rule that follows is practical: do not point the machine at your weakest deciders, put it where the human can already overrule it. That is not a reason for despair, but for discipline. An accountable human is only worth having if they stay sharp enough to overrule the machine, and they will not stay sharp if they have stopped deciding anything real. A director who only nods is not answerable at all, just a crumple zone with a better title.
+
+## The requirements we cannot yet write
+
+Scale that up, past the acceptance criteria and the org charts, to the largest futures we can imagine. There is a future none of us can specify. We cannot write the requirements for a starship, not because the engineering is hard but because we cannot yet even state the problem well enough to begin. That inability is not a gap in the example. It is the definition of the stage we are entering, the one where the machine helps us articulate problems we currently have no language for. The far edge of discovery is the moment we start to be able to specify what we could not.
+
+And when that edge arrives, when the machine can reach for almost anything, a cure, a new material, a way to somewhere we have only pointed at, the work that is left to us is not smaller for being singular. It is the oldest work there is, made scarce again by abundance. Out of all the futures the machine can now put within reach, we are the ones who choose which of them to commit to, and stand behind the choice.
+
+<CTA href="/toolkit/">👉 Put it into practice: the Requirements Engineering toolkit</CTA>
