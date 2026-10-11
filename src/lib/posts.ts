@@ -69,12 +69,11 @@ export async function getReadingOrderPosts(): Promise<ResolvedPost[]> {
  * series, oldest first. Reading order *is* publication order for those series,
  * so taking the tail keeps the grid on the leading edge — each weekly release
  * pushes the oldest card off the left and lands the new post on the right.
- * Toolkit posts are excluded (they have their own hub under /toolkit), and so
- * are the off-topic "How We Work" pieces, which aren't requirements notes.
+ * Toolkit posts are excluded; they have their own hub under /toolkit.
  */
 export async function getRecentPosts(count = 4): Promise<ResolvedPost[]> {
 	const narrative = (await getReadingOrderPosts()).filter(
-		(r) => r.series.id !== 'toolkits' && r.series.id !== 'workplace',
+		(r) => r.series.id !== 'toolkits',
 	);
 	return narrative.slice(-count);
 }

@@ -38,8 +38,8 @@ export const SERIES: Record<SeriesId, Series> = {
 		image: series03,
 	},
 	// Off-topic opinion pieces about how we work (office days, hybrid rules) —
-	// nothing to do with AI or requirements engineering, so kept off the home
-	// "Recent posts" grid. May only ever hold one post.
+	// nothing to do with AI or requirements engineering. May only ever hold one
+	// post.
 	workplace: {
 		id: 'workplace',
 		num: '05',
