@@ -17,7 +17,7 @@ const blog = defineCollection({
 			// Human-entered publish date shown verbatim on the blog list, e.g. '31.07.2026'.
 			publishedOn: z.string().optional(),
 			// Which series (category) the post belongs to, and its position within it.
-			series: z.enum(['series-01', 'series-02', 'series-03', 'toolkits']),
+			series: z.enum(['series-01', 'series-02', 'series-03', 'workplace', 'toolkits']),
 			order: z.number(),
 			tags: z.array(z.string()).default([]),
 			// Reading time in minutes (from the design hand-off).

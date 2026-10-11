@@ -4,7 +4,12 @@ import series02 from '../assets/images/series-02.jpg';
 import series03 from '../assets/images/series-03.jpg';
 import seriesToolkits from '../assets/images/series-toolkits.jpg';
 
-export type SeriesId = 'series-01' | 'series-02' | 'series-03' | 'toolkits';
+export type SeriesId =
+	| 'series-01'
+	| 'series-02'
+	| 'series-03'
+	| 'workplace'
+	| 'toolkits';
 
 export interface Series {
 	id: SeriesId;
@@ -32,6 +37,16 @@ export const SERIES: Record<SeriesId, Series> = {
 		title: 'AI-readable documentation architecture',
 		image: series03,
 	},
+	// Off-topic opinion pieces about how we work (office days, hybrid rules) —
+	// nothing to do with AI or requirements engineering, so kept off the home
+	// "Recent posts" grid. May only ever hold one post.
+	workplace: {
+		id: 'workplace',
+		num: '05',
+		title: 'How We Work',
+		// Placeholder: borrows the Series 1 art until the real image is supplied.
+		image: series01,
+	},
 	// Not a narrative series: the posts that introduce the open-source toolkits
 	// promoted under /toolkit. Kept in the same collection so they share the blog
 	// list, search and reading experience.
@@ -48,5 +63,6 @@ export const SERIES_ORDER: SeriesId[] = [
 	'series-01',
 	'series-02',
 	'series-03',
+	'workplace',
 	'toolkits',
 ];
