@@ -3,6 +3,7 @@ import series01 from '../assets/images/series-01.jpg';
 import series02 from '../assets/images/series-02.jpg';
 import series03 from '../assets/images/series-03.jpg';
 import seriesToolkits from '../assets/images/series-toolkits.jpg';
+import seriesWorkplace from '../assets/images/series-workplace.png';
 
 export type SeriesId =
 	| 'series-01'
@@ -44,8 +45,7 @@ export const SERIES: Record<SeriesId, Series> = {
 		id: 'workplace',
 		num: '05',
 		title: 'How We Work',
-		// Placeholder: borrows the Series 1 art until the real image is supplied.
-		image: series01,
+		image: seriesWorkplace,
 	},
 	// Not a narrative series: the posts that introduce the open-source toolkits
 	// promoted under /toolkit. Kept in the same collection so they share the blog
